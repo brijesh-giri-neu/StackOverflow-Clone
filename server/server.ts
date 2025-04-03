@@ -1,34 +1,158 @@
-import express, { Request, Response } from 'express';
-import mongoose from 'mongoose';
+import cors from "cors";
+import { Server } from "http"; // Import the Server type from Node.js
+import express, { type Express, Request, Response, NextFunction } from "express";
+import swaggerUi from "swagger-ui-express";
+import yaml from "yaml";
+import fs from "fs";
+import { middleware } from "express-openapi-validator";
+import path from "path";
+import tagRouter from "./pages/tag";
+import answerRouter from "./pages/answer";
+import questionRouter from "./pages/question";
+import { HttpError } from "express-openapi-validator/dist/framework/types";
+import DBConnection from "./utilities/DBConnection";
 
-import { MONGO_URL, port } from './config';
+/**
+ * Client URL for CORS configuration.
+ * @constant {string}
+ */
+const CLIENT_URL: string = "http://localhost:3000";
 
-mongoose.connect(MONGO_URL)
-    .catch(err => console.error('Error connecting to MongoDB:', err));
+/**
+ * Port on which the server listens.
+ * @constant {number}
+ */
+const port: number = 8000;
 
-const app = express();
+// Initialize database connection
+DBConnection.getInstance();
 
-app.get('/', (_: Request, res: Response) => {
-    res.send('Fake SO Server Dummy Endpoint');
-    res.end();
+/**
+ * Express app instance.
+ * @type {Express}
+ */
+const app: Express = express();
+
+/**
+ * Middleware for handling Cross-Origin Resource Sharing (CORS).
+ * Allows requests from the client URL.
+ */
+app.use(
+  cors({
+    credentials: true,
+    origin: [CLIENT_URL],
+  })
+);
+
+/**
+ * Middleware for parsing incoming JSON requests.
+ */
+app.use(express.json());
+
+/**
+ * Path to the OpenAPI specification YAML file.
+ * @constant {string}
+ */
+const openApiPath = path.join(__dirname, 'openapi.yaml');
+
+/**
+ * Parses the OpenAPI YAML file into a JavaScript object.
+ * @type {object}
+ */
+const openApiDocument = yaml.parse(fs.readFileSync(openApiPath, 'utf8'));
+
+/**
+ * Configuration options for Swagger UI.
+ * @constant {object}
+ */
+const swaggerOptions = {
+  customSiteTitle: "Fake Stack Overflow API Documentation",
+  customCss: '.swagger-ui .topbar { display: none } .swagger-ui .info { margin: 20px 0 } .swagger-ui .scheme-container { display: none }',
+  swaggerOptions: {
+    displayRequestDuration: true,
+    docExpansion: 'none',
+    showCommonExtensions: true
+  }
+};
+
+/**
+ * Middleware to serve Swagger UI documentation for the OpenAPI spec.
+ */
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocument, swaggerOptions));
+
+/**
+ * Middleware to validate requests and responses according to the OpenAPI specification.
+ */
+app.use(
+  middleware({
+    apiSpec: openApiPath,
+    validateRequests: true,
+    validateResponses: true,
+    formats: {
+      'mongodb-id': /^[0-9a-fA-F]{24}$/ // Custom format for validating MongoDB ObjectIds
+    }
+  })
+);
+
+/**
+ * Starts the Express server and listens for incoming requests.
+ * Logs the server URL on startup.
+ * @type {Server}
+ */
+const server: Server = app.listen(port, () => {
+  console.log(`Server starts at http://localhost:${port}`);
 });
 
-const server = app.listen(port, () => {
-    console.log(`Server starts at http://localhost:${port}`);
+/**
+ * Gracefully shuts down the server and disconnects from the MongoDB database on SIGINT (Ctrl+C).
+ * Logs server and database disconnection statuses.
+ */
+process.on("SIGINT", async () => {
+  server.close(() => {
+    console.log("Server closed.");
+  });
+
+  try {
+    await DBConnection.getInstance().disconnect(); // ✅ Uses the Singleton's disconnect method
+    process.exit(0);
+  } catch (err) {
+    console.error("Error during disconnection:", err);
+    process.exit(1);
+  }
 });
 
-process.on('SIGINT', () => {
-    server.close(() => {
-        console.log('Server closed.');
+/**
+ * Global error handler middleware.
+ * Handles errors and sends proper JSON responses with status codes and error messages.
+ * @param {HttpError} err - The error object.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @param {NextFunction} next - The next middleware function.
+ */
+app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
+  void next;
+  if (err.status && err.errors) {
+    console.log("err", err);
+    res.status(err.status).json({
+      message: err.message,
+      errors: err.errors,
     });
-    mongoose.disconnect().then(() => {
-        console.log('Database instance disconnected.');
-        process.exit(0);
-    }).catch((err) => {
-        console.error('Error during disconnection:', err);
-        process.exit(1);
+  } else {
+    res.status(500).json({
+      message: err.message || 'Internal Server Error',
     });
+  }
 });
 
+/**
+ * Routes for handling API requests related to tags, questions, and answers.
+ */
+app.use('/tag', tagRouter);
+app.use('/question', questionRouter);
+app.use('/answer', answerRouter);
 
+/**
+ * Exports the server for testing or other use cases.
+ * @module
+ */
 module.exports = server;
