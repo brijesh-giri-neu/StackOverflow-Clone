@@ -6,6 +6,8 @@ import TagPageClass from "./main/routing/tag";
 import AnswerPageClass from "./main/routing/answer";
 import NewQuestionPageClass from "./main/routing/newQuestion";
 import NewAnswerPageClass from "./main/routing/newAnswer";
+import UserRegistrationPageClass from "./main/routing/userRegistration";
+import UserLoginPageClass from "./main/routing/userLogin";
 
 /**
  * The root component for the Fake Stack Overflow application.
@@ -28,6 +30,49 @@ const FakeStackOverflow = () => {
   const [questionOrder, setQuestionOrder] = useState("newest");
   const [qid, setQid] = useState("");
 
+  // Set the page to display the user registration form
+  const handleUserRegistration = () => {
+    setPageInstance(
+      new UserRegistrationPageClass({
+        search,
+        title: "User Registration",
+        setQuestionPage,
+        questionOrder,
+        setQuestionOrder,
+        qid,
+        handleQuestions,
+        handleTags,
+        handleAnswer,
+        clickTag,
+        handleNewQuestion,
+        handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
+      })
+    );
+  };
+
+  const handleUserLogin = () => {
+    setPageInstance(
+      new UserLoginPageClass({
+        search,
+        title: "User Login",
+        setQuestionPage,
+        questionOrder,
+        setQuestionOrder,
+        qid,
+        handleQuestions,
+        handleTags,
+        handleAnswer,
+        clickTag,
+        handleNewQuestion,
+        handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
+      })
+    );
+  };
+
   // Set the page to display the questions based on the search string
   const setQuestionPage = (
     search = "",
@@ -49,6 +94,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
       })
     );
   };
@@ -71,6 +118,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
       })
     );
   };
@@ -91,6 +140,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
       })
     );
   };
@@ -112,6 +163,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin
       })
     );
   };
@@ -134,6 +187,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
       })
     );
   };
@@ -154,6 +209,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
       })
     );
   };
@@ -174,6 +231,8 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
+        handleUserRegistration,
+        handleUserLogin,
       })
     );
   };
@@ -192,6 +251,8 @@ const FakeStackOverflow = () => {
       clickTag,
       handleNewQuestion,
       handleNewAnswer,
+      handleUserRegistration,
+      handleUserLogin,
     })
   );
 
@@ -210,7 +271,9 @@ const FakeStackOverflow = () => {
     <>
       <Header 
         search={search} 
-        setQuestionPage={setQuestionPage} />
+        setQuestionPage={setQuestionPage} 
+        handleUserRegistration={handleUserRegistration}
+        handleUserLogin={handleUserLogin}/>
       <Main 
         page={pageInstance} 
         handleQuestions={handleQuestions} handleTags={handleTags}

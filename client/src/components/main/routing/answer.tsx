@@ -38,6 +38,8 @@ export default class AnswerPageClass extends PageClass {
       clickTag: props.clickTag,
       handleNewQuestion: props.handleNewQuestion,
       handleNewAnswer: props.handleNewAnswer,
+      handleUserRegistration: props.handleUserRegistration,
+      handleUserLogin: props.handleUserLogin,
     });
 
     this.qid = props.qid;

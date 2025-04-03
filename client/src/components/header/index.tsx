@@ -1,10 +1,13 @@
 import "./index.css";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
-import { QuestionsPageQueryFuntionType } from "../../types/functionTypes";
+import { QuestionsPageQueryFuntionType, VoidFunctionType } from "../../types/functionTypes";
+import { FaUserCircle } from "react-icons/fa";
 // A type definition for the props of the Header component
 interface HeaderProps {
   search: string;
   setQuestionPage: QuestionsPageQueryFuntionType;
+  handleUserRegistration: VoidFunctionType;
+  handleUserLogin: VoidFunctionType;
 }
 
 /**
@@ -14,7 +17,7 @@ interface HeaderProps {
  * @param param0 with the search string and the function to set the page to display the search results
  * @returns the header component
  */
-const Header = ({ search, setQuestionPage }: HeaderProps) => {
+const Header = ({ search, setQuestionPage, handleUserRegistration, handleUserLogin }: HeaderProps) => {
   const [val, setVal] = useState<string>(search);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +43,10 @@ const Header = ({ search, setQuestionPage }: HeaderProps) => {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
       />
+      {/* <FaUserCircle className="profile-icon" size={24} /> */}
+      <button className="profile-button">Profile</button>
+      <button className="login-button" onClick={handleUserLogin}>Log in</button>
+      <button className="signup-button" onClick={handleUserRegistration}>Sign up</button>
     </div>
   );
 };

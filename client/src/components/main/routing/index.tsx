@@ -20,6 +20,8 @@ export interface PageClassProps {
   clickTag: ClickTagFunctionType;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
+  handleUserRegistration: VoidFunctionType;
+  handleUserLogin: VoidFunctionType;
 }
 
 /**
@@ -43,6 +45,8 @@ class PageClass {
   clickTag: ClickTagFunctionType; // the function to handle the click event on a tag
   handleNewQuestion: VoidFunctionType;  // the function to handle the creation of a new question
   handleNewAnswer: VoidFunctionType;  // the function to handle the creation of a new answer
+  handleUserRegistration: VoidFunctionType;
+  handleUserLogin: VoidFunctionType;
 
   constructor(props: PageClassProps) {
     this.search = props.search;
@@ -57,6 +61,8 @@ class PageClass {
     this.clickTag = props.clickTag;
     this.handleNewQuestion = props.handleNewQuestion;
     this.handleNewAnswer = props.handleNewAnswer;
+    this.handleUserRegistration = props.handleUserRegistration;
+    this.handleUserLogin = props.handleUserLogin;
   }
 
   getContent(): React.ReactNode {
