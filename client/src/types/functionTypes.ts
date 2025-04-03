@@ -21,6 +21,8 @@ type QuestionIdFunctionType = (qid: string) => void;
 
 type StringFunctionType = (value: string) => void;
 
+type UserIdFunctionType = (userid: string) => void;
+
 export type {
   VoidFunctionType,
   PageSetterFunctionType,
@@ -31,4 +33,5 @@ export type {
   QuestionIdFunctionType,
   StringFunctionType,
   QuestionsPageQueryFuntionType,
+  UserIdFunctionType
 };
