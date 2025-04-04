@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import UserSchema from "./schema/user";
 import { IUser, IUserDocument, IUserModel } from "../types/types";
+import bcrypt from "bcrypt";
 
 /**
  * Static Method: registerUser
@@ -25,19 +26,22 @@ UserSchema.statics.registerUser = async function (user: IUser): Promise<IUser> {
 
 /**
  * Static Method: loginUser
- * Logs in a user by checking if the provided email and password match a user document.
- * 
- * @param {string} email - The user's email.
- * @param {string} password - The user's password.
- * @returns {Promise<Boolean>} - Returns true if credentials match; otherwise, false.
+ * Logs in a user by verifying that the provided plain text password matches the stored hashed password.
+ *
+ * @param {string} email - The email address of the user trying to log in.
+ * @param {string} plainPassword - The plain text password provided by the user.
+ * @returns {Promise<boolean>} A promise that resolves to true if the password matches, or false otherwise.
  */
-UserSchema.statics.loginUser = async function (email: string, password: string): Promise<Boolean> {
-    const foundUser = await this.findOne({ email }).exec();
-    // NOTE: In production, use a proper hashing and secure password comparison.
-    if (!foundUser || foundUser.password !== password) {
-        return false;
-    }
-    return true;
+UserSchema.statics.loginUser = async function (
+    email: string,
+    plainPassword: string
+): Promise<boolean> {
+    const user = await this.findOne({ email }).exec();
+    if (!user) return false;
+
+    // Compare the plain text password with the stored hashed password.
+    const passwordMatches = await bcrypt.compare(plainPassword, user.password);
+    return passwordMatches;
 };
 
 /**

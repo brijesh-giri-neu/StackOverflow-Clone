@@ -15,7 +15,7 @@ import { IUserProfileDocument, IUserProfileModel } from "../../types/types";
  */
 const UserProfileSchema = new mongoose.Schema<IUserProfileDocument, IUserProfileModel>(
     {
-        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
         fullName: { type: String, required: true },
         location: { type: String },
         title: { type: String },
@@ -26,31 +26,5 @@ const UserProfileSchema = new mongoose.Schema<IUserProfileDocument, IUserProfile
     },
     { collection: "UserProfile" }
 );
-
-/**
- * Static Method: Get the user profile by the associated user's ObjectId.
- * 
- * @param {mongoose.Types.ObjectId} userId - The ObjectId of the user.
- * @returns {Promise<IUserProfileDocument | null>} - A promise that resolves with the user profile document or null if not found.
- */
-UserProfileSchema.statics.getProfileByUserId = async function (
-    userId: mongoose.Types.ObjectId
-): Promise<IUserProfileDocument | null> {
-    return this.findOne({ user: userId }).exec();
-};
-
-/**
- * Static Method: Update the user profile information.
- * 
- * @param {mongoose.Types.ObjectId} userId - The ObjectId of the user.
- * @param {Partial<Omit<IUserProfileDocument, "user" | "_id">>} profile - The profile fields to update.
- * @returns {Promise<IUserProfileDocument | null>} - A promise that resolves with the updated user profile document.
- */
-UserProfileSchema.statics.updateUserProfile = async function (
-    userId: mongoose.Types.ObjectId,
-    profile: Partial<Omit<IUserProfileDocument, "user" | "_id">>
-): Promise<IUserProfileDocument | null> {
-    return this.findOneAndUpdate({ user: userId }, profile, { new: true, runValidators: true }).exec();
-};
 
 export default UserProfileSchema;

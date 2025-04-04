@@ -32,26 +32,6 @@ UserSchema.statics.getUserByEmail = async function (
 };
 
 /**
- * Static Method: loginUser
- * Logs in a user by verifying that the provided plain text password matches the stored hashed password.
- *
- * @param {string} email - The email address of the user trying to log in.
- * @param {string} plainPassword - The plain text password provided by the user.
- * @returns {Promise<boolean>} A promise that resolves to true if the password matches, or false otherwise.
- */
-UserSchema.statics.loginUser = async function (
-    email: string,
-    plainPassword: string
-): Promise<boolean> {
-    const user = await this.findOne({ email }).exec();
-    if (!user) return false;
-
-    // Compare the plain text password with the stored hashed password.
-    const passwordMatches = await bcrypt.compare(plainPassword, user.password);
-    return passwordMatches;
-};
-
-/**
  * Pre-save hook for the User schema.
  * Hashes the user's password using bcrypt before saving the user document to the database.
  *
