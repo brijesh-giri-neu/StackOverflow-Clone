@@ -34,6 +34,10 @@ export default class NewAnswerPageClass extends PageClass {
       handleNewAnswer: props.handleNewAnswer,
       handleUserRegistration: props.handleUserRegistration,
       handleUserLogin: props.handleUserLogin,
+      handleUserLogout: props.handleUserLogout,
+      handleEditUserProfile: props.handleEditUserProfile,
+      userProfile: props.userProfile,
+      setProfilePage: props.setProfilePage,
     });
 
     this.qid = props.qid;

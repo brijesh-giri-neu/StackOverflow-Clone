@@ -5,6 +5,7 @@ import {
   VoidFunctionType,
   OrderFunctionType,
 } from "../../../types/functionTypes";
+import { UserProfileType } from "../../../types/entityTypes";
 
 // The type definitions for the input object of the PageClass constructor
 export interface PageClassProps {
@@ -22,6 +23,10 @@ export interface PageClassProps {
   handleNewAnswer: VoidFunctionType;
   handleUserRegistration: VoidFunctionType;
   handleUserLogin: VoidFunctionType;
+  handleUserLogout: VoidFunctionType;
+  handleEditUserProfile: VoidFunctionType;
+  userProfile: UserProfileType | null;
+  setProfilePage: VoidFunctionType;
 }
 
 /**
@@ -47,6 +52,10 @@ class PageClass {
   handleNewAnswer: VoidFunctionType;  // the function to handle the creation of a new answer
   handleUserRegistration: VoidFunctionType;
   handleUserLogin: VoidFunctionType;
+  handleUserLogout: VoidFunctionType;
+  handleEditUserProfile: VoidFunctionType;
+  userProfile: UserProfileType | null;
+  setProfilePage: VoidFunctionType
 
   constructor(props: PageClassProps) {
     this.search = props.search;
@@ -63,6 +72,10 @@ class PageClass {
     this.handleNewAnswer = props.handleNewAnswer;
     this.handleUserRegistration = props.handleUserRegistration;
     this.handleUserLogin = props.handleUserLogin;
+    this.handleUserLogout = props.handleUserLogout;
+    this.handleEditUserProfile = props.handleEditUserProfile;
+    this.userProfile = props.userProfile;
+    this.setProfilePage = props.setProfilePage
   }
 
   getContent(): React.ReactNode {

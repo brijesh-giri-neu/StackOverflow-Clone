@@ -8,6 +8,7 @@ interface HeaderProps {
   setQuestionPage: QuestionsPageQueryFuntionType;
   handleUserRegistration: VoidFunctionType;
   handleUserLogin: VoidFunctionType;
+  setProfilePage: VoidFunctionType;
 }
 
 /**
@@ -17,7 +18,7 @@ interface HeaderProps {
  * @param param0 with the search string and the function to set the page to display the search results
  * @returns the header component
  */
-const Header = ({ search, setQuestionPage, handleUserRegistration, handleUserLogin }: HeaderProps) => {
+const Header = ({ search, setQuestionPage, handleUserRegistration, handleUserLogin, setProfilePage }: HeaderProps) => {
   const [val, setVal] = useState<string>(search);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +45,7 @@ const Header = ({ search, setQuestionPage, handleUserRegistration, handleUserLog
         onKeyDown={handleKeyDown}
       />
       {/* <FaUserCircle className="profile-icon" size={24} /> */}
-      <button className="profile-button">Profile</button>
+      <button className="profile-button" onClick={setProfilePage}>Profile</button>
       <button className="login-button" onClick={handleUserLogin}>Log in</button>
       <button className="signup-button" onClick={handleUserRegistration}>Sign up</button>
     </div>

@@ -1,0 +1,40 @@
+import React from "react";
+import "./headerView.css";
+import { FaUserCircle, FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
+
+interface ProfileHeaderProps {
+    displayName: string;
+    handleEditProfile: () => void;
+    handleLogout: () => void;
+}
+
+const UserIcon = FaUserCircle as React.FC<React.SVGProps<SVGSVGElement>>;
+const PencilIcon = FaPencilAlt as React.FC<React.SVGProps<SVGSVGElement>>;
+const LogoutIcon = FaSignOutAlt as React.FC<React.SVGProps<SVGSVGElement>>;
+
+const ProfileHeader = ({
+    displayName,
+    handleEditProfile,
+    handleLogout,
+}: ProfileHeaderProps) => {
+    return (
+        <div className="profile_header">
+            <div className="profile_left">
+                <UserIcon className="user_icon"/>
+                <h2 className="profile_name">{displayName}</h2>
+            </div>
+            <div className="profile_actions">
+                <button onClick={handleEditProfile} className="edit_profile_button">
+                    <PencilIcon className="button_icon"/>
+                    <span>Edit Profile</span>
+                </button>
+                <button onClick={handleLogout} className="logout_button">
+                    <LogoutIcon className="button_icon"/>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default ProfileHeader;

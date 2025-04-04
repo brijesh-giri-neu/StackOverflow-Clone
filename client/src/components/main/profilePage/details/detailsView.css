@@ -1,0 +1,69 @@
+/* Container with two columns */
+.profile_details_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    max-width: 900px;
+    margin: 2rem auto;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    border: 1px solid #e4e6e8;
+    border-radius: 4px;
+    padding: 1.5rem;
+}
+
+/* Left column: primary details */
+.profile_details_left {
+    flex: 2;
+    min-width: 250px;
+}
+
+.display_name {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #232629;
+}
+
+.title_badge {
+    display: inline-block;
+    margin: 0.5rem 0;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.9rem;
+    color: #39739d;
+    background-color: #eff8fa;
+    border: 1px solid #b3d3ea;
+    border-radius: 3px;
+}
+
+.about_me {
+    margin-top: 1rem;
+    color: #3b4045;
+    line-height: 1.5;
+}
+
+/* Right column: info lines with icons */
+.profile_details_right {
+    flex: 1;
+    min-width: 200px;
+}
+
+.info_line {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.info_icon {
+    margin-right: 0.5rem;
+    color: #6a737c;
+}
+
+.info_line a {
+    color: #0077cc;
+    text-decoration: none;
+}
+
+.info_line a:hover {
+    text-decoration: underline;
+}

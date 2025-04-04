@@ -131,6 +131,8 @@ interface UserType {
  * @property {string} github - The user's GitHub profile link.
  */
 interface UserProfileType {
+  email: string;
+  displayName: string;
   fullName: string;
   location?: string;
   title?: string;
