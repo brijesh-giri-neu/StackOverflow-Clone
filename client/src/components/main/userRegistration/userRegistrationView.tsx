@@ -25,7 +25,6 @@ const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
         <Form>
             <Input
                 title="Email"
-                hint="Enter your email"
                 id="formEmailInput"
                 val={email}
                 setState={setEmail}
@@ -33,7 +32,6 @@ const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
             />
             <Input
                 title="Password"
-                hint="Enter your password"
                 id="formPasswordInput"
                 val={password}
                 setState={setPassword}
@@ -41,7 +39,6 @@ const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
             />
             <Input
                 title="Display Name"
-                hint="Enter a display name"
                 id="formDisplayNameInput"
                 val={displayName}
                 setState={setDisplayName}

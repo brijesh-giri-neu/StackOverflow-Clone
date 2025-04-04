@@ -33,7 +33,6 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
         github,
         setGithub,
         displayNameErr,
-        fullNameErr,
         aboutMeErr,
         handleSave,
     } = useEditProfile({ userProfile, setProfilePage });
@@ -49,18 +48,21 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     val={displayName}
                     setState={setDisplayName}
                     err={displayNameErr}
+                    mandatory={true}
                 />
                 <Input
                     title="Location"
                     id="location"
                     val={location}
                     setState={setLocation}
+                    mandatory={false}
                 />
                 <Input
                     title="Title"
                     id="title"
                     val={title}
                     setState={setTitle}
+                    mandatory={false}
                 />
                 <Textarea
                     title="About me"
@@ -68,6 +70,7 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     val={aboutMe}
                     setState={setAboutMe}
                     err={aboutMeErr}
+                    mandatory={false}
                 />
             </div>
 
@@ -79,18 +82,21 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     id="website"
                     val={website}
                     setState={setWebsite}
+                    mandatory={false}
                 />
                 <Input
                     title="X link or username"
                     id="twitter"
                     val={twitter}
                     setState={setTwitter}
+                    mandatory={false}
                 />
                 <Input
                     title="GitHub link or username"
                     id="github"
                     val={github}
                     setState={setGithub}
+                    mandatory={false}
                 />
             </div>
 
@@ -102,7 +108,6 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     id="fullName"
                     val={fullName}
                     setState={setFullName}
-                    err={fullNameErr}
                 />
                 {/* Add any other private fields here */}
             </div>
@@ -112,6 +117,7 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                 <button className="form_postBtn" onClick={handleSave}>
                     Save Profile
                 </button>
+                <div className="mandatory_indicator">* indicates mandatory fields</div>
             </div>
         </Form>
     );

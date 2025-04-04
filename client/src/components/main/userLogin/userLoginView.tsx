@@ -22,7 +22,6 @@ const UserLogin = ({ handleQuestions }: UserLoginProps) => {
         <Form>
             <Input
                 title="Email"
-                hint="Enter your email"
                 id="formEmailInput"
                 val={email}
                 setState={setEmail}
@@ -30,7 +29,6 @@ const UserLogin = ({ handleQuestions }: UserLoginProps) => {
             />
             <Input
                 title="Password"
-                hint="Enter your password"
                 id="formPasswordInput"
                 val={password}
                 setState={setPassword}

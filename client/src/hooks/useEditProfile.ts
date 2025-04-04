@@ -18,7 +18,6 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
     const [github, setGithub] = useState<string>(userProfile.github || "");
 
     const [displayNameErr, setDisplayNameErr] = useState<string>("");
-    const [fullNameErr, setFullNameErr] = useState<string>("");
     const [aboutMeErr, setAboutMeErr] = useState<string>("");
 
     const handleSave = async () => {
@@ -29,13 +28,6 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
             isValid = false;
         } else {
             setDisplayNameErr("");
-        }
-
-        if (!fullName) {
-            setFullNameErr("Full Name cannot be empty");
-            isValid = false;
-        } else {
-            setFullNameErr("");
         }
 
         if (aboutMe.length > 500) {
@@ -84,7 +76,6 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
         github,
         setGithub,
         displayNameErr,
-        fullNameErr,
         aboutMeErr,
         handleSave,
     };
