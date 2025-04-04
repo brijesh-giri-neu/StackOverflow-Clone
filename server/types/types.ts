@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IAnswerDB, IQuestionDB, ITagDB } from "../scripts/script_types";
+import { IAnswerDB, IQuestionDB, ITagDB, IUserDB, IUserProfileDB } from "../scripts/script_types";
 
 /**
  * A type representing a question object
@@ -54,6 +54,48 @@ export interface ITag {
 }
 
 /**
+ * A type representing a user object.
+ * Use this type to define the shape of a user returned from the Users collection.
+ * 
+ * @property {String} _id - The unique identifier of the user.
+ * @property {String} email - The user's email.
+ * @property {String} displayName - The user's display name.
+ * @property {String} password - The user's password.
+ */
+export interface IUser {
+  _id?: string;
+  email: string;
+  displayName: string;
+  password: string;
+}
+
+/**
+ * A type representing a user profile object.
+ * Use this type to define the shape of a user profile returned from the UserProfiles collection.
+ * 
+ * @property {String} _id - The unique identifier of the user profile.
+ * @property {String} user - The associated user (typically the user's _id).
+ * @property {String} fullName - The user's full name.
+ * @property {String} [location] - The user's location.
+ * @property {String} [title] - The user's title or professional role.
+ * @property {String} [aboutMe] - A short bio or description of the user.
+ * @property {String} [website] - The user's personal or professional website link.
+ * @property {String} [twitter] - The user's Twitter (X) profile link.
+ * @property {String} [github] - The user's GitHub profile link.
+ */
+export interface IUserProfile {
+  _id?: string;
+  user: (IUser | mongoose.Types.ObjectId);
+  fullName?: string;
+  location?: string;
+  title?: string;
+  aboutMe?: string;
+  website?: string;
+  twitter?: string;
+  github?: string;
+}
+
+/**
  * A type representing a tag document schema in the tags collection
  * except the _id field, which is explicitly defined to have the type
  * mongoose.Types.ObjectId
@@ -61,6 +103,26 @@ export interface ITag {
 export interface ITagDocument
   extends Omit<mongoose.Document, "_id">, Omit<ITagDB, "_id"> {
   _id: mongoose.Types.ObjectId;
+}
+
+/**
+ * A type representing a user document schema in the Users collection,
+ * where the _id field is explicitly defined as mongoose.Types.ObjectId.
+ */
+export interface IUserDocument 
+  extends Omit<mongoose.Document, "_id">, Omit<IUser, "_id"> {
+  _id: mongoose.Types.ObjectId;
+}
+
+/**
+ * A type representing a user profile document schema in the UserProfiles collection,
+ * where the _id field is explicitly defined as mongoose.Types.ObjectId,
+ * and the user field is explicitly defined as mongoose.Types.ObjectId.
+ */
+export interface IUserProfileDocument
+  extends Omit<mongoose.Document, "_id">, Omit<IUserProfile, "_id" | "user"> {
+  _id: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId | IUserDocument;
 }
 
 /**
@@ -157,4 +219,28 @@ export interface IAnswerDocument
 export interface TagCountResponse {
   name: string;
   qcnt: number;
+}
+
+/**
+ * A type representing the model for the Users collection.
+ * This interface defines static methods for user operations such as registration and login.
+ * 
+ * @method registerUser - An async method that registers a new user with email, displayName, and password.
+ * @method loginUser - An async method that logs in a user using email and password.
+ */
+export interface IUserModel extends mongoose.Model<IUserDocument> {
+  registerUser(user: IUser): Promise<IUser>;
+  loginUser(email: string, password: string): Promise<Boolean>;
+}
+
+/**
+ * A type representing the model for the UserProfiles collection.
+ * This interface defines static methods for profile operations such as retrieving and updating the profile.
+ * 
+ * @method getProfileByUserId - An async method that returns the user profile for a given user id.
+ * @method updateUserProfile - An async method that updates the profile information for a given user.
+ */
+export interface IUserProfileModel extends mongoose.Model<IUserProfileDocument> {
+  getProfileByUserId(userId: mongoose.Types.ObjectId): Promise<IUserProfile | null>;
+  updateUserProfile(userId: mongoose.Types.ObjectId, profile: IUserProfile): Promise<IUserProfile>;
 }

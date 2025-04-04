@@ -35,3 +35,42 @@ export interface ITagDB {
   _id?: mongoose.Types.ObjectId;
   name: string;
 }
+
+
+/**
+ * Represents a User document in the database.
+ * @property {mongoose.Types.ObjectId} _id - The unique identifier for the document.
+ * @property {string} email - The user's email (unique identifier).
+ * @property {string} displayName - The user's public display name.
+ * @property {string} password - The user's password.
+ */
+export interface IUserDB {
+  _id?: mongoose.Types.ObjectId;
+  email: string;
+  displayName: string;
+  password: string;
+}
+
+/**
+ * Represents a UserProfile document in the database.
+ * @property {mongoose.Types.ObjectId} _id - The unique identifier for the document.
+ * @property {mongoose.Types.ObjectId} user - Reference to the User document.
+ * @property {string} fullName - The user's full name.
+ * @property {string} [location] - The user's location.
+ * @property {string} [title] - The user's title or professional role.
+ * @property {string} [aboutMe] - A short bio or description of the user.
+ * @property {string} [website] - The user's personal or professional website link.
+ * @property {string} [twitter] - The user's Twitter (X) profile link.
+ * @property {string} [github] - The user's GitHub profile link.
+ */
+export interface IUserProfileDB {
+  _id?: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId; // Reference to the User document
+  fullName: string;
+  location?: string;
+  title?: string;
+  aboutMe?: string;
+  website?: string;
+  twitter?: string;
+  github?: string;
+}
