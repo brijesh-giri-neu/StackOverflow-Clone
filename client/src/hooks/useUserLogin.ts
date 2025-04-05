@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { VoidFunctionType, UserObjFunctionType } from "../types/functionTypes";
+import { VoidFunctionType, UserObjFunctionType, UserProfileObjFunctionType } from "../types/functionTypes";
 import { loginExistingUser } from "../services/userService";
 import { UserResponseType } from "../types/entityTypes";
 
@@ -7,11 +7,13 @@ import { UserResponseType } from "../types/entityTypes";
  * A custom hook for handling user login logic, including validation and error handling.
  *
  * @param setUser - Function to update the global user state with the logged-in user's details.
+ * @param setUserProfile - Function to update the global user profile state with the logged-in user's info.
  * @param handleQuestions - Function to navigate to the questions page after login.
  * @returns An object containing login form state, error messages, and the loginUser function.
  */
 export const useUserLogin = (
     setUser: UserObjFunctionType,
+    setUserProfile: UserProfileObjFunctionType,
     handleQuestions: VoidFunctionType
 ) => {
     const [email, setEmail] = useState<string>("");
@@ -49,7 +51,24 @@ export const useUserLogin = (
             // Call API to log in; expects to return a user object if successful
             const user: UserResponseType = await loginExistingUser(email, password);
             if (user) {
+                // Update global user state
                 setUser(user);
+                // Update user profile state with the logged-in user's object in its "user" field.
+                setUserProfile({
+                    user: {
+                        _id: user._id,
+                        email: user.email,
+                        displayName: user.displayName,
+                        password: user.password,
+                    },
+                    fullName: "",
+                    location: "",
+                    title: "",
+                    aboutMe: "",
+                    website: "",
+                    twitter: "",
+                    github: "",
+                });
                 handleQuestions();
             } else {
                 setLoginErr("Incorrect email or password.");

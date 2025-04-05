@@ -9,8 +9,8 @@ import NewAnswerPageClass from "./main/routing/newAnswer";
 import UserRegistrationPageClass from "./main/routing/userRegistration";
 import UserLoginPageClass from "./main/routing/userLogin";
 import UserProfilePageClass from "./main/routing/userProfile";
-import { UserProfileType, UserResponseType } from "../types/entityTypes";
 import EditUserProfilePageClass from "./main/routing/editUserProfile";
+import { UserProfileType, UserResponseType } from "../types/entityTypes";
 
 /**
  * The root component for the Fake Stack Overflow application.
@@ -38,6 +38,7 @@ const FakeStackOverflow = () => {
 
   useEffect(() => {
     console.log("Updated user state ->", user);
+    console.log("Updated user profile ->", userProfile);
   }, [user]);
 
   // Set the page to display the user registration form
@@ -64,6 +65,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -91,6 +93,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -102,20 +105,6 @@ const FakeStackOverflow = () => {
   };
 
   const setEditUserProfilePage = () => {
-    const sampleUserProfile: UserProfileType = {
-      email: "sampleuser@example.com",
-      displayName: "SampleUser",
-      fullName: "Sample User",
-      location: "New York, USA",
-      title: "Software Engineer",
-      aboutMe: "A passionate developer with a love for coding.",
-      website: "https://www.sampleuser.com",
-      twitter: "https://twitter.com/sampleuser",
-      github: "https://github.com/sampleuser"
-    };
-
-    // Set the user profile state to the sample data for now
-    setUserProfile(sampleUserProfile);
     setPageInstance(
       new EditUserProfilePageClass({
         search,
@@ -134,31 +123,47 @@ const FakeStackOverflow = () => {
         setUserLoginPage,
         handleUserLogout,
         setEditUserProfilePage,
-        userProfile: sampleUserProfile,
-        setProfilePage: setProfilePage,
+        userProfile,
+        setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
 
 
-  const setProfilePage = () => {
-    // Sample user profile data
-    const sampleUserProfile: UserProfileType = {
-      email: "sampleuser@example.com",
-      displayName: "SampleUser",
-      fullName: "Sample User",
-      location: "New York, USA",
-      title: "Software Engineer",
-      aboutMe: "A passionate developer with a love for coding.",
-      website: "https://www.sampleuser.com",
-      twitter: "https://twitter.com/sampleuser",
-      github: "https://github.com/sampleuser"
-    };
+  // const setProfilePage = () => {
+  //   setPageInstance(
+  //     new UserProfilePageClass({
+  //       search,
+  //       title: "User Login",
+  //       setQuestionPage,
+  //       questionOrder,
+  //       setQuestionOrder,
+  //       qid,
+  //       handleQuestions,
+  //       handleTags,
+  //       handleAnswer,
+  //       clickTag,
+  //       handleNewQuestion,
+  //       handleNewAnswer,
+  //       setUserRegistrationPage,
+  //       setUserLoginPage,
+  //       handleUserLogout,
+  //       setEditUserProfilePage,
+  //       userProfile,
+  //       setProfilePage: setProfilePage,
+  //       user,
+  //       setUser,
+  //       setUserProfile,
+  //     })
+  //   );
+  // };
 
-    // Set the user profile state to the sample data for now
-    setUserProfile(sampleUserProfile);
+  const setProfilePage = (userProileUpdated: UserProfileType) => {
+    //console.log("userProileUpdated ->"+userProileUpdated);
+    setUserProfile(userProileUpdated);
     setPageInstance(
       new UserProfilePageClass({
         search,
@@ -177,10 +182,11 @@ const FakeStackOverflow = () => {
         setUserLoginPage,
         handleUserLogout,
         setEditUserProfilePage,
-        userProfile: sampleUserProfile,
-        setProfilePage: setProfilePage,
+        userProfile,
+        setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -215,6 +221,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -245,6 +252,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -273,6 +281,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -302,6 +311,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -332,6 +342,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -360,6 +371,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -388,6 +400,7 @@ const FakeStackOverflow = () => {
         setProfilePage,
         user,
         setUser,
+        setUserProfile,
       })
     );
   };
@@ -414,6 +427,7 @@ const FakeStackOverflow = () => {
     setProfilePage,
     user,
     setUser,
+    setUserProfile,
   })
   );
 
@@ -427,11 +441,13 @@ const FakeStackOverflow = () => {
   pageInstance.questionOrder = questionOrder;
   pageInstance.qid = qid;
   pageInstance.title = mainTitle;
+  pageInstance.userProfile = userProfile;
 
   return (
     <>
       <Header
         user={user}
+        userProfile={userProfile}
         search={search}
         setQuestionPage={setQuestionPage}
         setUserRegistrationPage={setUserRegistrationPage}

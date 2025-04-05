@@ -23,7 +23,7 @@ const ProfileDetails = ({ userProfile }: ProfileDetailsProps) => {
         <div className="profile_details_container">
             {/* Left Column: Display Name, Title, About Me */}
             <div className="profile_details_left">
-                <h1 className="display_name">{userProfile.displayName}</h1>
+                <h1 className="display_name">{userProfile.user.displayName}</h1>
                 {userProfile.title && (
                     <span className="title_badge">{userProfile.title}</span>
                 )}

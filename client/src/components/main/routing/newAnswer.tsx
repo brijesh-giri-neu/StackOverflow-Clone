@@ -40,6 +40,7 @@ export default class NewAnswerPageClass extends PageClass {
       setProfilePage: props.setProfilePage,
       user: props.user,
       setUser: props.setUser,
+      setUserProfile: props.setUserProfile,
     });
 
     this.qid = props.qid;

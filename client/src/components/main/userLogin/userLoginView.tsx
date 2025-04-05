@@ -1,14 +1,15 @@
 import { useUserLogin } from "../../../hooks/useUserLogin";
 import Input from "../baseComponents/input/inputView";
 import Form from "../baseComponents/form/formView";
-import { UserObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
+import { UserObjFunctionType, UserProfileObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 
 interface UserLoginProps {
-    handleQuestions: VoidFunctionType;
     setUser: UserObjFunctionType;
+    setUserProfile: UserProfileObjFunctionType;
+    handleQuestions: VoidFunctionType;
 }
 
-const UserLogin = ({ setUser, handleQuestions }: UserLoginProps) => {
+const UserLogin = ({ setUser, setUserProfile, handleQuestions }: UserLoginProps) => {
     const {
         email,
         setEmail,
@@ -18,7 +19,7 @@ const UserLogin = ({ setUser, handleQuestions }: UserLoginProps) => {
         passwordErr,
         loginErr,
         loginUser,
-    } = useUserLogin(setUser, handleQuestions);
+    } = useUserLogin(setUser, setUserProfile, handleQuestions);
 
     return (
         <Form>

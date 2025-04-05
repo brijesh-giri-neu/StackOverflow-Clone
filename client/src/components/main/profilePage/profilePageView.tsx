@@ -24,7 +24,7 @@ const MainProfile = ({ userProfile, handleLogout, setEditUserProfilePage }: Main
     return (
         <div className="main_profile">
             <ProfileHeader
-                displayName={userProfile.displayName}
+                displayName={userProfile.user.displayName}
                 setEditUserProfilePage={setEditUserProfilePage}
                 handleLogout={logoutUser}
             />

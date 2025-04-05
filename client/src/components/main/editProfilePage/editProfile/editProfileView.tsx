@@ -1,6 +1,6 @@
 
 import { UserProfileType } from "../../../../types/entityTypes";
-import { VoidFunctionType } from "../../../../types/functionTypes";
+import { UserProfileObjFunctionType, VoidFunctionType } from "../../../../types/functionTypes";
 import { useEditProfile } from "../../../../hooks/useEditProfile";
 
 import Form from "../../baseComponents/form/formView";
@@ -11,10 +11,11 @@ import "./editProfileView.css";
 
 interface EditProfilePageProps {
     userProfile: UserProfileType;
-    setProfilePage: VoidFunctionType;
+    setUserProfile: UserProfileObjFunctionType;
+    setProfilePage: UserProfileObjFunctionType;
 }
 
-const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) => {
+const EditProfilePage = ({ userProfile, setUserProfile, setProfilePage }: EditProfilePageProps) => {
     const {
         displayName,
         setDisplayName,
@@ -35,7 +36,7 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
         displayNameErr,
         aboutMeErr,
         handleSave,
-    } = useEditProfile({ userProfile, setProfilePage });
+    } = useEditProfile({ userProfile, setUserProfile, setProfilePage });
 
     return (
         <Form>

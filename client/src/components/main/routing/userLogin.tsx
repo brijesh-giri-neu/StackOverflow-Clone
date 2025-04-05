@@ -8,7 +8,7 @@ import UserLogin from "../userLogin/userLoginView";
  */
 export default class UserLoginPageClass extends PageClass {
     getContent(): React.ReactNode {
-        return <UserLogin setUser={this.setUser} handleQuestions={this.handleQuestions} />;
+        return <UserLogin setUser={this.setUser} setUserProfile={this.setUserProfile} handleQuestions={this.handleQuestions} />;
     }
 
     getSelected(): string {

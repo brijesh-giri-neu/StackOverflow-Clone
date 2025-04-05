@@ -1,15 +1,16 @@
 import "./index.css";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
-import { QuestionsPageQueryFuntionType, VoidFunctionType } from "../../types/functionTypes";
-import { UserResponseType } from "../../types/entityTypes";
+import { QuestionsPageQueryFuntionType, UserProfileObjFunctionType, VoidFunctionType } from "../../types/functionTypes";
+import { UserProfileType, UserResponseType } from "../../types/entityTypes";
 
 interface HeaderProps {
   user: UserResponseType | null;
+  userProfile: UserProfileType | null;
   search: string;
   setQuestionPage: QuestionsPageQueryFuntionType;
   setUserRegistrationPage: VoidFunctionType;
   setUserLoginPage: VoidFunctionType;
-  setProfilePage: VoidFunctionType;
+  setProfilePage: UserProfileObjFunctionType;
   handleQuestions: VoidFunctionType;
 }
 
@@ -19,6 +20,7 @@ interface HeaderProps {
  */
 const Header = ({
   user,
+  userProfile,
   search,
   setQuestionPage,
   setUserRegistrationPage,
@@ -55,12 +57,12 @@ const Header = ({
         />
       </div>
       <div className="header-right">
-        {user ? (
+        {user && userProfile ? (
           <img
             src="/profile.png"
             alt="Profile"
             className="profile-icon"
-            onClick={setProfilePage}
+            onClick={() => setProfilePage(userProfile)}
           />
         ) : (
           <>

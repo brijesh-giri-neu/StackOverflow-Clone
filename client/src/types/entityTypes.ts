@@ -145,8 +145,7 @@ interface UserResponseType {
  * @property {string} github - The user's GitHub profile link.
  */
 interface UserProfileType {
-  email: string;
-  displayName: string;
+  user: UserResponseType;
   fullName: string;
   location?: string;
   title?: string;
@@ -171,8 +170,7 @@ interface UserProfileType {
  */
 interface UserProfileResponseType {
   _id: string;
-  email: string;
-  displayName: string;
+  user: UserResponseType;
   fullName?: string;
   location?: string;
   title?: string;

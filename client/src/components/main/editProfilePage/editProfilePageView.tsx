@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import ProfileHeader from "./header/headerView";
 import EditProfilePage from "./editProfile/editProfileView";
 import { UserProfileType } from "../../../types/entityTypes";
-import { VoidFunctionType } from "../../../types/functionTypes";
+import { UserProfileObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 import { useUserLogout } from "../../../hooks/useUserLogout";
 
 interface EditProfileProps {
     userProfile: UserProfileType | null;
-    setProfilePage: VoidFunctionType;
+    setUserProfile: UserProfileObjFunctionType;
+    setProfilePage: UserProfileObjFunctionType;
     handleLogout: VoidFunctionType;
 }
 
-const EditProfile = ({ userProfile, setProfilePage, handleLogout }: EditProfileProps) => {
+const EditProfile = ({ userProfile, setUserProfile, setProfilePage, handleLogout }: EditProfileProps) => {
     const { logoutUser } = useUserLogout(handleLogout);
     if (!userProfile) {
         return (
@@ -24,10 +25,10 @@ const EditProfile = ({ userProfile, setProfilePage, handleLogout }: EditProfileP
     return (
         <div className="main_profile">
             <ProfileHeader
-                displayName={userProfile.displayName}
+                displayName={userProfile.user.displayName}
                 handleLogout={logoutUser}
             />
-            <EditProfilePage userProfile={userProfile} setProfilePage={setProfilePage} />
+            <EditProfilePage userProfile={userProfile} setUserProfile={setUserProfile} setProfilePage={setProfilePage} />
         </div>
     );
 };

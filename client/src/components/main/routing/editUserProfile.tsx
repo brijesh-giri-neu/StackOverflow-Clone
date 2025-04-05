@@ -11,6 +11,7 @@ export default class EditUserProfilePageClass extends PageClass {
     getContent(): React.ReactNode {
         return <EditProfile
             userProfile={this.userProfile}
+            setUserProfile={this.setUserProfile}
             handleLogout={this.handleUserLogout}
             setProfilePage={this.setProfilePage}
         />;

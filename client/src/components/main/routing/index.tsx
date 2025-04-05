@@ -4,7 +4,8 @@ import {
   IdFunctionType,
   VoidFunctionType,
   OrderFunctionType,
-  UserObjFunctionType
+  UserObjFunctionType,
+  UserProfileObjFunctionType
 } from "../../../types/functionTypes";
 import { UserProfileType, UserResponseType } from "../../../types/entityTypes";
 
@@ -27,9 +28,10 @@ export interface PageClassProps {
   handleUserLogout: VoidFunctionType;
   setEditUserProfilePage: VoidFunctionType;
   userProfile: UserProfileType | null;
-  setProfilePage: VoidFunctionType;
+  setProfilePage: UserProfileObjFunctionType;
   user: UserResponseType | null;
   setUser: UserObjFunctionType;
+  setUserProfile: UserProfileObjFunctionType;
 }
 
 /**
@@ -58,9 +60,10 @@ class PageClass {
   handleUserLogout: VoidFunctionType;
   setEditUserProfilePage: VoidFunctionType;
   userProfile: UserProfileType | null;
-  setProfilePage: VoidFunctionType;
+  setProfilePage: UserProfileObjFunctionType;
   user: UserResponseType | null;
   setUser: UserObjFunctionType;
+  setUserProfile: UserProfileObjFunctionType;
 
   constructor(props: PageClassProps) {
     this.search = props.search;
@@ -83,6 +86,7 @@ class PageClass {
     this.setProfilePage = props.setProfilePage;
     this.user = props.user;
     this.setUser = props.setUser;
+    this.setUserProfile = props.setUserProfile;
   }
 
   getContent(): React.ReactNode {
