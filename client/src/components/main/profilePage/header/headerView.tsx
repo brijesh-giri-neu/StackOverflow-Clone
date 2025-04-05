@@ -4,7 +4,7 @@ import { FaUserCircle, FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
 
 interface ProfileHeaderProps {
     displayName: string;
-    handleEditProfile: () => void;
+    setEditUserProfilePage: () => void;
     handleLogout: () => void;
 }
 
@@ -14,7 +14,7 @@ const LogoutIcon = FaSignOutAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 
 const ProfileHeader = ({
     displayName,
-    handleEditProfile,
+    setEditUserProfilePage,
     handleLogout,
 }: ProfileHeaderProps) => {
     return (
@@ -24,7 +24,7 @@ const ProfileHeader = ({
                 <h2 className="profile_name">{displayName}</h2>
             </div>
             <div className="profile_actions">
-                <button onClick={handleEditProfile} className="edit_profile_button">
+                <button onClick={setEditUserProfilePage} className="edit_profile_button">
                     <PencilIcon className="button_icon"/>
                     <span>Edit Profile</span>
                 </button>

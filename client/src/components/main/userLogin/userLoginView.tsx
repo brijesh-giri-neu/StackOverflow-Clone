@@ -1,13 +1,14 @@
 import { useUserLogin } from "../../../hooks/useUserLogin";
-import Input from "../baseComponents/input/inputView"; 
+import Input from "../baseComponents/input/inputView";
 import Form from "../baseComponents/form/formView";
-import { VoidFunctionType } from "../../../types/functionTypes";
+import { UserObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 
 interface UserLoginProps {
     handleQuestions: VoidFunctionType;
+    setUser: UserObjFunctionType;
 }
 
-const UserLogin = ({ handleQuestions }: UserLoginProps) => {
+const UserLogin = ({ setUser, handleQuestions }: UserLoginProps) => {
     const {
         email,
         setEmail,
@@ -15,8 +16,9 @@ const UserLogin = ({ handleQuestions }: UserLoginProps) => {
         setPassword,
         emailErr,
         passwordErr,
+        loginErr,
         loginUser,
-    } = useUserLogin(handleQuestions);
+    } = useUserLogin(setUser, handleQuestions);
 
     return (
         <Form>
@@ -34,6 +36,11 @@ const UserLogin = ({ handleQuestions }: UserLoginProps) => {
                 setState={setPassword}
                 err={passwordErr}
             />
+            {loginErr && (
+                <div className="form_error" style={{ color: "red", marginTop: "8px", marginBottom: "18px" }}>
+                    {loginErr}
+                </div>
+            )}
             <div className="btn_indicator_container">
                 <button className="form_postBtn" onClick={loginUser}>
                     Login

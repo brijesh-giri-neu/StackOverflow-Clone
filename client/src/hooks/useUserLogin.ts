@@ -1,27 +1,41 @@
 import { useState } from "react";
-import { VoidFunctionType } from "../types/functionTypes";
+import { VoidFunctionType, UserObjFunctionType } from "../types/functionTypes";
+import { loginExistingUser } from "../services/userService";
+import { UserResponseType } from "../types/entityTypes";
 
 /**
- * A custom hook for handling user login logic, including validation.
- * @returns login logic including form state and error handling.
+ * A custom hook for handling user login logic, including validation and error handling.
+ *
+ * @param setUser - Function to update the global user state with the logged-in user's details.
+ * @param handleQuestions - Function to navigate to the questions page after login.
+ * @returns An object containing login form state, error messages, and the loginUser function.
  */
-export const useUserLogin = (handleQuestions: VoidFunctionType) => {
+export const useUserLogin = (
+    setUser: UserObjFunctionType,
+    handleQuestions: VoidFunctionType
+) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const [emailErr, setEmailErr] = useState<string>("");
     const [passwordErr, setPasswordErr] = useState<string>("");
+    const [loginErr, setLoginErr] = useState<string>("");
 
     const loginUser = async () => {
+        // Clear previous error messages
+        setEmailErr("");
+        setPasswordErr("");
+        setLoginErr("");
+
         let isValid = true;
 
-        // Email validation
+        // Validate email
         if (!email || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
             setEmailErr("Please enter a valid email address");
             isValid = false;
         }
 
-        // Password validation (example: minimum 8 characters)
+        // Validate password (e.g., minimum 8 characters)
         if (!password || password.length < 8) {
             setPasswordErr("Password must be at least 8 characters");
             isValid = false;
@@ -31,15 +45,22 @@ export const useUserLogin = (handleQuestions: VoidFunctionType) => {
             return;
         }
 
-        // Proceed with login logic, e.g., API call to authenticate the user
-        const user = {
-            email: email,
-            password: password
-        };
-
-        if (isValid) {
-            console.log(user);
-            handleQuestions();
+        try {
+            // Call API to log in; expects to return a user object if successful
+            const user: UserResponseType = await loginExistingUser(email, password);
+            if (user) {
+                setUser(user);
+                handleQuestions();
+            } else {
+                setLoginErr("Incorrect email or password.");
+            }
+        } catch (err: any) {
+            if (err.response && err.response.status === 401) {
+                setLoginErr("Incorrect email or password.");
+            } else {
+                setLoginErr("An error occurred. Please try again later.");
+            }
+            console.error("Login error:", err);
         }
     };
 
@@ -50,6 +71,7 @@ export const useUserLogin = (handleQuestions: VoidFunctionType) => {
         setPassword,
         emailErr,
         passwordErr,
+        loginErr,
         loginUser,
     };
 };

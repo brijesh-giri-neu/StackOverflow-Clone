@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import UserSchema from "./schema/user";
 import { IUser, IUserDocument, IUserModel } from "../types/types";
 import bcrypt from "bcrypt";
+import { convertToIUser } from "../utilities/formatUtils";
 
 /**
  * Static Method: registerUser
@@ -12,15 +13,7 @@ import bcrypt from "bcrypt";
  */
 UserSchema.statics.registerUser = async function (user: IUser): Promise<IUser> {
     const newUser: IUserDocument = await this.create(user);
-    const userObj = newUser.toObject();
-
-    // Build a new object conforming to IUser
-    return {
-        _id: userObj._id.toString(),
-        email: userObj.email,
-        displayName: userObj.displayName,
-        password: userObj.password,
-    };
+    return convertToIUser(newUser);
 };
 
 /**
@@ -35,25 +28,29 @@ UserSchema.statics.getUserByEmail = async function (
     return this.findOne({ email }).exec();
 };
 
+
 /**
  * Static Method: loginUser
  * Logs in a user by verifying that the provided plain text password matches the stored hashed password.
  *
  * @param {string} email - The email address of the user trying to log in.
  * @param {string} plainPassword - The plain text password provided by the user.
- * @returns {Promise<boolean>} A promise that resolves to true if the password matches, or false otherwise.
+ * @returns {Promise<IUser | null>} A promise that resolves to the user object if the credentials are correct, or null otherwise.
  */
 UserSchema.statics.loginUser = async function (
     email: string,
     plainPassword: string
-): Promise<boolean> {
+): Promise<IUser | null> {
     const user = await this.findOne({ email }).exec();
-    if (!user) return false;
+    if (!user) return null;
 
     // Compare the plain text password with the stored hashed password.
     const passwordMatches = await bcrypt.compare(plainPassword, user.password);
-    return passwordMatches;
+    if (!passwordMatches) return null;
+    
+    return convertToIUser(user);
 };
+
 
 /**
  * The User model representing the Users collection in MongoDB.

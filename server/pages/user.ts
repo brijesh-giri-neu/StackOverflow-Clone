@@ -14,14 +14,10 @@ const router = express.Router();
  * @returns {Response} - A JSON response containing the newly created user.
  */
 router.post('/register', async (req: Request, res: Response) => {
-    try {
-        const { email, displayName, password } = req.body;
-        const user: IUser = { email, displayName, password };
-        const newUser = await User.registerUser(user);
-        res.status(200).json(newUser);
-    } catch (error) {
-        res.status(500).json({ message: "Registration failed", error });
-    }
+    const { email, displayName, password } = req.body;
+    const user: IUser = { email, displayName, password };
+    const newUser = await User.registerUser(user);
+    res.status(200).json(newUser);
 });
 
 /**
@@ -35,14 +31,15 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
-        const isAuthenticated = await User.loginUser(email, password);
-        if (isAuthenticated) {
-            res.status(200).json({ message: "Login successful" });
+        const user = await User.loginUser(email, password);
+        if (user) {
+            res.status(200).json({ message: "Login successful", user });
         } else {
             res.status(401).json({ message: "Invalid credentials" });
         }
     } catch (error) {
-        res.status(500).json({ message: "Login failed", error });
+        console.error("Login error:", error);
+        res.status(500).json({ message: "An error occurred during login" });
     }
 });
 

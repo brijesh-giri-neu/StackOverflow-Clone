@@ -14,16 +14,12 @@ const router = express.Router();
  * @returns {Response} - A JSON response with the user profile, or a 404 error if not found.
  */
 router.get('/:userId', async (req: Request, res: Response) => {
-    try {
-        const { userId } = req.params;
-        const profile = await UserProfile.getProfileByUserId(new mongoose.Types.ObjectId(userId));
-        if (!profile) {
-            return res.status(404).json({ message: 'User profile not found' });
-        }
-        res.status(200).json(profile);
-    } catch (error) {
-        res.status(500).json({ message: 'Error retrieving user profile', error });
+    const { userId } = req.params;
+    const profile = await UserProfile.getProfileByUserId(new mongoose.Types.ObjectId(userId));
+    if (!profile) {
+        return res.status(404).json({ message: 'User profile not found' });
     }
+    res.status(200).json(profile);
 });
 
 /**
@@ -36,17 +32,12 @@ router.get('/:userId', async (req: Request, res: Response) => {
  * @returns {Response} - A JSON response containing the updated user profile.
  */
 router.put('/:userId', async (req: Request, res: Response) => {
-    try {
-        const { userId } = req.params;
-        // The updated profile information is provided in req.body.
-        const updatedProfile = await UserProfile.updateUserProfile(
-            new mongoose.Types.ObjectId(userId),
-            req.body
-        );
-        res.status(200).json(updatedProfile);
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating user profile', error });
-    }
+    const { userId } = req.params;
+    const updatedProfile = await UserProfile.updateUserProfile(
+        new mongoose.Types.ObjectId(userId),
+        req.body
+    );
+    res.status(200).json(updatedProfile);
 });
 
 export default router;

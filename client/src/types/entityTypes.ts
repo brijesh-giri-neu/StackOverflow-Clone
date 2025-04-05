@@ -121,6 +121,20 @@ interface UserType {
 }
 
 /**
+ * The type of a user object received from the server.
+ * @property {string} _id - The unique identifier of the user
+ * @property {string} email - The user's email (unique identifier).
+ * @property {string} displayName - The user's public display name.
+ * @property {string} password - The user's password (used for login and registration).
+ */
+interface UserResponseType {
+  _id: string;
+  email: string;
+  displayName: string;
+  password: string; 
+}
+
+/**
  * The type of a user profile object.
  * @property {string} fullName - The user's full name.
  * @property {string} location - The user's location.
@@ -177,6 +191,7 @@ export type {
   QuestionResponseType,
   TagResponseType,
   UserType,
+  UserResponseType,
   UserProfileType,
   UserProfileResponseType
 };

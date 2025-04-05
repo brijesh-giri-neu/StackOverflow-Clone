@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "./header";
 import Main from "./main/mainView";
 import HomePageClass from "./main/routing/home";
@@ -9,7 +9,7 @@ import NewAnswerPageClass from "./main/routing/newAnswer";
 import UserRegistrationPageClass from "./main/routing/userRegistration";
 import UserLoginPageClass from "./main/routing/userLogin";
 import UserProfilePageClass from "./main/routing/userProfile";
-import { UserType, UserProfileType } from "../types/entityTypes";
+import { UserProfileType, UserResponseType } from "../types/entityTypes";
 import EditUserProfilePageClass from "./main/routing/editUserProfile";
 
 /**
@@ -33,11 +33,15 @@ const FakeStackOverflow = () => {
   const [mainTitle, setMainTitle] = useState<string>("All Questions");
   const [questionOrder, setQuestionOrder] = useState("newest");
   const [qid, setQid] = useState("");
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<UserResponseType | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfileType | null>(null);
 
+  useEffect(() => {
+    console.log("Updated user state ->", user);
+  }, [user]);
+
   // Set the page to display the user registration form
-  const handleUserRegistration = () => {
+  const setUserRegistrationPage = () => {
     setPageInstance(
       new UserRegistrationPageClass({
         search,
@@ -52,17 +56,19 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
 
-  const handleUserLogin = () => {
+  const setUserLoginPage = () => {
     setPageInstance(
       new UserLoginPageClass({
         search,
@@ -77,21 +83,24 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
 
   const handleUserLogout = () => {
-
+    setUser(null);
+    setUserProfile(null);
   };
 
-  const handleEditUserProfile = () => {
+  const setEditUserProfilePage = () => {
     const sampleUserProfile: UserProfileType = {
       email: "sampleuser@example.com",
       displayName: "SampleUser",
@@ -120,12 +129,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile: sampleUserProfile,
-        setProfilePage: setProfilePage
+        setProfilePage: setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -161,12 +172,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile: sampleUserProfile,
-        setProfilePage: setProfilePage
+        setProfilePage: setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -193,12 +206,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -221,12 +236,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -247,12 +264,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -274,12 +293,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -302,12 +323,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -328,12 +351,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -354,12 +379,14 @@ const FakeStackOverflow = () => {
         clickTag,
         handleNewQuestion,
         handleNewAnswer,
-        handleUserRegistration,
-        handleUserLogin,
+        setUserRegistrationPage,
+        setUserLoginPage,
         handleUserLogout,
-        handleEditUserProfile,
+        setEditUserProfilePage,
         userProfile,
-        setProfilePage
+        setProfilePage,
+        user,
+        setUser,
       })
     );
   };
@@ -378,12 +405,14 @@ const FakeStackOverflow = () => {
     clickTag,
     handleNewQuestion,
     handleNewAnswer,
-    handleUserRegistration,
-    handleUserLogin,
+    setUserRegistrationPage,
+    setUserLoginPage,
     handleUserLogout,
-    handleEditUserProfile,
+    setEditUserProfilePage,
     userProfile,
-    setProfilePage
+    setProfilePage,
+    user,
+    setUser,
   })
   );
 
@@ -403,8 +432,8 @@ const FakeStackOverflow = () => {
       <Header
         search={search}
         setQuestionPage={setQuestionPage}
-        handleUserRegistration={handleUserRegistration}
-        handleUserLogin={handleUserLogin}
+        setUserRegistrationPage={setUserRegistrationPage}
+        setUserLoginPage={setUserLoginPage}
         setProfilePage={setProfilePage} />
       <Main
         page={pageInstance}

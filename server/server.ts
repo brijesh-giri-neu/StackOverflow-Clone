@@ -9,6 +9,7 @@ import path from "path";
 import tagRouter from "./pages/tag";
 import answerRouter from "./pages/answer";
 import questionRouter from "./pages/question";
+import userRouter from "./pages/user";
 import { HttpError } from "express-openapi-validator/dist/framework/types";
 import DBConnection from "./utilities/DBConnection";
 
@@ -150,6 +151,7 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
 app.use('/tag', tagRouter);
 app.use('/question', questionRouter);
 app.use('/answer', answerRouter);
+app.use('/user', userRouter);
 
 /**
  * Exports the server for testing or other use cases.

@@ -4,8 +4,9 @@ import {
   IdFunctionType,
   VoidFunctionType,
   OrderFunctionType,
+  UserObjFunctionType
 } from "../../../types/functionTypes";
-import { UserProfileType } from "../../../types/entityTypes";
+import { UserProfileType, UserResponseType } from "../../../types/entityTypes";
 
 // The type definitions for the input object of the PageClass constructor
 export interface PageClassProps {
@@ -21,12 +22,14 @@ export interface PageClassProps {
   clickTag: ClickTagFunctionType;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
-  handleUserRegistration: VoidFunctionType;
-  handleUserLogin: VoidFunctionType;
+  setUserRegistrationPage: VoidFunctionType;
+  setUserLoginPage: VoidFunctionType;
   handleUserLogout: VoidFunctionType;
-  handleEditUserProfile: VoidFunctionType;
+  setEditUserProfilePage: VoidFunctionType;
   userProfile: UserProfileType | null;
   setProfilePage: VoidFunctionType;
+  user: UserResponseType | null;
+  setUser: UserObjFunctionType;
 }
 
 /**
@@ -50,12 +53,14 @@ class PageClass {
   clickTag: ClickTagFunctionType; // the function to handle the click event on a tag
   handleNewQuestion: VoidFunctionType;  // the function to handle the creation of a new question
   handleNewAnswer: VoidFunctionType;  // the function to handle the creation of a new answer
-  handleUserRegistration: VoidFunctionType;
-  handleUserLogin: VoidFunctionType;
+  setUserRegistrationPage: VoidFunctionType;
+  setUserLoginPage: VoidFunctionType;
   handleUserLogout: VoidFunctionType;
-  handleEditUserProfile: VoidFunctionType;
+  setEditUserProfilePage: VoidFunctionType;
   userProfile: UserProfileType | null;
-  setProfilePage: VoidFunctionType
+  setProfilePage: VoidFunctionType;
+  user: UserResponseType | null;
+  setUser: UserObjFunctionType;
 
   constructor(props: PageClassProps) {
     this.search = props.search;
@@ -70,12 +75,14 @@ class PageClass {
     this.clickTag = props.clickTag;
     this.handleNewQuestion = props.handleNewQuestion;
     this.handleNewAnswer = props.handleNewAnswer;
-    this.handleUserRegistration = props.handleUserRegistration;
-    this.handleUserLogin = props.handleUserLogin;
+    this.setUserRegistrationPage = props.setUserRegistrationPage;
+    this.setUserLoginPage = props.setUserLoginPage;
     this.handleUserLogout = props.handleUserLogout;
-    this.handleEditUserProfile = props.handleEditUserProfile;
+    this.setEditUserProfilePage = props.setEditUserProfilePage;
     this.userProfile = props.userProfile;
-    this.setProfilePage = props.setProfilePage
+    this.setProfilePage = props.setProfilePage;
+    this.user = props.user;
+    this.setUser = props.setUser;
   }
 
   getContent(): React.ReactNode {

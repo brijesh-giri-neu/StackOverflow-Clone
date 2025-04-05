@@ -6,8 +6,8 @@ import { FaUserCircle } from "react-icons/fa";
 interface HeaderProps {
   search: string;
   setQuestionPage: QuestionsPageQueryFuntionType;
-  handleUserRegistration: VoidFunctionType;
-  handleUserLogin: VoidFunctionType;
+  setUserRegistrationPage: VoidFunctionType;
+  setUserLoginPage: VoidFunctionType;
   setProfilePage: VoidFunctionType;
 }
 
@@ -18,7 +18,7 @@ interface HeaderProps {
  * @param param0 with the search string and the function to set the page to display the search results
  * @returns the header component
  */
-const Header = ({ search, setQuestionPage, handleUserRegistration, handleUserLogin, setProfilePage }: HeaderProps) => {
+const Header = ({ search, setQuestionPage, setUserRegistrationPage, setUserLoginPage, setProfilePage }: HeaderProps) => {
   const [val, setVal] = useState<string>(search);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +46,8 @@ const Header = ({ search, setQuestionPage, handleUserRegistration, handleUserLog
       />
       {/* <FaUserCircle className="profile-icon" size={24} /> */}
       <button className="profile-button" onClick={setProfilePage}>Profile</button>
-      <button className="login-button" onClick={handleUserLogin}>Log in</button>
-      <button className="signup-button" onClick={handleUserRegistration}>Sign up</button>
+      <button className="login-button" onClick={setUserLoginPage}>Log in</button>
+      <button className="signup-button" onClick={setUserRegistrationPage}>Sign up</button>
     </div>
   );
 };

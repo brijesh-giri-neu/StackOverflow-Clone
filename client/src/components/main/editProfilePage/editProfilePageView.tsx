@@ -3,6 +3,7 @@ import ProfileHeader from "./header/headerView";
 import EditProfilePage from "./editProfile/editProfileView";
 import { UserProfileType } from "../../../types/entityTypes";
 import { VoidFunctionType } from "../../../types/functionTypes";
+import { useUserLogout } from "../../../hooks/useUserLogout";
 
 interface EditProfileProps {
     userProfile: UserProfileType | null;
@@ -11,6 +12,7 @@ interface EditProfileProps {
 }
 
 const EditProfile = ({ userProfile, setProfilePage, handleLogout }: EditProfileProps) => {
+    const { logoutUser } = useUserLogout(handleLogout);
     if (!userProfile) {
         return (
             <div className="main_profile">
@@ -23,7 +25,7 @@ const EditProfile = ({ userProfile, setProfilePage, handleLogout }: EditProfileP
         <div className="main_profile">
             <ProfileHeader
                 displayName={userProfile.displayName}
-                handleLogout={handleLogout}
+                handleLogout={logoutUser}
             />
             <EditProfilePage userProfile={userProfile} setProfilePage={setProfilePage} />
         </div>

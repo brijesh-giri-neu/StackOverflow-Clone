@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { VoidFunctionType } from "../types/functionTypes";
+import { registerNewUser } from "../services/userService";
 
 /**
  * A custom hook for handling user registration logic, including validation.
@@ -40,11 +41,11 @@ export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
         }
 
         // Proceed with registration logic, e.g., API call to register the user
-        // const res = await registerNewUser(email, password, displayName); // replace with your API logic
+        const res = await registerNewUser({email, password, displayName}); // replace with your API logic
 
-        // if (res && res.success) {
-        //     handleUserRegistration();
-        // }
+        if (res && res._id) {
+            handleQuestions();
+        }
 
         const user = {
             email: email,
@@ -52,10 +53,10 @@ export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
             display_name: displayName
         };
 
-        if(isValid){
-            console.log(user);
-            handleQuestions();
-        }
+        // if(isValid){
+        //     console.log(user);
+        //     handleQuestions();
+        // }
     };
 
     return {
