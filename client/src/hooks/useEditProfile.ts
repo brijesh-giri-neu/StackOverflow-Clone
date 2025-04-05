@@ -4,7 +4,6 @@ import { UserProfileObjFunctionType, VoidFunctionType } from "../types/functionT
 
 interface UseEditProfileProps {
     userProfile: UserProfileType;
-    setUserProfile: UserProfileObjFunctionType;
     setProfilePage: UserProfileObjFunctionType;
 }
 
@@ -15,7 +14,7 @@ interface UseEditProfileProps {
  * @param {UseEditProfileProps} props - The current user profile and a function to switch the view.
  * @returns An object containing profile field state, error messages, and a handleSave function.
  */
-export const useEditProfile = ({ userProfile, setUserProfile, setProfilePage }: UseEditProfileProps) => {
+export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfileProps) => {
     const [displayName, setDisplayName] = useState<string>(userProfile.user.displayName);
     const [fullName, setFullName] = useState<string>(userProfile.fullName);
     const [location, setLocation] = useState<string>(userProfile.location || "");
@@ -63,11 +62,6 @@ export const useEditProfile = ({ userProfile, setUserProfile, setProfilePage }: 
             github,
         };
 
-        // API call to update the profile can be added here.
-        console.log("Updated Profile:", updatedProfile);
-        setUserProfile(updatedProfile);
-
-        // Trigger to switch the view after a successful save.
         setProfilePage(updatedProfile);
     };
 

@@ -11,11 +11,10 @@ import "./editProfileView.css";
 
 interface EditProfilePageProps {
     userProfile: UserProfileType;
-    setUserProfile: UserProfileObjFunctionType;
     setProfilePage: UserProfileObjFunctionType;
 }
 
-const EditProfilePage = ({ userProfile, setUserProfile, setProfilePage }: EditProfilePageProps) => {
+const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) => {
     const {
         displayName,
         setDisplayName,
@@ -36,7 +35,7 @@ const EditProfilePage = ({ userProfile, setUserProfile, setProfilePage }: EditPr
         displayNameErr,
         aboutMeErr,
         handleSave,
-    } = useEditProfile({ userProfile, setUserProfile, setProfilePage });
+    } = useEditProfile({ userProfile, setProfilePage });
 
     return (
         <Form>

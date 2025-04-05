@@ -7,12 +7,11 @@ import { useUserLogout } from "../../../hooks/useUserLogout";
 
 interface EditProfileProps {
     userProfile: UserProfileType | null;
-    setUserProfile: UserProfileObjFunctionType;
     setProfilePage: UserProfileObjFunctionType;
     handleLogout: VoidFunctionType;
 }
 
-const EditProfile = ({ userProfile, setUserProfile, setProfilePage, handleLogout }: EditProfileProps) => {
+const EditProfile = ({ userProfile, setProfilePage, handleLogout }: EditProfileProps) => {
     const { logoutUser } = useUserLogout(handleLogout);
     if (!userProfile) {
         return (
@@ -28,7 +27,7 @@ const EditProfile = ({ userProfile, setUserProfile, setProfilePage, handleLogout
                 displayName={userProfile.user.displayName}
                 handleLogout={logoutUser}
             />
-            <EditProfilePage userProfile={userProfile} setUserProfile={setUserProfile} setProfilePage={setProfilePage} />
+            <EditProfilePage userProfile={userProfile} setProfilePage={setProfilePage} />
         </div>
     );
 };
