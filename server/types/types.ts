@@ -85,7 +85,7 @@ export interface IUser {
  */
 export interface IUserProfile {
   _id?: string;
-  user: (IUser | mongoose.Types.ObjectId);
+  user: (IUser | string);
   fullName?: string;
   location?: string;
   title?: string;

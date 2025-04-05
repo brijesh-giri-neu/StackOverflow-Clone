@@ -16,7 +16,7 @@ import { IUserProfileDocument, IUserProfileModel } from "../../types/types";
 const UserProfileSchema = new mongoose.Schema<IUserProfileDocument, IUserProfileModel>(
     {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, unique: true },
-        fullName: { type: String, required: true },
+        fullName: { type: String },
         location: { type: String },
         title: { type: String },
         aboutMe: { type: String },

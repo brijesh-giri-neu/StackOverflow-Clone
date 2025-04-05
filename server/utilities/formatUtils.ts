@@ -62,15 +62,18 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
 export function convertToIUserProfile(
     profile: IUserProfileDocument
 ): IUserProfile {
-    let convertedUser: IUser | mongoose.Types.ObjectId;
+    let convertedUser: IUser | string;
 
     if (profile.user instanceof mongoose.Types.ObjectId) {
-        // If it's an ObjectId, leave it as is.
-        convertedUser = profile.user;
-    } else {
-        // Otherwise, assume it's populated and convert its _id to a string.
         convertedUser = {
-            _id: profile.user._id ? profile.user._id.toString() : "",
+            _id: profile.user.toString(),
+            email: "",
+            displayName: "",
+            password: "",
+        };
+    } else {
+        convertedUser = {
+            _id: profile.user._id.toString(),
             email: profile.user.email,
             password: profile.user.password,
             displayName: profile.user.displayName,

@@ -9,7 +9,7 @@ info:
     * Tags route: Managing tags and their statistics
     * Questions route: Managing questions and their operations
     * Answers route: Managing answers to questions
-    * Users route: Managing user registration and login
+    * Users route: Managing user registration, login, and user profiles
 
 servers:
   - url: http://localhost:8000
@@ -23,7 +23,7 @@ tags:
   - name: Answers
     description: Operations related to answers
   - name: Users
-    description: Operations related to user registration and login
+    description: Operations related to user registration, login, and profiles
 
 components:
   responses:
@@ -231,6 +231,61 @@ components:
           type: string
           example: "hashedPassword"
 
+    UserProfileResponseType:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "679846196243c96505ba4007"
+        user:
+          $ref: "#/components/schemas/User"
+        fullName:
+          type: string
+          example: "John Doe"
+        location:
+          type: string
+          example: "New York, USA"
+        title:
+          type: string
+          example: "Software Engineer"
+        aboutMe:
+          type: string
+          example: "A passionate developer"
+        website:
+          type: string
+          example: "https://johndoe.com"
+        twitter:
+          type: string
+          example: "https://twitter.com/johndoe"
+        github:
+          type: string
+          example: "https://github.com/johndoe"
+
+    UserProfileUpdateRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+          example: "John Doe"
+        location:
+          type: string
+          example: "New York, USA"
+        title:
+          type: string
+          example: "Software Engineer"
+        aboutMe:
+          type: string
+          example: "A passionate developer"
+        website:
+          type: string
+          example: "https://johndoe.com"
+        twitter:
+          type: string
+          example: "https://twitter.com/johndoe"
+        github:
+          type: string
+          example: "https://github.com/johndoe"
+
 paths:
   # Tags Controller Endpoints
   /tag/getTagsWithQuestionNumber:
@@ -437,6 +492,8 @@ paths:
                   success:
                     type: boolean
                     example: true
+                  user:
+                    $ref: "#/components/schemas/User"
         "401":
           description: Invalid credentials.
           content:
@@ -447,5 +504,64 @@ paths:
                   message:
                     type: string
                     example: "Incorrect email or password"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  # UserProfiles Controller Endpoints
+  /userprofile/{userId}:
+    get:
+      tags:
+        - Users
+      summary: Get user profile by userId
+      description: Retrieve the user profile associated with the given user's ObjectId.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "679846196243c96505ba4007"
+      responses:
+        "200":
+          description: Successful response. Returns the user profile.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfileResponseType"
+        "404":
+          description: User profile not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+    put:
+      tags:
+        - Users
+      summary: Update user profile by userId
+      description: Update the user profile for the given user's ObjectId with new profile data.
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "679846196243c96505ba4007"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdateRequest"
+      responses:
+        "200":
+          description: User profile updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfileResponseType"
+        "400":
+          $ref: "#/components/responses/BadRequest"
         "500":
           $ref: "#/components/responses/InternalServerError"
