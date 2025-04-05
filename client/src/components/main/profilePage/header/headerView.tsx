@@ -1,6 +1,6 @@
 import React from "react";
 import "./headerView.css";
-import { FaUserCircle, FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
 
 interface ProfileHeaderProps {
     displayName: string;
@@ -8,7 +8,6 @@ interface ProfileHeaderProps {
     handleLogout: () => void;
 }
 
-const UserIcon = FaUserCircle as React.FC<React.SVGProps<SVGSVGElement>>;
 const PencilIcon = FaPencilAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 const LogoutIcon = FaSignOutAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 
@@ -20,7 +19,7 @@ const ProfileHeader = ({
     return (
         <div className="profile_header">
             <div className="profile_left">
-                <UserIcon className="user_icon"/>
+                <img src="/profile.png" alt="User" className="user_icon" />
                 <h2 className="profile_name">{displayName}</h2>
             </div>
             <div className="profile_actions">

@@ -1,24 +1,31 @@
 import "./index.css";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
 import { QuestionsPageQueryFuntionType, VoidFunctionType } from "../../types/functionTypes";
-import { FaUserCircle } from "react-icons/fa";
-// A type definition for the props of the Header component
+import { UserResponseType } from "../../types/entityTypes";
+
 interface HeaderProps {
+  user: UserResponseType | null;
   search: string;
   setQuestionPage: QuestionsPageQueryFuntionType;
   setUserRegistrationPage: VoidFunctionType;
   setUserLoginPage: VoidFunctionType;
   setProfilePage: VoidFunctionType;
+  handleQuestions: VoidFunctionType;
 }
 
 /**
- * The header component for the Fake Stack Overflow application.
- * It is composed of a title and a search bar.
- * When the user types in the search bar and presses Enter, the page is set to display the search results.
- * @param param0 with the search string and the function to set the page to display the search results
- * @returns the header component
+ * A Stack Overflow–style header with a logo on the left,
+ * a search bar in the center, and a profile or auth buttons on the right.
  */
-const Header = ({ search, setQuestionPage, setUserRegistrationPage, setUserLoginPage, setProfilePage }: HeaderProps) => {
+const Header = ({
+  user,
+  search,
+  setQuestionPage,
+  setUserRegistrationPage,
+  setUserLoginPage,
+  setProfilePage,
+  handleQuestions
+}: HeaderProps) => {
   const [val, setVal] = useState<string>(search);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,22 +40,40 @@ const Header = ({ search, setQuestionPage, setUserRegistrationPage, setUserLogin
   };
 
   return (
-    <div id="header" className="header">
-      <div></div>
-      <div className="title">Fake Stack Overflow</div>
-      <input
-        id="searchBar"
-        placeholder="Search ..."
-        type="text"
-        value={val}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-      />
-      {/* <FaUserCircle className="profile-icon" size={24} /> */}
-      <button className="profile-button" onClick={setProfilePage}>Profile</button>
-      <button className="login-button" onClick={setUserLoginPage}>Log in</button>
-      <button className="signup-button" onClick={setUserRegistrationPage}>Sign up</button>
-    </div>
+    <header className="header-container">
+      <div className="header-left" onClick={handleQuestions} style={{ cursor: "pointer" }}>
+        <img src="/logo.png" alt="Stack Overflow Logo" className="header-logo" />
+      </div>
+      <div className="header-center">
+        <input
+          className="header-search"
+          placeholder="Search ..."
+          type="text"
+          value={val}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+      <div className="header-right">
+        {user ? (
+          <img
+            src="/profile.png"
+            alt="Profile"
+            className="profile-icon"
+            onClick={setProfilePage}
+          />
+        ) : (
+          <>
+            <button className="login-button" onClick={setUserLoginPage}>
+              Log in
+            </button>
+            <button className="signup-button" onClick={setUserRegistrationPage}>
+              Sign up
+            </button>
+          </>
+        )}
+      </div>
+    </header>
   );
 };
 

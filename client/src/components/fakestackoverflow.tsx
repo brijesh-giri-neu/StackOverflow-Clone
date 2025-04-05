@@ -98,6 +98,7 @@ const FakeStackOverflow = () => {
   const handleUserLogout = () => {
     setUser(null);
     setUserProfile(null);
+    handleQuestions();
   };
 
   const setEditUserProfilePage = () => {
@@ -430,11 +431,13 @@ const FakeStackOverflow = () => {
   return (
     <>
       <Header
+        user={user}
         search={search}
         setQuestionPage={setQuestionPage}
         setUserRegistrationPage={setUserRegistrationPage}
         setUserLoginPage={setUserLoginPage}
-        setProfilePage={setProfilePage} />
+        setProfilePage={setProfilePage} 
+        handleQuestions={handleQuestions}/>
       <Main
         page={pageInstance}
         handleQuestions={handleQuestions} handleTags={handleTags}
