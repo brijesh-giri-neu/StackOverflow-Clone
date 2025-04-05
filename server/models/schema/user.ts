@@ -20,18 +20,6 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
 );
 
 /**
- * Static Method: Get a user by email.
- * 
- * @param {string} email - The email to search for.
- * @returns {Promise<IUserDocument | null>} - A promise that resolves to the user document or null if not found.
- */
-UserSchema.statics.getUserByEmail = async function (
-    email: string
-): Promise<IUserDocument | null> {
-    return this.findOne({ email }).exec();
-};
-
-/**
  * Pre-save hook for the User schema.
  * Hashes the user's password using bcrypt before saving the user document to the database.
  *
