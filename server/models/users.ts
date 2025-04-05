@@ -23,6 +23,17 @@ UserSchema.statics.registerUser = async function (user: IUser): Promise<IUser> {
     };
 };
 
+/**
+ * Static Method: Get a user by email.
+ * 
+ * @param {string} email - The email to search for.
+ * @returns {Promise<IUserDocument | null>} - A promise that resolves to the user document or null if not found.
+ */
+UserSchema.statics.getUserByEmail = async function (
+    email: string
+): Promise<IUserDocument | null> {
+    return this.findOne({ email }).exec();
+};
 
 /**
  * Static Method: loginUser
