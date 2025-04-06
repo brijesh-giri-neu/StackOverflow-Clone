@@ -1,4 +1,5 @@
 import { VoidFunctionType } from "../types/functionTypes";
+import { toast } from 'react-toastify';
 
 /**
  * A custom hook for handling user logout logic.
@@ -9,9 +10,16 @@ import { VoidFunctionType } from "../types/functionTypes";
  */
 export const useUserLogout = (handleUserLogout: VoidFunctionType) => {
     const logoutUser = async () => {
-        // Optionally, you could also call an API endpoint for logging out on the server side here.
-        // For now, simply call the passed-in function.
         handleUserLogout();
+        toast.success("Logged out successfully.", {
+            position: "top-center",      
+            autoClose: 1000,             
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+        });
     };
 
     return { logoutUser };

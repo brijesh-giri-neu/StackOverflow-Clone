@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { ToastContainer } from 'react-toastify';
 import Header from "./header";
 import Main from "./main/mainView";
 import HomePageClass from "./main/routing/home";
@@ -35,11 +36,6 @@ const FakeStackOverflow = () => {
   const [qid, setQid] = useState("");
   const [user, setUser] = useState<UserResponseType | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfileType | null>(null);
-
-  useEffect(() => {
-    console.log("Updated user state ->", user);
-    console.log("Updated user profile ->", userProfile);
-  }, [user]);
 
   // Set the page to display the user registration form
   const setUserRegistrationPage = () => {
@@ -101,7 +97,7 @@ const FakeStackOverflow = () => {
   const handleUserLogout = () => {
     setUser(null);
     setUserProfile(null);
-    handleQuestions();
+    setUserLoginPage();
   };
 
   const setEditUserProfilePage = () => {
@@ -132,37 +128,7 @@ const FakeStackOverflow = () => {
     );
   };
 
-
-  // const setProfilePage = () => {
-  //   setPageInstance(
-  //     new UserProfilePageClass({
-  //       search,
-  //       title: "User Login",
-  //       setQuestionPage,
-  //       questionOrder,
-  //       setQuestionOrder,
-  //       qid,
-  //       handleQuestions,
-  //       handleTags,
-  //       handleAnswer,
-  //       clickTag,
-  //       handleNewQuestion,
-  //       handleNewAnswer,
-  //       setUserRegistrationPage,
-  //       setUserLoginPage,
-  //       handleUserLogout,
-  //       setEditUserProfilePage,
-  //       userProfile,
-  //       setProfilePage: setProfilePage,
-  //       user,
-  //       setUser,
-  //       setUserProfile,
-  //     })
-  //   );
-  // };
-
   const setProfilePage = (userProileUpdated: UserProfileType) => {
-    //console.log("userProileUpdated ->"+userProileUpdated);
     setUserProfile(userProileUpdated);
     setPageInstance(
       new UserProfilePageClass({
@@ -458,6 +424,7 @@ const FakeStackOverflow = () => {
         page={pageInstance}
         handleQuestions={handleQuestions} handleTags={handleTags}
       />
+      <ToastContainer />
     </>
   );
 };
