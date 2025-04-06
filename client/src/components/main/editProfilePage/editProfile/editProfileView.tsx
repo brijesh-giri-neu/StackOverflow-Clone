@@ -1,6 +1,6 @@
 
 import { UserProfileType } from "../../../../types/entityTypes";
-import { UserProfileObjFunctionType, VoidFunctionType } from "../../../../types/functionTypes";
+import { UserProfileObjFunctionType } from "../../../../types/functionTypes";
 import { useEditProfile } from "../../../../hooks/useEditProfile";
 
 import Form from "../../baseComponents/form/formView";

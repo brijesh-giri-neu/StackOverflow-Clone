@@ -17,7 +17,7 @@ const registerNewUser = async (
     try {
         const res = await api.post(`${USER_API_URL}/register`, user);
         if (res.status !== 200) {
-            if (res.status == 400) {
+            if (res.status === 400) {
                 throw new Error("Email already in use");
             }
             throw new Error("Error while registering user");
@@ -83,7 +83,6 @@ const getUserSession = async (): Promise<UserResponseType | null> => {
         const res = await api.get(`${USER_API_URL}/session`);
         console.log("response ->"+JSON.stringify(res.data.user));
         if (res.status !== 200) {
-            throw new Error("Unable to fetch user session");
             return null;
         }
         if (res.data.user) {

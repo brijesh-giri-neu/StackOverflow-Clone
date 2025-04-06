@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import ProfileHeader from "./header/headerView";
 import ProfileDetails from "./details/detailsView";
 import { UserProfileType } from "../../../types/entityTypes";

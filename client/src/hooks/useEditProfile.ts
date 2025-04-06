@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { UserProfileType } from "../types/entityTypes";
-import { UserProfileObjFunctionType, VoidFunctionType } from "../types/functionTypes";
+import { UserProfileObjFunctionType } from "../types/functionTypes";
 import { upsertUserProfile } from "../services/userProfileService";
 
 interface UseEditProfileProps {

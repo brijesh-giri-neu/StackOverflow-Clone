@@ -1,11 +1,10 @@
 import "./sideBarNavView.css";
 import { VoidFunctionType } from "../../../types/functionTypes";
-import { FaQuestion, FaTags, FaSignOutAlt } from "react-icons/fa";
+import { FaQuestion, FaTags } from "react-icons/fa";
 
 // Create icon components with the appropriate type
 const QuestionIcon = FaQuestion as React.FC<React.SVGProps<SVGSVGElement>>;
 const TagIcon = FaTags as React.FC<React.SVGProps<SVGSVGElement>>;
-const LogoutIcon = FaSignOutAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 
 interface SideBarNavProps {
   selected?: string;

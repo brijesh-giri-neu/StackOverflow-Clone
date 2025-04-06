@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IAnswerDB, IQuestionDB, ITagDB, IUserDB, IUserProfileDB } from "../scripts/script_types";
+import { IAnswerDB, IQuestionDB, ITagDB } from "../scripts/script_types";
 
 /**
  * A type representing a question object
