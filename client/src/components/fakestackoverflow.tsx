@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer } from 'react-toastify';
 import Header from "./header";
 import Main from "./main/mainView";
@@ -12,8 +12,7 @@ import UserLoginPageClass from "./main/routing/userLogin";
 import UserProfilePageClass from "./main/routing/userProfile";
 import EditUserProfilePageClass from "./main/routing/editUserProfile";
 import { UserProfileType, UserResponseType } from "../types/entityTypes";
-import { getUserSession } from "../services/userService";
-import { getUserProfile } from "../services/userProfileService";
+import { useUserSession } from "../hooks/useUserSession";
 
 /**
  * The root component for the Fake Stack Overflow application.
@@ -38,64 +37,8 @@ const FakeStackOverflow = () => {
   const [qid, setQid] = useState("");
   const [user, setUser] = useState<UserResponseType | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfileType | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchSessionUser = async () => {
-      try {
-        const loggedInUser = await getUserSession();
-        if (loggedInUser) {
-          setUser(loggedInUser);
-          try {
-            const fetchedProfile = await getUserProfile(loggedInUser._id);
-            if (fetchedProfile) {
-              setUserProfile({
-                user: loggedInUser,
-                fullName: fetchedProfile.fullName ?? "",
-                location: fetchedProfile.location ?? "",
-                title: fetchedProfile.title ?? "",
-                aboutMe: fetchedProfile.aboutMe ?? "",
-                website: fetchedProfile.website ?? "",
-                twitter: fetchedProfile.twitter ?? "",
-                github: fetchedProfile.github ?? "",
-              });
-            }
-            else {
-              setUserProfile({
-                user: loggedInUser,
-                fullName: "",
-                location: "",
-                title: "",
-                aboutMe: "",
-                website: "",
-                twitter: "",
-                github: "",
-              });
-            }
-
-          } catch (any) {
-            setUserProfile({
-              user: loggedInUser,
-              fullName: "",
-              location: "",
-              title: "",
-              aboutMe: "",
-              website: "",
-              twitter: "",
-              github: "",
-            });
-          }
-        }
-      } catch (error) {
-        setUser(null);
-        setUserProfile(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSessionUser();
-  }, []);
+  useUserSession(setUser, setUserProfile);
 
   // Set the page to display the user registration form
   const setUserRegistrationPage = () => {
@@ -469,10 +412,6 @@ const FakeStackOverflow = () => {
   pageInstance.title = mainTitle;
   pageInstance.user = user;
   pageInstance.userProfile = userProfile;
-
-  if (loading) {
-    return <div>Loading...</div>; // Or use a fancy spinner here
-  }
 
   return (
     <>
