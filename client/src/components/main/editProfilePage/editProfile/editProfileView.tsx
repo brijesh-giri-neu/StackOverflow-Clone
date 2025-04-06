@@ -33,7 +33,6 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
         github,
         setGithub,
         displayNameErr,
-        aboutMeErr,
         handleSave,
     } = useEditProfile({ userProfile, setProfilePage });
 
@@ -69,7 +68,6 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     id="aboutMe"
                     val={aboutMe}
                     setState={setAboutMe}
-                    err={aboutMeErr}
                     mandatory={false}
                 />
             </div>
@@ -108,6 +106,7 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     id="fullName"
                     val={fullName}
                     setState={setFullName}
+                    mandatory={false}
                 />
                 {/* Add any other private fields here */}
             </div>

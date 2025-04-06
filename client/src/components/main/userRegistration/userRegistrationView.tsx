@@ -19,6 +19,7 @@ const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
         passwordErr,
         displayNameErr,
         registerUser,
+        registrationErr
     } = useUserRegistration(handleQuestions);
 
     return (
@@ -44,6 +45,11 @@ const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
                 setState={setDisplayName}
                 err={displayNameErr}
             />
+            {registrationErr && (
+                <div className="form_error" style={{ color: "red", marginTop: "8px", marginBottom: "18px" }}>
+                    {registrationErr}
+                </div>
+            )}
             <div className="btn_indicator_container">
                 <button className="form_postBtn" onClick={registerUser}>
                     Register

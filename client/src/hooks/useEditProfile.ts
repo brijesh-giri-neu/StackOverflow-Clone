@@ -26,7 +26,7 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
     const [github, setGithub] = useState<string>(userProfile.github || "");
 
     const [displayNameErr, setDisplayNameErr] = useState<string>("");
-    const [aboutMeErr, setAboutMeErr] = useState<string>("");
+    // const [aboutMeErr, setAboutMeErr] = useState<string>("");
 
     const handleSave = async () => {
         let isValid = true;
@@ -38,12 +38,12 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
             setDisplayNameErr("");
         }
 
-        if (aboutMe.length > 500) {
-            setAboutMeErr("About Me cannot exceed 500 characters");
-            isValid = false;
-        } else {
-            setAboutMeErr("");
-        }
+        // if (aboutMe.length > 500) {
+        //     setAboutMeErr("About Me cannot exceed 500 characters");
+        //     isValid = false;
+        // } else {
+        //     setAboutMeErr("");
+        // }
 
         if (!isValid) return;
 
@@ -62,7 +62,7 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
             twitter,
             github,
         };
-        upsertUserProfile(updatedProfile.user._id, updatedProfile);
+        upsertUserProfile(updatedProfile);
         setProfilePage(updatedProfile);
     };
 
@@ -84,7 +84,6 @@ export const useEditProfile = ({ userProfile, setProfilePage }: UseEditProfilePr
         github,
         setGithub,
         displayNameErr,
-        aboutMeErr,
         handleSave,
     };
 };

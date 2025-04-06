@@ -7,30 +7,56 @@ import { registerNewUser } from "../services/userService";
  * @returns registration logic including form state and error handling.
  */
 export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [displayName, setDisplayName] = useState<string>("");
+    const [email, _setEmail] = useState<string>("");
+    const [password, _setPassword] = useState<string>("");
+    const [displayName, _setDisplayName] = useState<string>("");
 
     const [emailErr, setEmailErr] = useState<string>("");
     const [passwordErr, setPasswordErr] = useState<string>("");
     const [displayNameErr, setDisplayNameErr] = useState<string>("");
+    const [registrationErr, setRegistrationErr] = useState<string>("");
+
+    const setEmail = (value: string) => {
+        _setEmail(value);
+        if (emailErr) setEmailErr("");
+        if (registrationErr) setRegistrationErr("");
+    };
+
+    const setPassword = (value: string) => {
+        _setPassword(value);
+        if (passwordErr) setPasswordErr("");
+        if (registrationErr) setRegistrationErr("");
+    };
+
+    const setDisplayName = (value: string) => {
+        _setDisplayName(value);
+        if (displayNameErr) setDisplayNameErr("");
+        if (registrationErr) setRegistrationErr("");
+    };
 
     const registerUser = async () => {
         let isValid = true;
 
-        // Email validation
-        if (!email || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
+        if (!email){
+            setEmailErr("Email address is required");
+            isValid = false;
+        }
+
+        if (!password){
+            setPasswordErr("Password is required");
+            isValid = false;
+        }
+
+        if (email && !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(email)) {
             setEmailErr("Please enter a valid email address");
             isValid = false;
         }
 
-        // Password validation (example: minimum 8 characters)
-        if (!password || password.length < 8) {
+        if (password && password.length < 8) {
             setPasswordErr("Password must be at least 8 characters");
             isValid = false;
         }
 
-        // Display name validation
         if (!displayName) {
             setDisplayNameErr("Display name is required");
             isValid = false;
@@ -40,23 +66,22 @@ export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
             return;
         }
 
-        // Proceed with registration logic, e.g., API call to register the user
-        const res = await registerNewUser({email, password, displayName}); // replace with your API logic
-
-        if (res && res._id) {
-            handleQuestions();
+        try{
+            const res = await registerNewUser({email, password, displayName}); 
+            if (res && res._id) {
+                handleQuestions();
+            }
+            else{
+                setRegistrationErr("User registration failed");
+            }
         }
-
-        const user = {
-            email: email,
-            password: password,
-            display_name: displayName
-        };
-
-        // if(isValid){
-        //     console.log(user);
-        //     handleQuestions();
-        // }
+        catch (err: any) {
+            if (err.response && err.response.status === 400) {
+                setRegistrationErr("Email already in use");
+            } else {
+                setRegistrationErr("An error occurred. Please try again later.");
+            }
+        }
     };
 
     return {
@@ -70,5 +95,6 @@ export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
         passwordErr,
         displayNameErr,
         registerUser,
+        registrationErr,
     };
 };

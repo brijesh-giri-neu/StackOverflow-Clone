@@ -17,6 +17,9 @@ const registerNewUser = async (
     try {
         const res = await api.post(`${USER_API_URL}/register`, user);
         if (res.status !== 200) {
+            if (res.status == 400){
+                throw new Error("Email already in use");
+            }
             throw new Error("Error while registering user");
         }
         return res.data;
