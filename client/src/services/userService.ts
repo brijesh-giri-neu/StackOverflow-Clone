@@ -17,7 +17,7 @@ const registerNewUser = async (
     try {
         const res = await api.post(`${USER_API_URL}/register`, user);
         if (res.status !== 200) {
-            if (res.status == 400){
+            if (res.status == 400) {
                 throw new Error("Email already in use");
             }
             throw new Error("Error while registering user");
@@ -53,4 +53,48 @@ const loginExistingUser = async (email: string, password: string): Promise<UserR
     }
 };
 
-export { registerNewUser, loginExistingUser };
+/**
+ * The function calls the API to log out the current user.
+ * It returns the response data if logout is successful.
+ * 
+ * @returns A promise that resolves to an object containing a logout message.
+ */
+const logoutCurrentUser = async (): Promise<{ message: string }> => {
+    try {
+        const res = await api.post(`${USER_API_URL}/logout`);
+        if (res.status !== 200) {
+            throw new Error("Error while logging out");
+        }
+        return res.data;
+    } catch (error) {
+        console.error("Error logging out user:", error);
+        throw error;
+    }
+};
+
+/**
+ * The function fetches the currently logged-in user from the session.
+ * It returns the user object if the session is valid, otherwise throws an error.
+ *
+ * @returns A promise that resolves to the current user object if logged in.
+ */
+const getUserSession = async (): Promise<UserResponseType | null> => {
+    try {
+        const res = await api.get(`${USER_API_URL}/session`);
+        console.log("response ->"+JSON.stringify(res.data.user));
+        if (res.status !== 200) {
+            throw new Error("Unable to fetch user session");
+            return null;
+        }
+        if (res.data.user) {
+            return res.data.user;
+        }
+        throw new Error("No active user session");
+    } catch (error) {
+        console.error("Error fetching user session:", error);
+        throw error;
+    }
+};
+
+
+export { registerNewUser, loginExistingUser, logoutCurrentUser, getUserSession };

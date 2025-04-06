@@ -463,7 +463,7 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: Email already registered
+                    example: "Email already registered"
         "500":
           $ref: "#/components/responses/InternalServerError"
 
@@ -512,6 +512,26 @@ paths:
                   message:
                     type: string
                     example: "Incorrect email or password"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
+  /user/logout:
+    post:
+      tags:
+        - Users
+      summary: Log out a user
+      description: Logs out a user by destroying their session and clearing the session cookie.
+      responses:
+        "200":
+          description: Logout successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Logout successful"
         "500":
           $ref: "#/components/responses/InternalServerError"
 
@@ -573,3 +593,41 @@ paths:
           $ref: "#/components/responses/BadRequest"
         "500":
           $ref: "#/components/responses/InternalServerError"
+          
+  /user/session:
+    get:
+      tags:
+        - Users
+      summary: Get currently logged-in user from session
+      description: |
+        Returns the currently authenticated user's data if a session exists.
+        This endpoint checks the session and fetches the user from the database using the stored userId.
+      responses:
+        "200":
+          description: User session is valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: "#/components/schemas/User"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Not authenticated"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+

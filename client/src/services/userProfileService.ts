@@ -12,14 +12,17 @@ const USER_PROFILE_API_URL = `${REACT_APP_API_URL}/userProfile`;
  */
 const getUserProfile = async (
     userId: string
-): Promise<UserProfileResponseType> => {
+): Promise<UserProfileResponseType | null> => {
     try {
         const res = await api.get(`${USER_PROFILE_API_URL}/${userId}`);
         if (res.status !== 200) {
             throw new Error("Error while fetching user profile");
         }
         return res.data;
-    } catch (error) {
+    } catch (error: any) {
+        if (error.response?.status === 404) {
+            return null;
+        }
         console.error("Error fetching user profile:", error);
         throw error;
     }

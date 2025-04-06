@@ -2,6 +2,8 @@ import express from 'express';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import UserProfile from '../models/userProfiles';
+import { isAuthenticated } from '../middlewares/auth/isAuthenticated';
+import { isAuthorized } from '../middlewares/auth/isAuthorized';
 
 const router = express.Router();
 
@@ -13,7 +15,7 @@ const router = express.Router();
  * @param   {Response} res - The response object to send the result back to the client.
  * @returns {Response} - A JSON response with the user profile, or a 404 error if not found.
  */
-router.get('/:userId', async (req: Request, res: Response) => {
+router.get('/:userId', isAuthenticated, isAuthorized, async (req: Request, res: Response) => {
     const { userId } = req.params;
     const profile = await UserProfile.getProfileByUserId(new mongoose.Types.ObjectId(userId));
     if (!profile) {
@@ -31,7 +33,7 @@ router.get('/:userId', async (req: Request, res: Response) => {
  * @param   {Response} res - The response object to send the updated profile back to the client.
  * @returns {Response} - A JSON response containing the updated user profile.
  */
-router.put('/:userId', async (req: Request, res: Response) => {
+router.put('/:userId', isAuthenticated, isAuthorized, async (req: Request, res: Response) => {
     const { userId } = req.params;
     const updatedProfile = await UserProfile.updateUserProfile(
         new mongoose.Types.ObjectId(userId),

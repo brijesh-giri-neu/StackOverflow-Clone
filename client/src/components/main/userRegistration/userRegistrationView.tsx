@@ -1,13 +1,15 @@
 import { useUserRegistration } from "../../../hooks/useUserRegistration";
 import Input from "../baseComponents/input/inputView"; // Reuse input component
 import Form from "../baseComponents/form/formView"; // Reuse form component
-import { VoidFunctionType } from "../../../types/functionTypes";
+import { UserObjFunctionType, UserProfileObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 
 interface UserRegistrationProps {
+    setUser: UserObjFunctionType,
+    setUserProfile: UserProfileObjFunctionType,
     handleQuestions: VoidFunctionType;
 }
 
-const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
+const UserRegistration = ({ setUser, setUserProfile, handleQuestions }: UserRegistrationProps) => {
     const {
         email,
         setEmail,
@@ -20,7 +22,7 @@ const UserRegistration = ({ handleQuestions }: UserRegistrationProps) => {
         displayNameErr,
         registerUser,
         registrationErr
-    } = useUserRegistration(handleQuestions);
+    } = useUserRegistration(handleQuestions, setUser, setUserProfile);
 
     return (
         <Form>

@@ -38,6 +38,17 @@ UserSchema.statics.loginUser = async function (
     return convertToIUser(user);
 };
 
+/**
+ * Static Method: getUserById
+ * Fetches a user by their MongoDB ObjectId.
+ * 
+ * @param {string} userId - The user's ObjectId as a string.
+ * @returns {Promise<IUser | null>} - The user object in IUser format, or null if not found.
+ */
+UserSchema.statics.getUserById = async function (userId: string): Promise<IUser | null> {
+    const user = await this.findById(userId).exec();
+    return user ? convertToIUser(user) : null;
+};
 
 /**
  * The User model representing the Users collection in MongoDB.

@@ -231,6 +231,7 @@ export interface TagCountResponse {
 export interface IUserModel extends mongoose.Model<IUserDocument> {
   registerUser(user: IUser): Promise<IUser>;
   loginUser(email: string, password: string): Promise<IUser>;
+  getUserById(userId: string): Promise<IUser | null>;
 }
 
 /**

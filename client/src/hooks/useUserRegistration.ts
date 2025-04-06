@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { VoidFunctionType } from "../types/functionTypes";
+import { UserObjFunctionType, UserProfileObjFunctionType, VoidFunctionType } from "../types/functionTypes";
 import { registerNewUser } from "../services/userService";
 
 /**
  * A custom hook for handling user registration logic, including validation.
  * @returns registration logic including form state and error handling.
  */
-export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
+export const useUserRegistration = (
+    handleQuestions: VoidFunctionType,
+    setUser: UserObjFunctionType,
+    setUserProfile: UserProfileObjFunctionType
+) => {
     const [email, _setEmail] = useState<string>("");
     const [password, _setPassword] = useState<string>("");
     const [displayName, _setDisplayName] = useState<string>("");
@@ -37,12 +41,12 @@ export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
     const registerUser = async () => {
         let isValid = true;
 
-        if (!email){
+        if (!email) {
             setEmailErr("Email address is required");
             isValid = false;
         }
 
-        if (!password){
+        if (!password) {
             setPasswordErr("Password is required");
             isValid = false;
         }
@@ -66,12 +70,33 @@ export const useUserRegistration = (handleQuestions: VoidFunctionType) => {
             return;
         }
 
-        try{
-            const res = await registerNewUser({email, password, displayName}); 
-            if (res && res._id) {
+        try {
+            const user = await registerNewUser({ email, password, displayName });
+            if (user && user._id) {
+                if (user) {
+                    setUser(user);
+
+                    setUserProfile({
+                        user: {
+                            _id: user._id,
+                            email: user.email,
+                            displayName: user.displayName,
+                            password: user.password,
+                        },
+                        fullName: "",
+                        location: "",
+                        title: "",
+                        aboutMe: "",
+                        website: "",
+                        twitter: "",
+                        github: "",
+                    });
+
+                    handleQuestions();
+                }
                 handleQuestions();
             }
-            else{
+            else {
                 setRegistrationErr("User registration failed");
             }
         }

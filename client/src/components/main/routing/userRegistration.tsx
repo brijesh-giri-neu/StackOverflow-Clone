@@ -8,7 +8,7 @@ import UserRegistration from "../userRegistration/userRegistrationView";
  */
 export default class UserRegistrationPageClass extends PageClass {
     getContent(): React.ReactNode {
-        return <UserRegistration handleQuestions={this.handleQuestions} />;
+        return <UserRegistration handleQuestions={this.handleQuestions} setUser={this.setUser} setUserProfile={this.setUserProfile} />;
     }
 
     getSelected(): string {

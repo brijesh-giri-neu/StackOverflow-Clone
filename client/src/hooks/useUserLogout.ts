@@ -1,5 +1,6 @@
 import { VoidFunctionType } from "../types/functionTypes";
 import { toast } from 'react-toastify';
+import { logoutCurrentUser } from "../services/userService";
 
 /**
  * A custom hook for handling user logout logic.
@@ -10,6 +11,7 @@ import { toast } from 'react-toastify';
  */
 export const useUserLogout = (handleUserLogout: VoidFunctionType) => {
     const logoutUser = async () => {
+        await logoutCurrentUser();
         handleUserLogout();
         toast.success("Logged out successfully.", {
             position: "top-center",      
