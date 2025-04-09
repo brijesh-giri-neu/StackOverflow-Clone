@@ -25,12 +25,15 @@
 }
 
 .bluebtn {
-    background: #3090e2;
+    /* background: #3090e2; */
+    background:  #f48024;
     color: #ffffff;
     border: #000000 1px solid;
     font-size: 20px;
     padding: 10px 10px 10px 10px;
     margin-right: 5%;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 .btn_indicator_container {
@@ -41,7 +44,8 @@
 }
 
 .form_postBtn {
-    background: #3090e2;
+    /* background: #3090e2; */
+    background:  #f48024;
     color: #ffffff;
     padding: 10px 20px;
     border: none;

@@ -1,13 +1,84 @@
-.header {
+/* Container for the entire header */
+.header-container {
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    height: 10%;
-    width: 100%;
-    background: #dddddd;
+    justify-content: space-between;
+    background-color: #f8f9f9;
+    /* Light gray, Stack Overflow–like */
+    border-bottom: 1px solid #e4e6e8;
+    padding: 0.5rem 1rem;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.title {
-    font-size: 32px;
-    font-weight: 800;
+/* Left section: logo + site name */
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-logo {
+    height: 35px;
+    width: 200px;
+    /* Adjust as needed */
+}
+
+.header-title {
+    font-weight: bold;
+    font-size: 1.3rem;
+    color: #2f3337;
+}
+
+/* Center section: search bar */
+.header-center {
+    flex: 1;
+    /* Grows to take up available space */
+    display: flex;
+    justify-content: center;
+}
+
+.header-search {
+    width: 500px;
+    /* Adjust for your layout */
+    max-width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #babfc4;
+    border-radius: 3px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.header-search:focus {
+    border-color: #6bbbf7;
+    box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.15);
+}
+
+/* Right section: profile or auth buttons */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.profile-icon {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    object-fit: cover;
+    /* Keep aspect ratio */
+}
+
+.login-button,
+.signup-button {
+    background-color: transparent;
+    border: 1px solid #838c95;
+    padding: 0.4rem 0.8rem;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.login-button:hover,
+.signup-button:hover {
+    background-color: #e3e6e8;
 }

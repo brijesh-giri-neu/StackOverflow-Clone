@@ -1,4 +1,4 @@
-import { IAnswerDocument, IAnswer, IQuestionDocument, IQuestion } from '../types/types';
+import { IAnswerDocument, IAnswer, IQuestionDocument, IQuestion, IUserProfile, IUserProfileDocument, IUser, IUserDocument } from '../types/types';
 import mongoose from 'mongoose';
 
 /**
@@ -49,5 +49,62 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
                 };
             }
         }),
+    };
+}
+
+/**
+ * Converts _id fields in a UserProfile document (including the nested user reference)
+ * to strings. This is useful when preparing the profile data for API responses.
+ *
+ * @param {IUserProfileDocument} profile - The Mongoose user profile document.
+ * @returns {IUserProfileResponse} - The converted profile object with _id and user as strings.
+ */
+export function convertToIUserProfile(
+    profile: IUserProfileDocument
+): IUserProfile {
+    let convertedUser: IUser | string;
+
+    if (profile.user instanceof mongoose.Types.ObjectId) {
+        convertedUser = {
+            _id: profile.user.toString(),
+            email: "",
+            displayName: "",
+            password: "",
+        };
+    } else {
+        convertedUser = {
+            _id: profile.user._id.toString(),
+            email: profile.user.email,
+            password: profile.user.password,
+            displayName: profile.user.displayName,
+        };
+    }
+
+    return {
+        _id: profile._id.toString(),
+        user: convertedUser,
+        fullName: profile.fullName,
+        location: profile.location || "",
+        title: profile.title || "",
+        aboutMe: profile.aboutMe || "",
+        website: profile.website || "",
+        twitter: profile.twitter || "",
+        github: profile.github || "",
+    };
+}
+
+/**
+ * Converts the _id field in a User document to a string.
+ * This is useful when preparing the user data for API responses.
+ *
+ * @param {IUserDocument} user - The Mongoose user document.
+ * @returns {IUser} - The converted user object with _id as a string.
+ */
+export function convertToIUser(user: IUserDocument): IUser {
+    return {
+        _id: user._id.toString(),
+        email: user.email,
+        displayName: user.displayName,
+        password: user.password,
     };
 }

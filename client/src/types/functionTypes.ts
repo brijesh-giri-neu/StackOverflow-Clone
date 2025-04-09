@@ -3,6 +3,8 @@
  * Function types are used to define the functions that are passed as props to components.
  */
 
+import { UserProfileType, UserResponseType } from "./entityTypes";
+
 type VoidFunctionType = () => void;
 
 type PageSetterFunctionType = (search?: string, title?: string) => void;
@@ -21,6 +23,12 @@ type QuestionIdFunctionType = (qid: string) => void;
 
 type StringFunctionType = (value: string) => void;
 
+type UserIdFunctionType = (userid: string) => void;
+
+type UserObjFunctionType = (user: UserResponseType) => void;
+
+type UserProfileObjFunctionType = (userProfile: UserProfileType) => void;
+
 export type {
   VoidFunctionType,
   PageSetterFunctionType,
@@ -31,4 +39,7 @@ export type {
   QuestionIdFunctionType,
   StringFunctionType,
   QuestionsPageQueryFuntionType,
+  UserIdFunctionType,
+  UserObjFunctionType,
+  UserProfileObjFunctionType
 };

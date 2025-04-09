@@ -9,8 +9,11 @@ import path from "path";
 import tagRouter from "./pages/tag";
 import answerRouter from "./pages/answer";
 import questionRouter from "./pages/question";
+import userRouter from "./pages/user";
+import userProfileRouter from "./pages/userProfile";
 import { HttpError } from "express-openapi-validator/dist/framework/types";
 import DBConnection from "./utilities/DBConnection";
+import session from "express-session";
 
 /**
  * Client URL for CORS configuration.
@@ -48,6 +51,21 @@ app.use(
  * Middleware for parsing incoming JSON requests.
  */
 app.use(express.json());
+
+/**
+ * Configure express-session to enable user sessions.
+ */
+app.use(
+  session({
+    secret: "your_very_secret_key", // use a strong secret in production!
+    resave: false,                  // avoid resaving session if unmodified
+    saveUninitialized: false,       // only save session if something is stored
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,       // session expiration: 24 hour (adjust as needed)
+      secure: false,                // set true if serving over HTTPS
+    },
+  })
+);
 
 /**
  * Path to the OpenAPI specification YAML file.
@@ -150,6 +168,8 @@ app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
 app.use('/tag', tagRouter);
 app.use('/question', questionRouter);
 app.use('/answer', answerRouter);
+app.use('/user', userRouter);
+app.use('/userProfile', userProfileRouter);
 
 /**
  * Exports the server for testing or other use cases.

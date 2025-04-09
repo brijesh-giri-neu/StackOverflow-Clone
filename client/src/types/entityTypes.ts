@@ -108,6 +108,78 @@ interface TagResponseType {
   qcnt: number;
 }
 
+/**
+ * The type of a user object.
+ * @property {string} email - The user's email (unique identifier).
+ * @property {string} displayName - The user's public display name.
+ * @property {string} password - The user's password (used for login and registration).
+ */
+interface UserType {
+  email: string;
+  displayName: string;
+  password: string; 
+}
+
+/**
+ * The type of a user object received from the server.
+ * @property {string} _id - The unique identifier of the user
+ * @property {string} email - The user's email (unique identifier).
+ * @property {string} displayName - The user's public display name.
+ * @property {string} password - The user's password (used for login and registration).
+ */
+interface UserResponseType {
+  _id: string;
+  email: string;
+  displayName: string;
+  password: string; 
+}
+
+/**
+ * The type of a user profile object.
+ * @property {string} fullName - The user's full name.
+ * @property {string} location - The user's location.
+ * @property {string} title - The user's title or professional role.
+ * @property {string} aboutMe - A short bio or description of the user.
+ * @property {string} website - The user's personal or professional website link.
+ * @property {string} twitter - The user's Twitter (X) profile link.
+ * @property {string} github - The user's GitHub profile link.
+ */
+interface UserProfileType {
+  user: UserResponseType;
+  fullName: string;
+  location?: string;
+  title?: string;
+  aboutMe?: string;
+  website?: string;
+  twitter?: string;
+  github?: string;
+}
+
+/**
+ * The type of a user object received from the server.
+ * @property {string} _id - The unique identifier of the user.
+ * @property {string} email - The user's email.
+ * @property {string} displayName - The user's public display name.
+ * @property {string} fullName - The user's full name.
+ * @property {string} location - The user's location.
+ * @property {string} title - The user's title.
+ * @property {string} aboutMe - A short bio about the user.
+ * @property {string} website - The user's website link.
+ * @property {string} twitter - The user's Twitter profile link.
+ * @property {string} github - The user's GitHub profile link.
+ */
+interface UserProfileResponseType {
+  _id: string;
+  user: UserResponseType;
+  fullName?: string;
+  location?: string;
+  title?: string;
+  aboutMe?: string;
+  website?: string;
+  twitter?: string;
+  github?: string;
+}
+
 export type {
   AnswerType,
   QuestionType,
@@ -116,4 +188,8 @@ export type {
   AnswerResponseType,
   QuestionResponseType,
   TagResponseType,
+  UserType,
+  UserResponseType,
+  UserProfileType,
+  UserProfileResponseType
 };

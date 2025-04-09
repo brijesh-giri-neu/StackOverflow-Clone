@@ -4,7 +4,10 @@ import {
   IdFunctionType,
   VoidFunctionType,
   OrderFunctionType,
+  UserObjFunctionType,
+  UserProfileObjFunctionType
 } from "../../../types/functionTypes";
+import { UserProfileType, UserResponseType } from "../../../types/entityTypes";
 
 // The type definitions for the input object of the PageClass constructor
 export interface PageClassProps {
@@ -20,6 +23,15 @@ export interface PageClassProps {
   clickTag: ClickTagFunctionType;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
+  setUserRegistrationPage: VoidFunctionType;
+  setUserLoginPage: VoidFunctionType;
+  handleUserLogout: VoidFunctionType;
+  setEditUserProfilePage: VoidFunctionType;
+  userProfile: UserProfileType | null;
+  setProfilePage: UserProfileObjFunctionType;
+  user: UserResponseType | null;
+  setUser: UserObjFunctionType;
+  setUserProfile: UserProfileObjFunctionType;
 }
 
 /**
@@ -43,6 +55,15 @@ class PageClass {
   clickTag: ClickTagFunctionType; // the function to handle the click event on a tag
   handleNewQuestion: VoidFunctionType;  // the function to handle the creation of a new question
   handleNewAnswer: VoidFunctionType;  // the function to handle the creation of a new answer
+  setUserRegistrationPage: VoidFunctionType;
+  setUserLoginPage: VoidFunctionType;
+  handleUserLogout: VoidFunctionType;
+  setEditUserProfilePage: VoidFunctionType;
+  userProfile: UserProfileType | null;
+  setProfilePage: UserProfileObjFunctionType;
+  user: UserResponseType | null;
+  setUser: UserObjFunctionType;
+  setUserProfile: UserProfileObjFunctionType;
 
   constructor(props: PageClassProps) {
     this.search = props.search;
@@ -57,6 +78,15 @@ class PageClass {
     this.clickTag = props.clickTag;
     this.handleNewQuestion = props.handleNewQuestion;
     this.handleNewAnswer = props.handleNewAnswer;
+    this.setUserRegistrationPage = props.setUserRegistrationPage;
+    this.setUserLoginPage = props.setUserLoginPage;
+    this.handleUserLogout = props.handleUserLogout;
+    this.setEditUserProfilePage = props.setEditUserProfilePage;
+    this.userProfile = props.userProfile;
+    this.setProfilePage = props.setProfilePage;
+    this.user = props.user;
+    this.setUser = props.setUser;
+    this.setUserProfile = props.setUserProfile;
   }
 
   getContent(): React.ReactNode {
