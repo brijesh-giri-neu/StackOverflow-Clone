@@ -26,7 +26,8 @@ router.post('/addQuestion', async (req: Request, res: Response) => {
         asked_by,
         ask_date_time,
         answers: [],
-        views: 0
+        views: 0,
+        vote_score: 0,
     };
     const newQuestion = await Question.createQuestion(question);
     res.status(200).json(newQuestion);

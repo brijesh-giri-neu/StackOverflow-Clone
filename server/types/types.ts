@@ -23,6 +23,7 @@ export interface IQuestion {
   asked_by?: string;
   ask_date_time: string;
   views: number;
+  vote_score: number;
 }
 
 /**
@@ -39,6 +40,7 @@ export interface IAnswer {
   text: string;
   ans_by: string;
   ans_date_time: string;
+  vote_score: number;
 }
 
 /**
@@ -271,5 +273,5 @@ export interface IVoteDocument
 }
 
 export interface IVoteModel extends mongoose.Model<IVoteDocument> {
-  registerVote(userId: mongoose.Types.ObjectId, postId: mongoose.Types.ObjectId, postType: PostType, type: VoteType): Promise<null>;
+  registerVote(vote: IVote): Promise<null>;
 }

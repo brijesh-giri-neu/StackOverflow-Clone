@@ -18,6 +18,7 @@ export interface IAnswerDB {
   text: string;
   ans_by: string;
   ans_date_time: Date;
+  vote_score: number;
 }
 
 export interface IQuestionDB {
@@ -29,6 +30,7 @@ export interface IQuestionDB {
   asked_by?: string;
   ask_date_time: Date;
   views: number;
+  vote_score: number;
 }
 
 export interface ITagDB {

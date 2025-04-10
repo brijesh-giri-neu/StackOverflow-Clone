@@ -4,9 +4,9 @@ import { IVoteDocument, IVoteModel, PostType, VoteType } from "../../types/types
 const postTypeValues = Object.keys(PostType)
   .filter(key => isNaN(Number(key))) as (keyof typeof PostType)[];
 
-const TagSchema = new mongoose.Schema<IVoteDocument, IVoteModel>(
+const VoteSchema = new mongoose.Schema<IVoteDocument, IVoteModel>(
   {
-    type: { type: VoteType, required: true },
+    type: { type: Number, enum: VoteType, required: true },
     postType: { type: String, enum: postTypeValues, required: true},
     postId: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: 'postType' },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' }
@@ -14,4 +14,4 @@ const TagSchema = new mongoose.Schema<IVoteDocument, IVoteModel>(
   { collection: "Vote" }
 );
 
-export default TagSchema;
+export default VoteSchema;

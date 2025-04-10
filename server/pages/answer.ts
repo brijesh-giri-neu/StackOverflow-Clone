@@ -29,6 +29,7 @@ router.post('/addAnswer', async (req: Request, res: Response) => {
         text,
         ans_by,
         ans_date_time,
+        vote_score: 0,
     };
 
     const addedAnswer = await Answer.createAnswer(answer);

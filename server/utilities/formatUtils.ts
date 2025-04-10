@@ -13,7 +13,8 @@ export function convertToIAnswer(answer: IAnswerDocument): IAnswer {
         _id: answer._id.toString(),
         text: answer.text,
         ans_by: answer.ans_by,
-        ans_date_time: answer.ans_date_time.toISOString()
+        ans_date_time: answer.ans_date_time.toISOString(),
+        vote_score: answer.vote_score,
     };
 }
 
@@ -33,6 +34,7 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
         asked_by: question.asked_by,
         views: question.views,
         ask_date_time: question.ask_date_time.toISOString(),
+        vote_score: question.vote_score,
         tags: (question.tags || []).map(tag => ({
             ...tag,
             _id: tag._id ? tag._id.toString() : "",
@@ -46,6 +48,7 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
                     text: ans.text,
                     ans_by: ans.ans_by,
                     ans_date_time: ans.ans_date_time.toISOString(),
+                    vote_score: ans.vote_score,
                 };
             }
         }),
