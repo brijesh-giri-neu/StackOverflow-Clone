@@ -11,11 +11,10 @@ import answerRouter from "./pages/answer";
 import questionRouter from "./pages/question";
 import userRouter from "./pages/user";
 import userProfileRouter from "./pages/userProfile";
+import voteRouter from "./pages/vote"
 import DBConnection from "./utilities/DBConnection";
 import session from "express-session";
 import { errorHandler } from "./middlewares/errorHandler";
-import { isAuthenticated } from "./middlewares/auth/isAuthenticated";
-import { isAuthorized } from "./middlewares/auth/isAuthorized";
 import { appRateLimiter } from "./middlewares/rateLimiter";
 import { loggingMiddleware } from "./middlewares/logger";
 
@@ -166,6 +165,7 @@ app.use('/question', questionRouter);
 app.use('/answer', answerRouter);
 app.use('/user', userRouter);
 app.use('/userProfile', userProfileRouter);
+app.use('/vote', voteRouter)
 
 /**
  * Exports the server for testing or other use cases.
