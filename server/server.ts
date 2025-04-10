@@ -77,16 +77,6 @@ app.use(
 );
 
 /**
- * Register Authentication Middleware
- */
-app.use(isAuthenticated);
-
-/**
- * Register Authorization Middleware
- */
-app.use(isAuthorized);
-
-/**
  * Register error handler middleware
  */
 app.use(errorHandler);
