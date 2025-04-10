@@ -245,3 +245,31 @@ export interface IUserProfileModel extends mongoose.Model<IUserProfileDocument> 
   getProfileByUserId(userId: mongoose.Types.ObjectId): Promise<IUserProfile | null>;
   updateUserProfile(userId: mongoose.Types.ObjectId, profile: IUserProfile): Promise<IUserProfile>;
 }
+
+export enum VoteType {
+  DownVote = -1,
+  UpVote = 1
+}
+
+export enum PostType {
+  Question = "Question",
+  Answer = "Answer"
+}
+
+// TODO: Refactor the posts into a single collection that references Questions and Answers collection
+export interface IVote {
+  _id?: string;
+  type: VoteType;
+  postId: mongoose.Types.ObjectId;
+  postType: PostType;
+  userId: mongoose.Types.ObjectId;
+}
+
+export interface IVoteDocument
+  extends Omit<mongoose.Document, "_id">, Omit<IVote, "_id">{
+  _id: mongoose.Types.ObjectId;
+}
+
+export interface IVoteModel extends mongoose.Model<IVoteDocument> {
+  registerVote(userId: mongoose.Types.ObjectId, postId: mongoose.Types.ObjectId, postType: PostType, type: VoteType): Promise<null>;
+}
