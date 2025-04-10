@@ -6,8 +6,10 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "express-openapi-validator": "^5.4.2",
+    "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "mongoose": "^8.2.1",
+    "morgan": "^1.10.0",
     "swagger-ui-express": "^5.0.1",
     "yaml": "^2.7.0"
   },
@@ -21,6 +23,7 @@
     "@types/express-session": "^1.18.1",
     "@types/jest": "^29.5.12",
     "@types/mockingoose": "^2.13.0",
+    "@types/morgan": "^1.9.9",
     "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
@@ -38,7 +41,7 @@
     "typescript-eslint": "^8.1.0"
   },
   "scripts": {
-    "start": "ts-node server.ts",
+    "start": "nodemon server.ts",
     "test": "jest",
     "populate_db": "ts-node scripts/populate_db.ts",
     "populate1k_db": "ts-node scripts/populate1k_db.ts",

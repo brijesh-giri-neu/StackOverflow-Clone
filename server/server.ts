@@ -1,6 +1,6 @@
 import cors from "cors";
 import { Server } from "http"; // Import the Server type from Node.js
-import express, { type Express, Request, Response, NextFunction } from "express";
+import express, { type Express} from "express";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yaml";
 import fs from "fs";
@@ -11,9 +11,13 @@ import answerRouter from "./pages/answer";
 import questionRouter from "./pages/question";
 import userRouter from "./pages/user";
 import userProfileRouter from "./pages/userProfile";
-import { HttpError } from "express-openapi-validator/dist/framework/types";
 import DBConnection from "./utilities/DBConnection";
 import session from "express-session";
+import { errorHandler } from "./middlewares/errorHandler";
+import { isAuthenticated } from "./middlewares/auth/isAuthenticated";
+import { isAuthorized } from "./middlewares/auth/isAuthorized";
+import { appRateLimiter } from "./middlewares/rateLimiter";
+import { loggingMiddleware } from "./middlewares/logger";
 
 /**
  * Client URL for CORS configuration.
@@ -53,6 +57,11 @@ app.use(
 app.use(express.json());
 
 /**
+ * Configure logging middleware
+ */
+app.use(loggingMiddleware);
+
+/**
  * Configure express-session to enable user sessions.
  */
 app.use(
@@ -66,6 +75,26 @@ app.use(
     },
   })
 );
+
+/**
+ * Register Authentication Middleware
+ */
+app.use(isAuthenticated);
+
+/**
+ * Register Authorization Middleware
+ */
+app.use(isAuthorized);
+
+/**
+ * Register error handler middleware
+ */
+app.use(errorHandler);
+
+/**
+ * Register rate limiting middleware
+ */
+app.use(appRateLimiter);
 
 /**
  * Path to the OpenAPI specification YAML file.
@@ -140,29 +169,6 @@ process.on("SIGINT", async () => {
 });
 
 /**
- * Global error handler middleware.
- * Handles errors and sends proper JSON responses with status codes and error messages.
- * @param {HttpError} err - The error object.
- * @param {Request} req - The request object.
- * @param {Response} res - The response object.
- * @param {NextFunction} next - The next middleware function.
- */
-app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
-  void next;
-  if (err.status && err.errors) {
-    console.log("err", err);
-    res.status(err.status).json({
-      message: err.message,
-      errors: err.errors,
-    });
-  } else {
-    res.status(500).json({
-      message: err.message || 'Internal Server Error',
-    });
-  }
-});
-
-/**
  * Routes for handling API requests related to tags, questions, and answers.
  */
 app.use('/tag', tagRouter);
@@ -176,3 +182,7 @@ app.use('/userProfile', userProfileRouter);
  * @module
  */
 module.exports = server;
+function morgan(arg0: string): any {
+  throw new Error("Function not implemented.");
+}
+
