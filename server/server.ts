@@ -16,6 +16,8 @@ import session from "express-session";
 import { errorHandler } from "./middlewares/errorHandler";
 import { isAuthenticated } from "./middlewares/auth/isAuthenticated";
 import { isAuthorized } from "./middlewares/auth/isAuthorized";
+import { appRateLimiter } from "./middlewares/rateLimiter";
+import { loggingMiddleware } from "./middlewares/logger";
 
 /**
  * Client URL for CORS configuration.
@@ -55,6 +57,11 @@ app.use(
 app.use(express.json());
 
 /**
+ * Configure logging middleware
+ */
+app.use(loggingMiddleware);
+
+/**
  * Configure express-session to enable user sessions.
  */
 app.use(
@@ -83,6 +90,11 @@ app.use(isAuthorized);
  * Register error handler middleware
  */
 app.use(errorHandler);
+
+/**
+ * Register rate limiting middleware
+ */
+app.use(appRateLimiter);
 
 /**
  * Path to the OpenAPI specification YAML file.
@@ -170,3 +182,7 @@ app.use('/userProfile', userProfileRouter);
  * @module
  */
 module.exports = server;
+function morgan(arg0: string): any {
+  throw new Error("Function not implemented.");
+}
+
