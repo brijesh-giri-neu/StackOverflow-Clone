@@ -41,7 +41,7 @@
     "typescript-eslint": "^8.1.0"
   },
   "scripts": {
-    "start": "nodemon server.ts",
+    "start": "npx ts-node server.ts",
     "test": "jest",
     "populate_db": "ts-node scripts/populate_db.ts",
     "populate1k_db": "ts-node scripts/populate1k_db.ts",

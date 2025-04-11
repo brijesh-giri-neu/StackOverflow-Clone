@@ -43,6 +43,16 @@ components:
               message:
                 type: string
                 example: "Internal Server Error"
+    Forbidden:
+      description: Forbidden - User is not authorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden"
   schemas:
     Tag:
       type: object
@@ -682,6 +692,8 @@ paths:
                 $ref: "#/components/schemas/RegisterVoteResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/Forbidden"
         "500":
           $ref: "#/components/responses/InternalServerError"
 
