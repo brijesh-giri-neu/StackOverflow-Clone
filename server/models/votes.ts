@@ -14,32 +14,56 @@ import Answer from "./answers";
  */
 VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
     const { userId, postId, type, postType } = vote;
-
+    await checkIfVotingOwnPost(postId, postType, userId);
     const existingVote = await this.findOne({ userId, postId });
     let delta = 0;
+
     if (!existingVote) {
-        delta = type; // No existing vote → apply new vote directly
+        delta = type;
     } else if (existingVote.type !== type) {
-        delta = type - existingVote.type; // Changing vote direction (e.g., upvote → downvote)
+        delta = type - existingVote.type;
     } else {
-        // Same vote already exists → no change
         return null;
     }
+
     await this.findOneAndUpdate(
         { userId, postId },
         { type, postType },
         { upsert: true, new: true, setDefaultsOnInsert: true }
     );
-    const update = { $inc: { vote_score: delta } };
-    if (postType === PostType.Question) {
-        await Question.findByIdAndUpdate(postId, update);
-    } else if (postType === PostType.Answer) {
-        await Answer.findByIdAndUpdate(postId, update);
-    }
 
+    await updateVoteScore(postId, postType, delta);
     return null;
 };
 
+
+async function checkIfVotingOwnPost(postId: mongoose.Types.ObjectId, postType: PostType, userId: mongoose.Types.ObjectId) {
+    let postAuthorId: string | null = null;
+
+    if (postType === PostType.Question) {
+        const question = await Question.findById(postId).select("asked_by");
+        if (!question) throw new Error("Question not found");
+        if (question.asked_by) postAuthorId = question.asked_by?.toString();
+    } else {
+        const answer = await Answer.findById(postId).select("ans_by");
+        if (!answer) throw new Error("Answer not found");
+        postAuthorId = answer.ans_by?.toString();
+    }
+
+    if (postAuthorId === userId.toString()) {
+        throw new Error("You cannot vote on your own post");
+    }
+}
+
+async function updateVoteScore(postId: mongoose.Types.ObjectId, postType: PostType, delta: number) {
+    const update = { $inc: { vote_score: delta } };
+
+    if (postType === PostType.Question) {
+        await Question.findByIdAndUpdate(postId, update);
+    } else {
+        await Answer.findByIdAndUpdate(postId, update);
+    }
+}
 
 /**
  * The Vote model representing the Vote collection in MongoDB.

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { registerOrUpdateVote } from "../services/voteService";
 import { PostType, VoteValueType } from "../types/entityTypes";
+import { toast } from 'react-toastify';
 
 export const useVote = (
     postId: string,
@@ -14,7 +15,7 @@ export const useVote = (
 
     const handleVote = async (newVote: VoteValueType) => {
         if (!userId) {
-            console.warn("User Id not available");
+            toast.warn("You must login to vote");
             return;
         }
 
@@ -29,9 +30,11 @@ export const useVote = (
             const delta = newVote - currentVote;
             setVoteScore((prev) => prev + delta);
             setCurrentVote(newVote);
-        } catch (err) {
-            console.error("Vote failed:", err);
+        } catch (err: any) {
+            const message = err?.response?.data?.message || "Something went wrong while voting";
+            toast.error(message);
         }
+
     };
     return { currentVote, voteScore, handleVote };
 };

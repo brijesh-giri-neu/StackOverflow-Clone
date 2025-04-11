@@ -18,20 +18,24 @@ const router = express.Router();
  */
 router.post('/', isAuthenticated, isAuthorized, appRateLimiter, async (req: Request, res: Response) => {
     const { postId, postType, type, userId } = req.body;
-
-    // Validation
-    if (!postId || !postType || (type !== 1 && type !== -1 && type!==0)) {
+    
+    if (!postId || !postType || (type !== 1 && type !== -1 && type !== 0)) {
         return res.status(400).json({ message: 'Invalid vote payload' });
     }
 
-    await Vote.registerVote({
-        postId: new mongoose.Types.ObjectId(postId),
-        postType: postType as PostType,
-        type: type as VoteType,
-        userId: userId,
-    });
-
-    res.status(200).json({ message: 'Vote registered successfully' });
+    try {
+        await Vote.registerVote({
+            postId: new mongoose.Types.ObjectId(postId),
+            postType: postType as PostType,
+            type: type as VoteType,
+            userId: userId,
+        });
+        res.status(200).json({ message: 'Vote registered successfully' });
+    } catch (err: any) {
+        if (err.message === "You cannot vote on your own post") {
+            return res.status(403).json({ message: err.message });
+        }
+    }
 });
 
 export default router;

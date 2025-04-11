@@ -428,7 +428,14 @@ const FakeStackOverflow = () => {
         page={pageInstance}
         handleQuestions={handleQuestions} handleTags={handleTags}
       />
-      <ToastContainer />
+      <ToastContainer
+        position="top-center"
+        autoClose={1500}
+        hideProgressBar={true}
+        closeOnClick={true}
+        pauseOnHover={false}
+        draggable={false}
+      />
     </>
   );
 };

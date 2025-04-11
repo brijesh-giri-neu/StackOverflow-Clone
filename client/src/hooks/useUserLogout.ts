@@ -13,15 +13,7 @@ export const useUserLogout = (handleUserLogout: VoidFunctionType) => {
     const logoutUser = async () => {
         await logoutCurrentUser();
         handleUserLogout();
-        toast.success("Logged out successfully.", {
-            position: "top-center",      
-            autoClose: 1000,             
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: false,
-            progress: undefined,
-        });
+        toast.success("Logged out successfully");
     };
 
     return { logoutUser };
