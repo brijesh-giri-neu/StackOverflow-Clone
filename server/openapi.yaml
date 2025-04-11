@@ -53,6 +53,16 @@ components:
               message:
                 type: string
                 example: "Forbidden"
+    Unauthorized:
+      description: Unauthorized - Authentication required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Not authenticated"
   schemas:
     Tag:
       type: object
@@ -697,4 +707,151 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
 
+  /comment/add:
+      post:
+        tags:
+          - Comments
+        summary: Add a new comment to a post
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - postId
+                  - postType
+                  - text
+                properties:
+                  postId:
+                    type: string
+                    example: "6641e6b0d75a1a6ac8b5cc11"
+                  postType:
+                    type: string
+                    enum: [Question, Answer]
+                    example: "Question"
+                  text:
+                    type: string
+                    example: "This is a comment."
+        responses:
+          "200":
+            description: Comment added successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+          "400":
+            $ref: "#/components/responses/BadRequest"
+          "500":
+            $ref: "#/components/responses/InternalServerError"
+          "403":
+            $ref: "#/components/responses/Forbidden"
+          "401":
+            $ref: "#/components/responses/Unauthorized"
 
+  /comment/edit:
+    post:
+      tags:
+        - Comments
+      summary: Edit an existing comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - _id
+                - postId
+                - postType
+                - text
+              properties:
+                _id:
+                  type: string
+                  example: "6641e6b0d75a1a6ac8b5cc99"
+                postId:
+                  type: string
+                  example: "6641e6b0d75a1a6ac8b5cc11"
+                postType:
+                  type: string
+                  enum: [Question, Answer]
+                  example: "Question"
+                text:
+                  type: string
+                  example: "Updated comment text"
+      responses:
+        "200":
+          description: Comment edited successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "403":
+            $ref: "#/components/responses/Forbidden"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+
+  /comment/delete/{id}:
+    post:
+      tags:
+        - Comments
+      summary: Soft delete a comment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "6641e6b0d75a1a6ac8b5cc99"
+      responses:
+        "200":
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "403":
+            $ref: "#/components/responses/Forbidden"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+
+  /comment/{postType}/{postId}:
+    get:
+      tags:
+        - Comments
+      summary: Get all comments for a post (question or answer)
+      parameters:
+        - name: postType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [Question, Answer]
+            example: "Question"
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "6641e6b0d75a1a6ac8b5cc11"
+      responses:
+        "200":
+          description: Successfully retrieved comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"

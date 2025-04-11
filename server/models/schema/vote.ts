@@ -1,9 +1,6 @@
 import mongoose from "mongoose";
 import { IVoteDocument, IVoteModel, PostType, VoteType } from "../../types/types";
 
-const postTypeValues = Object.keys(PostType)
-  .filter(key => isNaN(Number(key))) as (keyof typeof PostType)[];
-
   /**
  * The schema for a document in the Vote collection.
  *
@@ -17,7 +14,7 @@ const postTypeValues = Object.keys(PostType)
 const VoteSchema = new mongoose.Schema<IVoteDocument, IVoteModel>(
   {
     type: { type: Number, enum: VoteType, required: true },
-    postType: { type: String, enum: postTypeValues, required: true},
+    postType: { type: String, enum: Object.values(PostType), required: true},
     postId: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: 'postType' },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' }
   },

@@ -12,10 +12,10 @@ import questionRouter from "./pages/question";
 import userRouter from "./pages/user";
 import userProfileRouter from "./pages/userProfile";
 import voteRouter from "./pages/vote"
+import commentRouter from "./pages/comment"
 import DBConnection from "./utilities/DBConnection";
 import session from "express-session";
 import { errorHandler } from "./middlewares/errorHandler";
-import { appRateLimiter } from "./middlewares/rateLimiter";
 import { loggingMiddleware } from "./middlewares/logger";
 
 /**
@@ -79,11 +79,6 @@ app.use(
  * Register error handler middleware
  */
 app.use(errorHandler);
-
-/**
- * Register rate limiting middleware
- */
-app.use(appRateLimiter);
 
 /**
  * Path to the OpenAPI specification YAML file.
@@ -165,14 +160,11 @@ app.use('/question', questionRouter);
 app.use('/answer', answerRouter);
 app.use('/user', userRouter);
 app.use('/userProfile', userProfileRouter);
-app.use('/vote', voteRouter)
+app.use('/vote', voteRouter);
+app.use('/comment', commentRouter);
 
 /**
  * Exports the server for testing or other use cases.
  * @module
  */
 module.exports = server;
-function morgan(arg0: string): any {
-  throw new Error("Function not implemented.");
-}
-

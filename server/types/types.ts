@@ -254,6 +254,7 @@ export enum VoteType {
 }
 
 export enum PostType {
+  None = "None",
   Question = "Question",
   Answer = "Answer"
 }
@@ -274,4 +275,27 @@ export interface IVoteDocument
 
 export interface IVoteModel extends mongoose.Model<IVoteDocument> {
   registerVote(vote: IVote): Promise<null>;
+}
+
+export interface IComment {
+  _id?: string;
+  text: string;
+  postId: mongoose.Types.ObjectId;
+  postType: PostType;
+  userId: mongoose.Types.ObjectId;
+  isDeleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ICommentDocument 
+  extends Omit<mongoose.Document, "_id">, Omit<IComment, "_id">{
+  _id: mongoose.Types.ObjectId;
+}
+
+export interface ICommentModel extends mongoose.Model<ICommentDocument> {
+  addComment(comment: IComment): Promise<IComment>;
+  editComment(comment: IComment): Promise<IComment | null>;
+  deleteComment(commentId: string, userId: string): Promise<IComment | null>;
+  getCommentsForPost(postId: mongoose.Types.ObjectId, postType: PostType): Promise<IComment[]>;
 }

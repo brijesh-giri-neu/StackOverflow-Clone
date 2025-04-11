@@ -1,4 +1,4 @@
-import { IAnswerDocument, IAnswer, IQuestionDocument, IQuestion, IUserProfile, IUserProfileDocument, IUser, IUserDocument } from '../types/types';
+import { IAnswerDocument, IAnswer, IQuestionDocument, IQuestion, IUserProfile, IUserProfileDocument, IUser, IUserDocument, ICommentDocument, IComment, PostType } from '../types/types';
 import mongoose from 'mongoose';
 
 /**
@@ -109,5 +109,18 @@ export function convertToIUser(user: IUserDocument): IUser {
         email: user.email,
         displayName: user.displayName,
         password: user.password,
+    };
+}
+
+export function convertToIComment(comment: ICommentDocument): IComment {
+    return {
+        _id: comment._id.toString(),
+        text: comment.text,
+        postId: comment.postId,
+        postType: comment.postType,
+        userId: comment.userId,
+        isDeleted: comment.isDeleted,
+        createdAt: comment.createdAt,
+        updatedAt: comment.updatedAt
     };
 }

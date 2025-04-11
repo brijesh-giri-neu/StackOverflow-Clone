@@ -4,7 +4,14 @@ import { IVote, IVoteDocument, IVoteModel, PostType } from "../types/types";
 import Question from "./questions";
 import Answer from "./answers";
 
-
+/**
+ * Static Method: registerVote
+ * 
+ * Handles the registration or updating of a vote made by a user on a post (either a Question or an Answer).
+ * 
+ * @param {IVote} vote - The vote object containing userId, postId, postType, and vote type (up/down).
+ * @returns {Promise<null>} Returns null after updating the vote and vote_score.
+ */
 VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
     const { userId, postId, type, postType } = vote;
 
@@ -42,7 +49,10 @@ VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
 };
 
 /**
- * The User model representing the Users collection in MongoDB.
+ * The Vote model representing the Vote collection in MongoDB.
+ * 
+ * This model provides static methods for voting logic, including registering and updating
+ * user votes on posts (Questions or Answers), and maintaining vote_score on the post itself.
  * 
  * @type {mongoose.Model<IVoteDocument, IVoteModel>}
  */
