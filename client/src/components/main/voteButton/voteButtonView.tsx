@@ -31,30 +31,36 @@ const VoteButtons = ({
     initialVote,
     voteScore,
 }: VoteButtonProps) => {
-    const { handleUpvote, handleDownvote } = useVote(
-        postId,
-        postType,
-        userId,
-    );
+    const {
+        currentVote,
+        voteScore: updatedScore,
+        handleVote,
+    } = useVote(postId, postType, userId, initialVote, voteScore);
 
-    const isUpVoted = initialVote? initialVote === 1 : false;
-    const isDownVoted = initialVote? initialVote === -1 : false;
+    const isUpVoted = currentVote === VoteValueType.UpVote;
+    const isDownVoted = currentVote === VoteValueType.DownVote;
 
     return (
         <div className="vote_section">
             <button
                 className={`vote_button ${isUpVoted ? "active_vote" : ""}`}
-                onClick={handleUpvote}
+                onClick={() =>
+                    handleVote(
+                        isUpVoted ? VoteValueType.NoVote : VoteValueType.UpVote
+                    )
+                }
                 title="Upvote"
             >
                 {isUpVoted ? <SolidUpIcon /> : <RegularUpIcon />}
             </button>
-
-            <div className="vote_score">{voteScore}</div>
-
+            <div className="vote_score">{updatedScore}</div>
             <button
                 className={`vote_button ${isDownVoted ? "active_vote" : ""}`}
-                onClick={handleDownvote}
+                onClick={() =>
+                    handleVote(
+                        isDownVoted ? VoteValueType.NoVote : VoteValueType.DownVote
+                    )
+                }
                 title="Downvote"
             >
                 {isDownVoted ? <SolidDownIcon /> : <RegularDownIcon />}

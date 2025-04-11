@@ -1,9 +1,10 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import Question from '../models/questions';
-import { IQuestion } from '../types/types';
+import { IQuestion, PostType, VoteType } from '../types/types';
 import { filterQuestions } from '../services/questionFilterService';
 import { sortQuestions } from '../services/questionSortService';
+import Vote from '../models/votes';
 
 const router = express.Router();
 
@@ -49,7 +50,18 @@ router.get('/getQuestionById/:qid', async (req: Request, res: Response) => {
     if (!question) {
         return res.status(400).json({ message: "Question not found" });
     }
-    res.status(200).json(question);
+
+    const userId = req.session?.userId;
+    let currentUserVote: VoteType = VoteType.NoVote;
+
+    if (userId) {
+        const enriched = await enrichQuestionWithUserVotes(question, userId);
+        return res.status(200).json(enriched);
+    }
+    res.status(200).json({
+        ...question,
+        currentUserVote
+    });
 });
 
 /**
@@ -72,5 +84,33 @@ router.get('/getQuestion', async (req: Request, res: Response) => {
     }
     res.status(200).json(filteredQuestions);
 });
+
+async function enrichQuestionWithUserVotes(question: any, userId: string) {
+    const allPostIds = [
+        question._id,
+        ...question.answers.map((a: any) => a._id),
+    ];
+
+    const votes = await Vote.find({
+        userId,
+        postId: { $in: allPostIds },
+    });
+
+    const voteMap: Record<string, VoteType> = {};
+    votes.forEach((vote) => {
+        voteMap[vote.postId.toString()] = vote.type;
+    });
+
+    const enrichedAnswers = question.answers.map((a: any) => ({
+        ...(a.toObject?.() ?? a),
+        currentUserVote: voteMap[a._id.toString()] ?? VoteType.NoVote,
+    }));
+
+    return {
+        ...question,
+        currentUserVote: voteMap[question._id.toString()] ?? VoteType.NoVote,
+        answers: enrichedAnswers,
+    };
+}
 
 export default router;

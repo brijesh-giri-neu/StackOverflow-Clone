@@ -20,7 +20,7 @@ router.post('/', isAuthenticated, isAuthorized, appRateLimiter, async (req: Requ
     const { postId, postType, type, userId } = req.body;
 
     // Validation
-    if (!postId || !postType || (type !== 1 && type !== -1)) {
+    if (!postId || !postType || (type !== 1 && type !== -1 && type!==0)) {
         return res.status(400).json({ message: 'Invalid vote payload' });
     }
 

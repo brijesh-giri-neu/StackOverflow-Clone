@@ -15,10 +15,7 @@ import Answer from "./answers";
 VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
     const { userId, postId, type, postType } = vote;
 
-    // Step 1: Find existing vote
     const existingVote = await this.findOne({ userId, postId });
-
-    // Step 2: Determine the vote delta (score change)
     let delta = 0;
     if (!existingVote) {
         delta = type; // No existing vote → apply new vote directly
@@ -28,17 +25,12 @@ VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
         // Same vote already exists → no change
         return null;
     }
-
-    // Step 3: Upsert the vote
     await this.findOneAndUpdate(
         { userId, postId },
         { type, postType },
         { upsert: true, new: true, setDefaultsOnInsert: true }
     );
-
-    // Step 4: Update vote_score in the related post
     const update = { $inc: { vote_score: delta } };
-
     if (postType === PostType.Question) {
         await Question.findByIdAndUpdate(postId, update);
     } else if (postType === PostType.Answer) {
@@ -47,6 +39,7 @@ VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
 
     return null;
 };
+
 
 /**
  * The Vote model representing the Vote collection in MongoDB.

@@ -250,7 +250,8 @@ export interface IUserProfileModel extends mongoose.Model<IUserProfileDocument> 
 
 export enum VoteType {
   DownVote = -1,
-  UpVote = 1
+  UpVote = 1,
+  NoVote = 0,
 }
 
 export enum PostType {

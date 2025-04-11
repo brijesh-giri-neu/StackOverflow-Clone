@@ -48,6 +48,7 @@ const AnswerPage = ({
         askby={question.asked_by}
         meta={getMetaData(new Date(question.ask_date_time))}
         vote_score={question.vote_score}
+        initial_vote={question.currentUserVote}
       />
       {question.answers.map((a, idx) => (
         <Answer
@@ -58,6 +59,7 @@ const AnswerPage = ({
           ansBy={a.ans_by}
           meta={getMetaData(new Date(a.ans_date_time))}
           vote_score={a.vote_score}
+          initial_vote={a.currentUserVote}
         />
       ))}
       <button
