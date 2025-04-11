@@ -4,12 +4,12 @@ import {
   ClickTagFunctionType,
   IdFunctionType,
 } from "../../../../types/functionTypes";
-import { Tag, AnswerType } from "../../../../types/entityTypes";
+import { Tag, AnswerResponseType } from "../../../../types/entityTypes";
 
 interface QuestionProps {
   q: {
     _id: string;
-    answers: AnswerType[];
+    answers: AnswerResponseType[];
     views: number;
     title: string;
     tags: Tag[];

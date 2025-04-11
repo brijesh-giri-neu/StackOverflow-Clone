@@ -12,6 +12,7 @@ interface AnswerType {
   text: string;
   ans_by: string;
   ans_date_time: Date;
+  vote_score: number;
 }
 
 /**
@@ -26,6 +27,8 @@ interface AnswerResponseType {
   ans_date_time: string;
   text: string;
   _id: string;
+  vote_score: number;
+  currentUserVote: VoteValueType;
 }
 
 /**
@@ -58,13 +61,15 @@ interface QuestionType {
  */
 interface QuestionResponseType {
   _id: string;
-  answers: AnswerType[];
+  answers: AnswerResponseType[];
   views: number;
   title: string;
   tags: { name: string }[];
   asked_by: string;
   ask_date_time: string;
   text: string;
+  vote_score: number;
+  currentUserVote: VoteValueType;
 }
 
 /**
@@ -180,6 +185,28 @@ interface UserProfileResponseType {
   github?: string;
 }
 
+export enum VoteValueType {
+  DownVote = -1,
+  UpVote = 1,
+  NoVote = 0,
+}
+
+export enum PostType {
+  Question = "Question",
+  Answer = "Answer"
+}
+
+interface VoteType {
+  postId: string;
+  postType: PostType;
+  type: VoteValueType;
+  userId: string;
+}
+
+interface VoteResponseType {
+  message: string;
+}
+
 export type {
   AnswerType,
   QuestionType,
@@ -191,5 +218,7 @@ export type {
   UserType,
   UserResponseType,
   UserProfileType,
-  UserProfileResponseType
+  UserProfileResponseType,
+  VoteType,
+  VoteResponseType,
 };

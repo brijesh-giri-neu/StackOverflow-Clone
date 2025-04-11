@@ -5,6 +5,8 @@ import {
     FaRegCircleDown,
 } from "react-icons/fa6";
 import "./voteButtonView.css";
+import { useVote } from "../../../hooks/useVote";
+import { PostType, VoteValueType } from "../../../types/entityTypes";
 
 import type { FC, SVGProps } from "react";
 
@@ -14,35 +16,46 @@ const RegularUpIcon = FaRegCircleUp as FC<SVGProps<SVGSVGElement>>;
 const SolidDownIcon = FaCircleDown as FC<SVGProps<SVGSVGElement>>;
 const RegularDownIcon = FaRegCircleDown as FC<SVGProps<SVGSVGElement>>;
 
-interface VoteButtonsProps {
-    score: number;
-    onUpvote?: () => void;
-    onDownvote?: () => void;
-    isUpVoted: boolean;
-    isDownVoted: boolean;
+interface VoteButtonProps {
+    userId?: string;
+    postId: string;
+    postType: PostType;
+    initialVote?: VoteValueType;
+    voteScore: number;
 }
 
 const VoteButtons = ({
-    score,
-    onUpvote,
-    onDownvote,
-    isUpVoted,
-    isDownVoted,
-}: VoteButtonsProps) => {
+    userId,
+    postId,
+    postType,
+    initialVote,
+    voteScore,
+}: VoteButtonProps) => {
+    const { handleUpvote, handleDownvote } = useVote(
+        postId,
+        postType,
+        userId,
+    );
+
+    const isUpVoted = initialVote? initialVote === 1 : false;
+    const isDownVoted = initialVote? initialVote === -1 : false;
+
     return (
         <div className="vote_section">
             <button
                 className={`vote_button ${isUpVoted ? "active_vote" : ""}`}
-                onClick={onUpvote}
+                onClick={handleUpvote}
+                title="Upvote"
             >
                 {isUpVoted ? <SolidUpIcon /> : <RegularUpIcon />}
             </button>
 
-            <div className="vote_score">{score}</div>
+            <div className="vote_score">{voteScore}</div>
 
             <button
                 className={`vote_button ${isDownVoted ? "active_vote" : ""}`}
-                onClick={onDownvote}
+                onClick={handleDownvote}
+                title="Downvote"
             >
                 {isDownVoted ? <SolidDownIcon /> : <RegularDownIcon />}
             </button>

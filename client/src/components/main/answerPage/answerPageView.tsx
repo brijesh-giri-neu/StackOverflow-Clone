@@ -8,6 +8,7 @@ import { useAnswerPage } from "../../../hooks/useAnswerPage";
 
 // The type of the props for the AnswerPage component
 interface AnswerPageProps {
+  userId?: string;
   qid: string;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
@@ -21,6 +22,7 @@ interface AnswerPageProps {
  * @returns the AnswerPage component
  */
 const AnswerPage = ({
+  userId,
   qid,
   handleNewQuestion,
   handleNewAnswer,
@@ -39,17 +41,23 @@ const AnswerPage = ({
         handleNewQuestion={handleNewQuestion}
       />
       <QuestionBody
+        qId={question._id}
+        userId={userId}
         views={question.views}
         text={question.text}
         askby={question.asked_by}
         meta={getMetaData(new Date(question.ask_date_time))}
+        vote_score={question.vote_score}
       />
       {question.answers.map((a, idx) => (
         <Answer
           key={idx}
+          userId={userId}
+          ansId={a._id}
           text={a.text}
           ansBy={a.ans_by}
           meta={getMetaData(new Date(a.ans_date_time))}
+          vote_score={a.vote_score}
         />
       ))}
       <button
