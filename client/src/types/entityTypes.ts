@@ -207,6 +207,22 @@ interface VoteResponseType {
   message: string;
 }
 
+interface UserRefType {
+  _id: string;
+  displayName: string;
+}
+
+interface CommentType {
+  _id: string;
+  text: string;
+  postId: string;
+  postType: PostType;
+  userId: (string | UserRefType);
+  isDeleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export type {
   AnswerType,
   QuestionType,
@@ -221,4 +237,6 @@ export type {
   UserProfileResponseType,
   VoteType,
   VoteResponseType,
+  CommentType,
+  UserRefType
 };

@@ -64,7 +64,7 @@ router.get('/:postType/:postId', async (req: Request, res: Response) => {
     const parsedPostId = new mongoose.Types.ObjectId(postId);
 
     const comment = await Comment.getCommentsForPost(parsedPostId, parsedPostType);
-
+    
     res.status(200).json(comment);
 });
 
