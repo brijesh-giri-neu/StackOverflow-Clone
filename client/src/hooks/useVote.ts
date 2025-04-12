@@ -31,7 +31,12 @@ export const useVote = (
             setVoteScore((prev) => prev + delta);
             setCurrentVote(newVote);
         } catch (err: any) {
-            const message = err?.response?.data?.message || "Something went wrong while voting";
+            const status = err?.response?.status;
+            const message =
+                status === 429
+                    ? "You are voting too quickly. Please wait for sometime before voting again."
+                    : err?.response?.data?.message || "Something went wrong while voting";
+
             toast.error(message);
         }
 
