@@ -2,10 +2,12 @@ import React from "react";
 import PageClass, { PageClassProps } from ".";
 import AnswerPage from "../answerPage/answerPageView";
 import { VoidFunctionType } from "../../../types/functionTypes";
+import { UserResponseType } from "../../../types/entityTypes";
 
 // The type definition for the constructor parameter.
 interface AnswerPageClassProps
   extends Omit<PageClassProps, "handleNewQuestion" | "handleNewAnswer"> {
+  user: UserResponseType | null;
   qid: string;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
@@ -15,6 +17,7 @@ interface AnswerPageClassProps
  * The class represents the answer page for a question.
  */
 export default class AnswerPageClass extends PageClass {
+  user: UserResponseType | null;
   qid: string;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
@@ -50,6 +53,7 @@ export default class AnswerPageClass extends PageClass {
     });
 
     this.qid = props.qid;
+    this.user = props.user;
     this.handleNewQuestion = props.handleNewQuestion;
     this.handleNewAnswer = props.handleNewAnswer;
   }
@@ -57,6 +61,7 @@ export default class AnswerPageClass extends PageClass {
   getContent(): React.ReactNode {
     return (
       <AnswerPage
+        userId={this.user?._id}
         qid={this.qid}
         handleNewQuestion={this.handleNewQuestion}
         handleNewAnswer={this.handleNewAnswer}

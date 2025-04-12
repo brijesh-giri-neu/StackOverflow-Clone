@@ -19,7 +19,8 @@ const AnswerSchema = new mongoose.Schema<IAnswerDocument, IAnswerModel> (
   {
     text: { type: String, required: true },
     ans_by: { type: String, required: true },
-    ans_date_time: { type: Date, required: true, default: Date.now }
+    ans_date_time: { type: Date, required: true, default: Date.now },
+    vote_score: { type: Number, default: 0 },
   },
   { collection: "Answer" }
 );

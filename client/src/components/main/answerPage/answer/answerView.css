@@ -7,10 +7,11 @@
 
 .answerText {
     width: 75%;
+    margin-left: 2%
 }
 
 .answerAuthor {
-    margin-left: 5%;
+    margin-left: 1%;
 }
 
 .answer_author {

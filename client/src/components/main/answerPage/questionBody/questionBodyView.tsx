@@ -1,11 +1,17 @@
 import "./questionBodyView.css";
+import VoteButtons from "../../voteButton/voteButtonView";
+import { PostType, VoteValueType } from "../../../../types/entityTypes";
 
 // The type definition for the props of the QuestionBody component
 interface QuestionBodyProps {
+  userId?: string
+  qId: string,
   views: number;
   text: string;
   askby: string;
   meta: string;
+  vote_score: number;
+  initial_vote: VoteValueType;
 }
 
 /**
@@ -13,14 +19,23 @@ interface QuestionBodyProps {
  * @param props containing the views, text, askby and meta data of the question 
  * @returns the question body component
  */
-const QuestionBody = ({ views, text, askby, meta }: QuestionBodyProps) => {
+const QuestionBody = ({ qId, userId, vote_score, views, text, askby, meta, initial_vote }: QuestionBodyProps) => {
   return (
     <div id="questionBody" className="questionBody right_padding">
-      <div className="bold_title answer_question_view">{views} views</div>
-      <div className="answer_question_text">{text}</div>
-      <div className="answer_question_right">
-        <div className="question_author">{askby}</div>
-        <div className="answer_question_meta">asked {meta}</div>
+      <div className="question_body_container">
+        <VoteButtons
+          userId = {userId}
+          voteScore={vote_score}
+          postType={PostType.Question}
+          initialVote={initial_vote}
+          postId = {qId}
+        />
+        <div className="bold_title answer_question_view">{views} views</div>
+        <div className="answer_question_text">{text}</div>
+        <div className="answer_question_right">
+          <div className="question_author">{askby}</div>
+          <div className="answer_question_meta">asked {meta}</div>
+        </div>
       </div>
     </div>
   );

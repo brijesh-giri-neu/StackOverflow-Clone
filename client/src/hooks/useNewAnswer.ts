@@ -40,6 +40,7 @@ export const useNewAnswer = (
       text: text,
       ans_by: usrn,
       ans_date_time: new Date(),
+      vote_score: 0,
     };
 
     const res = await addAnswer(qid, answer);

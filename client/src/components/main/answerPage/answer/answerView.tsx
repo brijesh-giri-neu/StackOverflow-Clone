@@ -1,10 +1,16 @@
 import "./answerView.css";
+import VoteButtons from "../../voteButton/voteButtonView";
+import { PostType, VoteValueType } from "../../../../types/entityTypes";
 
 // The type definition for the props of the Answer component
 interface AnswerProps {
+  userId?: string;
+  ansId: string;
   text: string;
   ansBy: string;
   meta: string;
+  vote_score: number;
+  initial_vote: VoteValueType;
 }
 
 /**
@@ -12,9 +18,16 @@ interface AnswerProps {
  * @param props containing the answer text, the author of the answer and the meta data of the answer 
  * @returns the Answer component
  */
-const Answer = ({ text, ansBy, meta }: AnswerProps) => {
+const Answer = ({ userId, ansId, text, ansBy, meta, vote_score, initial_vote }: AnswerProps) => {
   return (
     <div className="answer right_padding">
+      <VoteButtons
+          userId = {userId}
+          voteScore={vote_score}
+          postType={PostType.Answer}
+          initialVote={initial_vote}
+          postId = {ansId}
+        />
       <div id="answerText" className="answerText">
         {text}
       </div>

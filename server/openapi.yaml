@@ -43,6 +43,26 @@ components:
               message:
                 type: string
                 example: "Internal Server Error"
+    Forbidden:
+      description: Forbidden - User is not authorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Forbidden"
+    Unauthorized:
+      description: Unauthorized - Authentication required
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Not authenticated"
   schemas:
     Tag:
       type: object
@@ -285,6 +305,32 @@ components:
         github:
           type: string
           example: "https://github.com/johndoe"
+    
+    RegisterVoteRequest:
+      type: object
+      required:
+        - postId
+        - postType
+        - type
+      properties:
+        postId:
+          type: string
+          example: "6616c72c8d3fe21e52c1123a"
+        postType:
+          type: string
+          enum: [Question, Answer]
+          example: "Question"
+        type:
+          type: integer
+          enum: [-1, 1, 0]
+          example: 1
+
+    RegisterVoteResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Vote registered successfully"
 
 paths:
   # Tags Controller Endpoints
@@ -630,4 +676,182 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "500":
           $ref: "#/components/responses/InternalServerError"
+  
+  /vote:
+    post:
+      tags:
+        - Questions
+        - Answers
+        - Users
+      summary: Register or update a vote on a post
+      description: |
+        Register a vote (+1 or -1) for a question or answer by the authenticated user.
+        If the vote already exists, it will be updated. Otherwise, a new vote will be created.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterVoteRequest"
+      responses:
+        "200":
+          description: Vote registered or updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisterVoteResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 
+  /comment/add:
+      post:
+        tags:
+          - Comments
+        summary: Add a new comment to a post
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - postId
+                  - postType
+                  - text
+                properties:
+                  postId:
+                    type: string
+                    example: "6641e6b0d75a1a6ac8b5cc11"
+                  postType:
+                    type: string
+                    enum: [Question, Answer]
+                    example: "Question"
+                  text:
+                    type: string
+                    example: "This is a comment."
+        responses:
+          "200":
+            description: Comment added successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+          "400":
+            $ref: "#/components/responses/BadRequest"
+          "500":
+            $ref: "#/components/responses/InternalServerError"
+          "403":
+            $ref: "#/components/responses/Forbidden"
+          "401":
+            $ref: "#/components/responses/Unauthorized"
+
+  /comment/edit:
+    post:
+      tags:
+        - Comments
+      summary: Edit an existing comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - _id
+                - postId
+                - postType
+                - text
+              properties:
+                _id:
+                  type: string
+                  example: "6641e6b0d75a1a6ac8b5cc99"
+                postId:
+                  type: string
+                  example: "6641e6b0d75a1a6ac8b5cc11"
+                postType:
+                  type: string
+                  enum: [Question, Answer]
+                  example: "Question"
+                text:
+                  type: string
+                  example: "Updated comment text"
+      responses:
+        "200":
+          description: Comment edited successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "403":
+            $ref: "#/components/responses/Forbidden"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+
+  /comment/delete/{id}:
+    post:
+      tags:
+        - Comments
+      summary: Soft delete a comment by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "6641e6b0d75a1a6ac8b5cc99"
+      responses:
+        "200":
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        "403":
+            $ref: "#/components/responses/Forbidden"
+        "401":
+            $ref: "#/components/responses/Unauthorized"
+
+  /comment/{postType}/{postId}:
+    get:
+      tags:
+        - Comments
+      summary: Get all comments for a post (question or answer)
+      parameters:
+        - name: postType
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [Question, Answer]
+            example: "Question"
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "6641e6b0d75a1a6ac8b5cc11"
+      responses:
+        "200":
+          description: Successfully retrieved comments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "500":
+          $ref: "#/components/responses/InternalServerError"

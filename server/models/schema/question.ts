@@ -27,7 +27,8 @@ const QuestionSchema = new mongoose.Schema<IQuestionDocument, IQuestionModel>(
     ask_date_time: { type: Date, required: true },
     views: { type: Number, default: 0 },
     answers: [{ type: mongoose.Schema.Types.ObjectId, ref: "Answer" }],
-    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }]
+    tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
+    vote_score: { type: Number, default: 0 },
   },
   { collection: "Question" }
 );

@@ -23,6 +23,7 @@ export interface IQuestion {
   asked_by?: string;
   ask_date_time: string;
   views: number;
+  vote_score: number;
 }
 
 /**
@@ -39,6 +40,7 @@ export interface IAnswer {
   text: string;
   ans_by: string;
   ans_date_time: string;
+  vote_score: number;
 }
 
 /**
@@ -244,4 +246,57 @@ export interface IUserModel extends mongoose.Model<IUserDocument> {
 export interface IUserProfileModel extends mongoose.Model<IUserProfileDocument> {
   getProfileByUserId(userId: mongoose.Types.ObjectId): Promise<IUserProfile | null>;
   updateUserProfile(userId: mongoose.Types.ObjectId, profile: IUserProfile): Promise<IUserProfile>;
+}
+
+export enum VoteType {
+  DownVote = -1,
+  UpVote = 1,
+  NoVote = 0,
+}
+
+export enum PostType {
+  None = "None",
+  Question = "Question",
+  Answer = "Answer"
+}
+
+// TODO: Refactor the posts into a single collection that references Questions and Answers collection
+export interface IVote {
+  _id?: string;
+  type: VoteType;
+  postId: mongoose.Types.ObjectId;
+  postType: PostType;
+  userId: mongoose.Types.ObjectId;
+}
+
+export interface IVoteDocument
+  extends Omit<mongoose.Document, "_id">, Omit<IVote, "_id">{
+  _id: mongoose.Types.ObjectId;
+}
+
+export interface IVoteModel extends mongoose.Model<IVoteDocument> {
+  registerVote(vote: IVote): Promise<null>;
+}
+
+export interface IComment {
+  _id?: string;
+  text: string;
+  postId: mongoose.Types.ObjectId;
+  postType: PostType;
+  userId: mongoose.Types.ObjectId;
+  isDeleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ICommentDocument 
+  extends Omit<mongoose.Document, "_id">, Omit<IComment, "_id">{
+  _id: mongoose.Types.ObjectId;
+}
+
+export interface ICommentModel extends mongoose.Model<ICommentDocument> {
+  addComment(comment: IComment): Promise<IComment>;
+  editComment(comment: IComment): Promise<IComment | null>;
+  deleteComment(commentId: string, userId: string): Promise<IComment | null>;
+  getCommentsForPost(postId: mongoose.Types.ObjectId, postType: PostType): Promise<IComment[]>;
 }
