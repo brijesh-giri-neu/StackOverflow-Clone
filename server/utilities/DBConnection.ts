@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 /**
  * Singleton class to manage MongoDB connection.
@@ -9,7 +11,7 @@ class DBConnection {
     private static instance: DBConnection;
 
     /** MongoDB connection URL. Update as per your database configuration. */
-    private static MONGO_URL: string = "mongodb://127.0.0.1:27017/fake_so";
+    private static MONGO_URL: string = process.env.DB_CONNECTION_STRING || "mongodb://127.0.0.1:27017/fake_so";
 
     /**
      * Private constructor to prevent direct instantiation.
