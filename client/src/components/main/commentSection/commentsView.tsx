@@ -28,6 +28,12 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
         <p>Loading comments...</p>
       ) : (
         <>
+          <CommentList
+            comments={comments}
+            currentUserId={userId}
+            onEdit={setEditTarget}
+            onDelete={deleteComment}
+          />
           {userId && (
             <CommentForm
               initialText={editTarget?.text}
@@ -36,12 +42,7 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
               onCancel={cancelEdit}
             />
           )}
-          <CommentList
-            comments={comments}
-            currentUserId={userId}
-            onEdit={setEditTarget}
-            onDelete={deleteComment}
-          />
+
         </>
       )}
     </div>
