@@ -18,7 +18,7 @@ import { IAnswerDocument, IAnswerModel } from "../../types/types";
 const AnswerSchema = new mongoose.Schema<IAnswerDocument, IAnswerModel> (
   {
     text: { type: String, required: true },
-    ans_by: { type: String, required: true },
+    ans_by: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },
     ans_date_time: { type: Date, required: true, default: Date.now },
     vote_score: { type: Number, default: 0 },
   },

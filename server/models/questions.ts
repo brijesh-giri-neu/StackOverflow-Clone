@@ -15,6 +15,7 @@ QuestionSchema.statics.getNewestQuestions = async function (): Promise<IQuestion
     .sort({ ask_date_time: -1 })
     .populate("answers", "ans_date_time")
     .populate("tags")
+    .populate("asked_by", "displayName")
     .lean()
     .then(questions => questions.map(convertToIQuestion));
 };
@@ -29,6 +30,7 @@ QuestionSchema.statics.getUnansweredQuestions = async function (): Promise<IQues
     .sort({ ask_date_time: -1 })
     .populate("answers")
     .populate("tags")
+    .populate("asked_by", "displayName")
     .lean()
     .then(questions => questions.map(convertToIQuestion));
 };
@@ -40,7 +42,7 @@ QuestionSchema.statics.getUnansweredQuestions = async function (): Promise<IQues
  * @returns {Promise<IQuestion[]>} - A promise that resolves to an array of active questions.
  */
 QuestionSchema.statics.getActiveQuestions = async function (): Promise<IQuestion[]> {
-  const questions : IQuestionDocument[] = await this.find().populate('answers').populate('tags').lean();
+  const questions : IQuestionDocument[] = await this.find().populate('answers').populate('tags').populate("asked_by", "displayName").lean();
   
   const answeredQuestions: IQuestionDocument[] = [];
   const unansweredQuestions: IQuestionDocument[] = [];
@@ -69,7 +71,7 @@ QuestionSchema.statics.getActiveQuestions = async function (): Promise<IQuestion
  * @returns {Promise<IQuestion | null>} - A promise that resolves to the updated question or null if not found.
  */
 QuestionSchema.statics.findByIdAndIncrementViews = async function (qid: string): Promise<IQuestion | null> {
-  const question = await this.findById(qid).populate("tags");
+  const question = await this.findById(qid).populate("tags").populate("asked_by", "displayName");
   if (!question) return null;
   await question.incrementViews();
   const sortedAnswers = await Answer.getMostRecent(question.answers as mongoose.Types.ObjectId[]);

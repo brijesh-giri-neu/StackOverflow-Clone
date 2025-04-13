@@ -20,7 +20,7 @@ export interface IQuestion {
   text: string;
   tags: ITag[];
   answers: (IAnswer | mongoose.Types.ObjectId)[];
-  asked_by?: string;
+  asked_by?: string | mongoose.Types.ObjectId;
   ask_date_time: string;
   views: number;
   vote_score: number;
@@ -38,7 +38,7 @@ export interface IQuestion {
 export interface IAnswer {
   _id?: string;
   text: string;
-  ans_by: string;
+  ans_by?: string | mongoose.Types.ObjectId;
   ans_date_time: string;
   vote_score: number;
 }

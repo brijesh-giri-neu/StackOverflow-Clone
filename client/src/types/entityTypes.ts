@@ -10,7 +10,7 @@
  */
 interface AnswerType {
   text: string;
-  ans_by: string;
+  ans_by?: string;
   ans_date_time: Date;
   vote_score: number;
 }

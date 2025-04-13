@@ -7,6 +7,7 @@ import { VoidFunctionType } from "../../../types/functionTypes";
 
 // Type definition for props passed to NewQuestion component
 interface NewQuestionProps {
+  userId?: string;
   handleQuestions: VoidFunctionType;
 }
 
@@ -18,7 +19,7 @@ interface NewQuestionProps {
  * @param props contains the handleQuestions function to update the view which renders the new question 
  * @returns the NewQuestion component.
  */
-const NewQuestion = ({ handleQuestions }: NewQuestionProps) => {
+const NewQuestion = ({ userId, handleQuestions }: NewQuestionProps) => {
   const {
     title,
     setTitle,
@@ -26,14 +27,11 @@ const NewQuestion = ({ handleQuestions }: NewQuestionProps) => {
     setText,
     tag,
     setTag,
-    usrn,
-    setUsrn,
     titleErr,
     textErr,
     tagErr,
-    usrnErr,
     postQuestion,
-  } = useNewQuestion(handleQuestions);
+  } = useNewQuestion(handleQuestions, userId);
 
   return (
     <Form>
@@ -60,13 +58,6 @@ const NewQuestion = ({ handleQuestions }: NewQuestionProps) => {
         val={tag}
         setState={setTag}
         err={tagErr}
-      />
-      <Input
-        title={"Username"}
-        id={"formUsernameInput"}
-        val={usrn}
-        setState={setUsrn}
-        err={usrnErr}
       />
       <div className="btn_indicator_container">
         <button className="form_postBtn" onClick={postQuestion}>

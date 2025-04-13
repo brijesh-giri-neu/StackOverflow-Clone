@@ -12,20 +12,14 @@ import { QuestionIdFunctionType } from "../types/functionTypes";
  */
 export const useNewAnswer = (
   qid: string,
-  handleAnswer: QuestionIdFunctionType
+  handleAnswer: QuestionIdFunctionType,
+  userId?: string
 ) => {
-  const [usrn, setUsrn] = useState<string>("");
   const [text, setText] = useState<string>("");
-  const [usrnErr, setUsrnErr] = useState<string>("");
   const [textErr, setTextErr] = useState<string>("");
 
   const postAnswer = async () => {
     let isValid = true;
-
-    if (!usrn) {
-      setUsrnErr("Username cannot be empty");
-      isValid = false;
-    }
 
     if (!text) {
       setTextErr("Answer text cannot be empty");
@@ -38,7 +32,7 @@ export const useNewAnswer = (
 
     const answer = {
       text: text,
-      ans_by: usrn,
+      ans_by: userId,
       ans_date_time: new Date(),
       vote_score: 0,
     };
@@ -50,11 +44,8 @@ export const useNewAnswer = (
   };
 
   return {
-    usrn,
-    setUsrn,
     text,
     setText,
-    usrnErr,
     textErr,
     postAnswer,
   };

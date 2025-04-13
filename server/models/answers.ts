@@ -12,7 +12,7 @@ import { IAnswerDB } from "../scripts/script_types";
 AnswerSchema.statics.getMostRecent = async function (
   answers: mongoose.Types.ObjectId[]
 ): Promise<IAnswerDocument[]> {
-  return this.find({ _id: { $in: answers } }).sort({ ans_date_time: -1 });
+  return this.find({ _id: { $in: answers } }).sort({ ans_date_time: -1 }).populate("ans_by", "displayName");
 };
 
 /**

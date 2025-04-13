@@ -9,6 +9,7 @@ import { QuestionIdFunctionType } from "../../../types/functionTypes";
 interface NewAnswerProps {
   qid: string;
   handleAnswer: QuestionIdFunctionType;
+  userId?: string;
 }
 
 /**
@@ -19,19 +20,12 @@ interface NewAnswerProps {
  * @param props contains the question id and the handleAnswer function to render the newly created answer
  * @returns the NewAnswer component
  */
-const NewAnswer = ({ qid, handleAnswer }: NewAnswerProps) => {
-  const { usrn, setUsrn, text, setText, usrnErr, textErr, postAnswer } =
-    useNewAnswer(qid, handleAnswer);
+const NewAnswer = ({ qid, handleAnswer, userId }: NewAnswerProps) => {
+  const { text, setText, textErr, postAnswer } =
+    useNewAnswer(qid, handleAnswer, userId);
 
   return (
     <Form>
-      <Input
-        title={"Username"}
-        id={"answerUsernameInput"}
-        val={usrn}
-        setState={setUsrn}
-        err={usrnErr}
-      />
       <Textarea
         title={"Answer Text"}
         id={"answerTextInput"}
