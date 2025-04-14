@@ -237,15 +237,21 @@ components:
 
     User:
       type: object
+      required:
+        - email
+        - displayName
+        - password
       properties:
         _id:
           type: string
           example: "679846196243c96505ba4007"
         email:
           type: string
+          # TODO: ADD pattern matching validation
           example: "user@example.com"
         displayName:
           type: string
+          # TODO: ADD pattern matching validation
           example: "user123"
         password:
           type: string
@@ -331,6 +337,53 @@ components:
         message:
           type: string
           example: "Vote registered successfully"
+    
+    AddCommentRequest:
+      type: object
+      required:
+        - postId
+        - postType
+        - text
+      properties:
+        postId:
+          type: string
+          pattern: "^[a-fA-F0-9]{24}$"
+          example: "6641e6b0d75a1a6ac8b5cc11"
+        postType:
+          type: string
+          enum: [Question, Answer]
+          example: "Question"
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "This is a comment."
+
+    EditCommentRequest:
+      type: object
+      required:
+        - _id
+        - postId
+        - postType
+        - text
+      properties:
+        _id:
+          type: string
+          pattern: "^[a-fA-F0-9]{24}$"
+          example: "6641e6b0d75a1a6ac8b5cc99"
+        postId:
+          type: string
+          pattern: "^[a-fA-F0-9]{24}$"
+          example: "6641e6b0d75a1a6ac8b5cc11"
+        postType:
+          type: string
+          enum: [Question, Answer]
+          example: "Question"
+        text:
+          type: string
+          minLength: 1
+          maxLength: 1000
+          example: "Updated comment text"
 
 paths:
   # Tags Controller Endpoints
@@ -717,22 +770,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - postId
-                  - postType
-                  - text
-                properties:
-                  postId:
-                    type: string
-                    example: "6641e6b0d75a1a6ac8b5cc11"
-                  postType:
-                    type: string
-                    enum: [Question, Answer]
-                    example: "Question"
-                  text:
-                    type: string
-                    example: "This is a comment."
+                $ref: "#/components/schemas/AddCommentRequest"
         responses:
           "200":
             description: Comment added successfully
@@ -759,26 +797,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - _id
-                - postId
-                - postType
-                - text
-              properties:
-                _id:
-                  type: string
-                  example: "6641e6b0d75a1a6ac8b5cc99"
-                postId:
-                  type: string
-                  example: "6641e6b0d75a1a6ac8b5cc11"
-                postType:
-                  type: string
-                  enum: [Question, Answer]
-                  example: "Question"
-                text:
-                  type: string
-                  example: "Updated comment text"
+              $ref: "#/components/schemas/EditCommentRequest"
       responses:
         "200":
           description: Comment edited successfully
@@ -806,7 +825,7 @@ paths:
           required: true
           schema:
             type: string
-            example: "6641e6b0d75a1a6ac8b5cc99"
+            pattern: "^[a-fA-F0-9]{24}$"
       responses:
         "200":
           description: Comment deleted successfully
