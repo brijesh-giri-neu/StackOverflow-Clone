@@ -39,6 +39,7 @@ const AnswerPage = ({
         ansCount={question.answers.length}
         title={question.title}
         handleNewQuestion={handleNewQuestion}
+        userId={userId}
       />
       <QuestionBody
         qId={question._id}

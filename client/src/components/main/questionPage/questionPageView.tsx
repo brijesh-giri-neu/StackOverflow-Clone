@@ -13,6 +13,7 @@ export interface QuestionPageProps {
   title_text?: string;
   order: string;
   search: string;
+  userId?: string;
   setQuestionOrder: OrderFunctionType;
   clickTag: ClickTagFunctionType;
   handleAnswer: IdFunctionType;
@@ -23,6 +24,7 @@ const QuestionPage = ({
   title_text = "All Questions",
   order,
   search,
+  userId,
   setQuestionOrder,
   clickTag,
   handleAnswer,
@@ -35,6 +37,7 @@ const QuestionPage = ({
       <QuestionHeader
         title_text={title_text}
         qcnt={qlist.length}
+        userId={userId}
         setQuestionOrder={setQuestionOrder}
         handleNewQuestion={handleNewQuestion}
       />
