@@ -164,7 +164,9 @@ const FakeStackOverflow = () => {
   // Set the page to display the questions based on the search string
   const setQuestionPage = (
     search = "",
-    title = "All Questions"
+    title = "All Questions",
+    page = 1,
+    limit = 10
   ): void => {
     setSearch(search);
     setMainTitle(title);
@@ -191,6 +193,40 @@ const FakeStackOverflow = () => {
         user,
         setUser,
         setUserProfile,
+        page,
+        limit
+      })
+    );
+  };
+
+  // Set the page to display tag statistics
+  const setTagPage = (page = 1, limit = 20) => {
+    setPageInstance(
+      new TagPageClass({
+        search,
+        title: mainTitle,
+        setQuestionPage,
+        questionOrder,
+        setQuestionOrder,
+        qid,
+        handleQuestions,
+        handleTags,
+        handleAnswer,
+        clickTag,
+        handleNewQuestion,
+        handleNewAnswer,
+        setUserRegistrationPage,
+        setUserLoginPage,
+        handleUserLogout,
+        setEditUserProfilePage,
+        userProfile,
+        setProfilePage,
+        user,
+        setUser,
+        setUserProfile,
+        page,
+        limit,
+        setTagPage
       })
     );
   };
@@ -251,6 +287,7 @@ const FakeStackOverflow = () => {
         user,
         setUser,
         setUserProfile,
+        setTagPage
       })
     );
   };

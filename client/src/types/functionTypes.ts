@@ -29,6 +29,10 @@ type UserObjFunctionType = (user: UserResponseType) => void;
 
 type UserProfileObjFunctionType = (userProfile: UserProfileType) => void;
 
+type SetQuestionPageFunctionType = (search: string, title: string, page: number, limit: number) => void;
+
+type SetTagPageFunctionType = (page: number, limit: number) => void;
+
 export type {
   VoidFunctionType,
   PageSetterFunctionType,
@@ -41,5 +45,7 @@ export type {
   QuestionsPageQueryFuntionType,
   UserIdFunctionType,
   UserObjFunctionType,
-  UserProfileObjFunctionType
+  UserProfileObjFunctionType,
+  SetQuestionPageFunctionType,
+  SetTagPageFunctionType
 };

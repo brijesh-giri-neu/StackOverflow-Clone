@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { getQuestionsByFilter } from "../services/questionService";
-import { QuestionResponseType } from "../types/entityTypes";
+import { PaginationMetadataType, QuestionResponseType } from "../types/entityTypes";
 
-// A type for the input to the useQuestionPage hook
+/**
+ * Interface to define question page props
+ */
 interface UseQuestionPageProps {
   order: string;
   search: string;
+  page: number;
+  limit: number;
 }
 
 /**
@@ -14,8 +18,14 @@ interface UseQuestionPageProps {
  * @param props containing the order and search query entered by the user 
  * @returns the list of questions fetched based on the filter parameters
  */
-export const useQuestionPage = ({ order, search }: UseQuestionPageProps) => {
+export const useQuestionPage = ({ order, search, page, limit }: UseQuestionPageProps) => {
   const [qlist, setQlist] = useState<QuestionResponseType[]>([]);
+  const [pagination, setPagination] = useState<PaginationMetadataType>({
+    totalItems: 0,
+    totalPages: 0,
+    currentPage: 1,
+    pageSize: limit,
+  });
 
   /**
    * The effect to fetch questions based on the filter parameters.
@@ -25,15 +35,16 @@ export const useQuestionPage = ({ order, search }: UseQuestionPageProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getQuestionsByFilter(order, search);
-        setQlist(res || []);
+        const res = await getQuestionsByFilter(order, search, page, limit);
+        setQlist(res.data || []);
+        setPagination(res?.pagination || pagination);
       } catch (error) {
         console.error("Error fetching questions:", error);
       }
     };
 
     fetchData();
-  }, [order, search]);
+  }, [order, search, page, limit]);
 
-  return { qlist };
+  return { qlist, pagination };
 };

@@ -3,26 +3,40 @@
  */
 
 import { REACT_APP_API_URL, api } from "./config";
-import { QuestionType, QuestionResponseType } from "../types/entityTypes";
+import { QuestionType, QuestionResponseType, PaginatedQuestionAPIResponseType } from "../types/entityTypes";
 
 // The base URL for the questions API
 const QUESTION_API_URL = `${REACT_APP_API_URL}/question`;
 
 /**
- * The function calls the API to get questions based on the filter parameters.
- * returns the response data if the status is 200, otherwise throws an error.
- * @param order display order of the questions selected by the user. @default "newest"
- * @param search the search query entered by the user. @default ""
- * @returns the response data from the API, which contains the matched list of questions.
+ * Fetches questions from the server based on filtering, sorting, and pagination options.
+ *
+ * @param {string} order - The display order of the questions (e.g., "newest"). Defaults to "newest".
+ * @param {string} search - A search query string to filter questions by title, text, or tags. Defaults to an empty string.
+ * @param {number} page - The page number for pagination (1-based). Defaults to 1.
+ * @param {number} limit - The number of questions to retrieve per page. Defaults to 10.
+ * @returns {Promise<PaginatedQuestionAPIResponseType>} - A promise that resolves to a response containing the filtered list of questions and pagination metadata.
+ * @throws Will throw an error if the request fails or the response status is not 200.
  */
 const getQuestionsByFilter = async (
   order = "newest",
-  search = ""
-): Promise<QuestionResponseType[]> => {
+  search = "",
+  page = 1,
+  limit = 10
+): Promise<PaginatedQuestionAPIResponseType> => {
   try {
     const res = await api.get(
-      `${QUESTION_API_URL}/getQuestion?order=${order}&search=${search}`
+      `${QUESTION_API_URL}/getQuestion`,
+      {
+        params: {
+          order,
+          search,
+          page,
+          limit,
+        },
+      }
     );
+
     if (res.status !== 200) {
       throw new Error("Error when fetching or filtering questions");
     }
