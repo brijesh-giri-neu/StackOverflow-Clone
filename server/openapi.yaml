@@ -385,22 +385,74 @@ components:
           maxLength: 1000
           example: "Updated comment text"
 
+    PaginationMetadata:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+          example: 50
+        totalPages:
+          type: integer
+          example: 5
+        currentPage:
+          type: integer
+          example: 1
+        pageSize:
+          type: integer
+          example: 10
+
+    PaginatedQuestionResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        pagination:
+          $ref: "#/components/schemas/PaginationMetadata"
+
+    PaginatedTagResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/TagCount"
+        pagination:
+          $ref: "#/components/schemas/PaginationMetadata"
+
 paths:
   # Tags Controller Endpoints
   /tag/getTagsWithQuestionNumber:
     get:
       tags:
         - Tags
-      summary: Get all tags with their question counts
+      summary: Get paginated tags with their question counts
+      description: Returns a paginated list of tags along with how many questions use each tag.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for pagination
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 20
+          description: Number of tags per page
       responses:
         "200":
-          description: Successful response
+          description: Paginated list of tags and their usage count
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/TagCount"
+                $ref: "#/components/schemas/PaginatedTagResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "500":
@@ -458,7 +510,7 @@ paths:
     get:
       tags:
         - Questions
-      summary: Get filtered questions
+      summary: Get filtered questions with pagination
       parameters:
         - name: order
           in: query
@@ -475,21 +527,30 @@ paths:
           schema:
             type: string
             example: "Android studio [mobile]"
-          description: Search term to filter questions
-          explode: true
-          allowReserved: true
-          x-express-openapi-validator:
-            allowReservedCharacters: true
+          description: Search term to filter questions by text, title, or tags.
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+          description: Page number for paginated results.
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            default: 10
+          description: Number of questions per page.
       responses:
         "200":
-          description: Successful response
+          description: Paginated list of questions.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Question"
-                minItems: 0
+                $ref: "#/components/schemas/PaginatedQuestionResponse"
         "400":
           $ref: "#/components/responses/BadRequest"
         "500":
