@@ -300,3 +300,15 @@ export interface ICommentModel extends mongoose.Model<ICommentDocument> {
   deleteComment(commentId: string, userId: string): Promise<IComment | null>;
   getCommentsForPost(postId: mongoose.Types.ObjectId, postType: PostType): Promise<IComment[]>;
 }
+
+export interface PaginationMetadata {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+}
+
+export interface PaginatedResult<T> {
+  paginatedItems: T[];
+  pagination: PaginationMetadata;
+}

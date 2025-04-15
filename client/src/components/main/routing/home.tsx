@@ -18,7 +18,10 @@ export default class HomePageClass extends PageClass {
         setQuestionOrder={this.setQuestionOrder}
         clickTag={this.clickTag}
         handleAnswer={this.handleAnswer}
-        handleNewQuestion={this.handleNewQuestion}
+        handleNewQuestion={this.handleNewQuestion} 
+        page={this.page ?? 1} 
+        limit={this.limit ?? 10} 
+        setQuestionPage={this.setQuestionPage}     
       />
     );
   }

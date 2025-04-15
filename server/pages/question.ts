@@ -1,10 +1,11 @@
 import express from 'express';
 import { Request, Response } from 'express';
 import Question from '../models/questions';
-import { IQuestion, PostType, VoteType } from '../types/types';
+import { IQuestion, VoteType } from '../types/types';
 import { filterQuestions } from '../services/questionFilterService';
 import { sortQuestions } from '../services/questionSortService';
 import Vote from '../models/votes';
+import { paginate } from '../utilities/pagination';
 
 const router = express.Router();
 
@@ -52,7 +53,7 @@ router.get('/getQuestionById/:qid', async (req: Request, res: Response) => {
     }
 
     const userId = req.session?.userId;
-    let currentUserVote: VoteType = VoteType.NoVote;
+    const currentUserVote: VoteType = VoteType.NoVote;
 
     if (userId) {
         const enriched = await enrichQuestionWithUserVotes(question, userId);
@@ -66,23 +67,38 @@ router.get('/getQuestionById/:qid', async (req: Request, res: Response) => {
 
 /**
  * @route   GET /question/getQuestion
- * @desc    Get a list of questions. This route allows filtering and sorting of questions based on query 
- *          parameters. It can sort by order (newest) and filter by search term.
+ * @desc    Get a list of questions. This route allows filtering, sorting, and pagination of questions based on query 
+ *          parameters. It can sort by order (e.g., "newest"), filter by a search term, and paginate results.
  * @access  Public
- * @param {Request} req - The request object, containing `order` (sorting order) and `search` (search query) 
- *                        as query parameters.
- * @param {Response} res - The response object to send the result back to the client.
- * @returns {Response} - A JSON response containing a list of questions based on the filter and sort criteria.
+ * @param   {Request} req - The request object, containing optional query parameters:
+ *                          - order: Sorting order of the questions (default: "newest")
+ *                          - search: Keyword to filter questions by
+ *                          - page: Page number for pagination (default: "1")
+ *                          - limit: Number of items per page (default: "10")
+ * @param   {Response} res - The response object used to send back the filtered, sorted, and paginated questions.
+ * @returns {Response} - A JSON response containing:
+ *                       - data: An array of paginated questions
+ *                       - pagination: Metadata including totalItems, totalPages, currentPage, and pageSize
  */
 router.get('/getQuestion', async (req: Request, res: Response) => {
-    let { order = "newest", search = "" } = req.query;
-    order = order.toString();
-    search = search?.toString();
-    let filteredQuestions: IQuestion[] = await sortQuestions(order);
+    const { order = "newest", search = "", page = "1", limit = "10" } = req.query;
+
+    const orderString = order.toString();
+    const searchString = search?.toString();
+    const pageString = page.toString();
+    const limitString = limit.toString();
+    
+    let filteredQuestions: IQuestion[] = await sortQuestions(orderString);
     if (search) {
-        filteredQuestions = filterQuestions(filteredQuestions, search);
+        filteredQuestions = filterQuestions(filteredQuestions, searchString);
     }
-    res.status(200).json(filteredQuestions);
+
+    const { paginatedItems, pagination } = paginate<IQuestion>(filteredQuestions, pageString, limitString);
+  
+    res.status(200).json({
+        data: paginatedItems,
+        pagination,
+    });
 });
 
 async function enrichQuestionWithUserVotes(question: any, userId: string) {

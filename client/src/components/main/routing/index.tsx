@@ -32,6 +32,9 @@ export interface PageClassProps {
   user: UserResponseType | null;
   setUser: UserObjFunctionType;
   setUserProfile: UserProfileObjFunctionType;
+  // Optional pagination props
+  page?: number;
+  limit?: number;
 }
 
 /**
@@ -49,6 +52,7 @@ class PageClass {
   questionOrder: string;  // the order of the questions
   setQuestionOrder: OrderFunctionType;  // the function to set the order of the questions
   qid: string;  // the id of a question
+  
   handleQuestions: VoidFunctionType;  // the function to render the list of questions
   handleTags: VoidFunctionType; // the function to render the list of tags
   handleAnswer: IdFunctionType; // the function to render the answers page of a question
@@ -64,6 +68,9 @@ class PageClass {
   user: UserResponseType | null;
   setUser: UserObjFunctionType;
   setUserProfile: UserProfileObjFunctionType;
+  // Optional pagination properties
+  page?: number;
+  limit?: number;
 
   constructor(props: PageClassProps) {
     this.search = props.search;
@@ -87,6 +94,9 @@ class PageClass {
     this.user = props.user;
     this.setUser = props.setUser;
     this.setUserProfile = props.setUserProfile;
+    // Optional pagination props
+    this.page = props.page;
+    this.limit = props.limit;
   }
 
   getContent(): React.ReactNode {

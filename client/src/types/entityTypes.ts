@@ -223,6 +223,32 @@ interface CommentType {
   updatedAt?: Date;
 }
 
+/**
+ * Metadata describing pagination details for a paginated API response.
+ */
+interface PaginationMetadataType {
+  totalItems: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+}
+
+/**
+ * Represents the complete API response for paginated questions.
+ */
+interface PaginatedQuestionAPIResponseType {
+  data: QuestionResponseType[];
+  pagination: PaginationMetadataType;
+}
+
+/**
+ * Represents the complete API response for paginated tags.
+ */
+interface PaginatedTagAPIResponseType {
+  data: TagResponseType[];
+  pagination: PaginationMetadataType;
+}
+
 export type {
   AnswerType,
   QuestionType,
@@ -238,5 +264,8 @@ export type {
   VoteType,
   VoteResponseType,
   CommentType,
-  UserRefType
+  UserRefType,
+  PaginationMetadataType,
+  PaginatedQuestionAPIResponseType,
+  PaginatedTagAPIResponseType
 };
