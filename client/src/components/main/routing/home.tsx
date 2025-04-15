@@ -14,6 +14,7 @@ export default class HomePageClass extends PageClass {
         title_text={this.title}
         order={this.questionOrder.toLowerCase()}
         search={this.search}
+        userId={this.user?._id}
         setQuestionOrder={this.setQuestionOrder}
         clickTag={this.clickTag}
         handleAnswer={this.handleAnswer}

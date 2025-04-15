@@ -17,6 +17,7 @@ export interface QuestionPageProps {
   search: string;
   page: number;
   limit: number;
+  userId?: string;
   setQuestionOrder: OrderFunctionType;
   clickTag: ClickTagFunctionType;
   handleAnswer: IdFunctionType;
@@ -30,6 +31,7 @@ const QuestionPage = ({
   search,
   page,
   limit,
+  userId,
   setQuestionOrder,
   clickTag,
   handleAnswer,
@@ -43,6 +45,7 @@ const QuestionPage = ({
       <QuestionHeader
         title_text={title_text}
         qcnt={pagination.totalItems}
+        userId={userId}
         setQuestionOrder={setQuestionOrder}
         handleNewQuestion={handleNewQuestion}
       />

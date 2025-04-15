@@ -30,6 +30,7 @@ export default class TagPageClass extends PageClass {
         page={this.page ?? 1}
         limit={this.limit ?? 20}
         setTagPage={this.setTagPage}
+        userId={this.user?._id}
       />
     );
   }

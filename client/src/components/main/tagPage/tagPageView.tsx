@@ -12,6 +12,7 @@ import Pagination from "../../pagination";
 interface TagPageProps {
   page: number;
   limit: number;
+  userId?: string;
   clickTag: ClickTagFunctionType;
   handleNewQuestion: VoidFunctionType;
   setTagPage: SetTagPageFunctionType;
@@ -23,17 +24,20 @@ interface TagPageProps {
  * @param param0 containing the functions to render the questions of a tag and to add a new question
  * @returns the TagPage component
  */
-const TagPage = ({ page, limit, clickTag, handleNewQuestion, setTagPage }: TagPageProps) => {
+const TagPage = ({ page, limit, userId, clickTag, handleNewQuestion, setTagPage }: TagPageProps) => {
   const { tlist, pagination } = useTagPage({page, limit});
-
   return (
     <>
       <div className="space_between right_padding">
         <div className="bold_title">{pagination.totalItems} Tags</div>
         <div className="bold_title">All Tags</div>
-        <button className="bluebtn" onClick={handleNewQuestion}>
-          Ask a Question
-        </button>
+        <div className="button_container">
+          {userId && (
+            <button className="bluebtn" onClick={handleNewQuestion}>
+              Ask a Question
+            </button>
+          )}
+        </div>
       </div>
       <div className="tag_list right_padding">
         {tlist.map((t, idx) => (
