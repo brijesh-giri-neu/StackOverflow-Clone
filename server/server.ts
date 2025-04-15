@@ -17,6 +17,7 @@ import DBConnection from "./utilities/DBConnection";
 import session from "express-session";
 import { errorHandler } from "./middlewares/errorHandler";
 import { loggingMiddleware } from "./middlewares/logger";
+import { inputSanitizer } from "./middlewares/inputSanitizer";
 
 /**
  * Client URL for CORS configuration.
@@ -56,6 +57,14 @@ app.use(
 app.use(express.json());
 
 /**
+ * Middleware for sanitizing user inputs in the incoming request by cleaning the data in:
+ * - `req.body`
+ * - `req.query`
+ * - `req.params`
+ */
+app.use(inputSanitizer);
+
+/**
  * Configure logging middleware
  */
 app.use(loggingMiddleware);
@@ -71,6 +80,9 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,       // session expiration: 24 hour (adjust as needed)
       secure: false,                // set true if serving over HTTPS
+      // Feature: Securing Authentication Cookies
+      httpOnly: true,     // Prevents client-side JavaScript from accessing the cookie (protects against XSS)
+      sameSite: true,     // Ensures cookies are sent only with same-site requests (protects against CSRF)
     },
   })
 );

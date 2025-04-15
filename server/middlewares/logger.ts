@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-import morgan from "morgan";
-import { RequestHandler } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 
 /**
  * Absolute path to the directory where log files will be stored.
@@ -26,23 +25,70 @@ const accessLogStream = fs.createWriteStream(
 );
 
 /**
- * Logging middleware for Express.js applications.
+ * List of sensitive keys to redact from logs.
+ */
+const sensitiveFields = ["password", "token", "secret"];
+
+/**
+ * Recursively redacts sensitive fields from an object.
  * 
- * Uses `morgan` in "dev" format for concise colored output during development,
- * and writes logs to `logs/access.log` for persistent storage.
+ * @param obj - The object to sanitize for logging
+ * @returns A shallow copy with sensitive fields masked
+ */
+const redactSensitiveFields = (obj: any): any => {
+  if (typeof obj !== "object" || obj === null) return obj;
+
+  const clone: any = Array.isArray(obj) ? [] : {};
+
+  for (const key in obj) {
+    if (sensitiveFields.includes(key.toLowerCase())) {
+      clone[key] = "***REDACTED***";
+    } else if (typeof obj[key] === "object") {
+      clone[key] = redactSensitiveFields(obj[key]);
+    } else {
+      clone[key] = obj[key];
+    }
+  }
+
+  return clone;
+};
+
+/**
+ * Custom logging middleware for Express.js that logs HTTP request details.
  * 
- * Each incoming HTTP request is logged with details including:
- * - Method (GET, POST, etc.)
- * - URL path
- * - Status code
- * - Response time
+ * Logs include:
+ * - Timestamp
+ * - HTTP method and URL
+ * - Query parameters (with sensitive fields redacted)
+ * - Request body (with sensitive fields redacted)
+ * - URL parameters (with sensitive fields redacted)
  * 
- * @type {RequestHandler}
+ * All logs are written to the `logs/access.log` file and formatted with ISO timestamp.
  * 
  * @example
- * import { loggingMiddleware } from './middlewares/logger';
  * app.use(loggingMiddleware);
  */
-export const loggingMiddleware: RequestHandler = morgan("dev", {
-  stream: accessLogStream,
-});
+export const loggingMiddleware: RequestHandler = (
+  req: Request,
+  _: Response,
+  next: NextFunction
+) => {
+  const timestamp = new Date().toISOString();
+  const method = req.method;
+  const url = req.originalUrl;
+
+  const redactedQuery = redactSensitiveFields(req.query);
+  const redactedBody = redactSensitiveFields(req.body);
+  const redactedParams = redactSensitiveFields(req.params);
+
+  const log = `
+[${timestamp}] ${method} ${url}
+Query: ${JSON.stringify(redactedQuery)}
+Body: ${JSON.stringify(redactedBody)}
+Params: ${JSON.stringify(redactedParams)}
+`;
+
+  accessLogStream.write(log);
+
+  next();
+};
