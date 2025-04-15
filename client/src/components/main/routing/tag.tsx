@@ -11,6 +11,7 @@ export default class TagPageClass extends PageClass {
       <TagPage
         clickTag={this.clickTag}
         handleNewQuestion={this.handleNewQuestion}
+        userId={this.user?._id}
       />
     );
   }

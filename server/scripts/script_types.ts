@@ -16,7 +16,7 @@ import mongoose from "mongoose";
 export interface IAnswerDB {
   _id?: mongoose.Types.ObjectId;
   text: string;
-  ans_by: string;
+  ans_by: IUserDB | mongoose.Types.ObjectId;
   ans_date_time: Date;
   vote_score: number;
 }
@@ -27,7 +27,7 @@ export interface IQuestionDB {
   text: string;
   tags: ITagDB[];
   answers: (IAnswerDB | mongoose.Types.ObjectId)[];
-  asked_by?: string;
+  asked_by?: IUserDB | mongoose.Types.ObjectId;
   ask_date_time: Date;
   views: number;
   vote_score: number;

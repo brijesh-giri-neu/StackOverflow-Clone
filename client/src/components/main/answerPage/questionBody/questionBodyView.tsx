@@ -1,6 +1,7 @@
 import "./questionBodyView.css";
 import VoteButtons from "../../voteButton/voteButtonView";
 import { PostType, VoteValueType } from "../../../../types/entityTypes";
+import CommentSection from "../../commentSection/commentsView";
 
 // The type definition for the props of the QuestionBody component
 interface QuestionBodyProps {
@@ -36,6 +37,9 @@ const QuestionBody = ({ qId, userId, vote_score, views, text, askby, meta, initi
           <div className="question_author">{askby}</div>
           <div className="answer_question_meta">asked {meta}</div>
         </div>
+      </div>
+      <div id="comment-div">
+        <CommentSection postId={qId} postType={PostType.Question} userId={userId}/>
       </div>
     </div>
   );

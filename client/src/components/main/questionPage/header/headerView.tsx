@@ -8,6 +8,7 @@ import {
 interface QuestionHeaderProps {
   title_text: string;
   qcnt: number;
+  userId?: string;
   setQuestionOrder: MessageFunctionType;
   handleNewQuestion: VoidFunctionType;
 }
@@ -15,6 +16,7 @@ interface QuestionHeaderProps {
 const QuestionHeader = ({
   title_text,
   qcnt,
+  userId,
   setQuestionOrder,
   handleNewQuestion,
 }: QuestionHeaderProps) => {
@@ -22,14 +24,15 @@ const QuestionHeader = ({
     <div>
       <div className="space_between right_padding">
         <div className="bold_title">{title_text}</div>
-        <button
-          className="bluebtn"
-          onClick={() => {
-            handleNewQuestion();
-          }}
-        >
-          Ask a Question
-        </button>
+        {userId && (
+          <button className="bluebtn"
+            onClick={() => {
+              handleNewQuestion();
+            }}
+          >
+            Ask a Question
+          </button>
+        )}
       </div>
       <div className="space_between right_padding">
         <div id="question_count">{qcnt} questions</div>

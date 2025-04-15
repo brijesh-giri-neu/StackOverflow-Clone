@@ -8,7 +8,7 @@ import NewQuestion from "../newQuestion/newQuestionView";
  */
 export default class NewQuestionPageClass extends PageClass {
   getContent(): React.ReactNode {
-    return <NewQuestion handleQuestions={this.handleQuestions} />;
+    return <NewQuestion userId={this.user?._id} handleQuestions={this.handleQuestions} />;
   }
 
   getSelected(): string {

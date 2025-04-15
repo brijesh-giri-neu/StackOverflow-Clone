@@ -12,7 +12,9 @@ export function convertToIAnswer(answer: IAnswerDocument): IAnswer {
     return {
         _id: answer._id.toString(),
         text: answer.text,
-        ans_by: answer.ans_by,
+        ans_by: answer.ans_by instanceof mongoose.Types.ObjectId
+        ? answer.ans_by.toString()
+        : (answer.ans_by as any)?.displayName?.toString() || "",
         ans_date_time: answer.ans_date_time.toISOString(),
         vote_score: answer.vote_score,
     };
@@ -31,7 +33,9 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
         _id: question._id.toString(),
         title: question.title,
         text: question.text,
-        asked_by: question.asked_by,
+        asked_by: question.asked_by instanceof mongoose.Types.ObjectId
+            ? question.asked_by.toString()
+            : (question.asked_by as any)?.displayName?.toString() || "",
         views: question.views,
         ask_date_time: question.ask_date_time.toISOString(),
         vote_score: question.vote_score,
@@ -46,7 +50,9 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
                 return {
                     _id: ans._id?.toString(),
                     text: ans.text,
-                    ans_by: ans.ans_by,
+                    ans_by: ans.ans_by instanceof mongoose.Types.ObjectId
+                    ? ans.ans_by
+                    : (ans.ans_by as any)?.displayName?.toString() || "",
                     ans_date_time: ans.ans_date_time.toISOString(),
                     vote_score: ans.vote_score,
                 };

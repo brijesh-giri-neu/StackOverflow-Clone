@@ -1,6 +1,7 @@
 import "./answerView.css";
 import VoteButtons from "../../voteButton/voteButtonView";
 import { PostType, VoteValueType } from "../../../../types/entityTypes";
+import CommentSection from "../../commentSection/commentsView";
 
 // The type definition for the props of the Answer component
 interface AnswerProps {
@@ -30,6 +31,9 @@ const Answer = ({ userId, ansId, text, ansBy, meta, vote_score, initial_vote }: 
         />
       <div id="answerText" className="answerText">
         {text}
+        <div id="comment-div">
+          <CommentSection postId={ansId} postType={PostType.Answer} userId={userId}/>
+        </div>
       </div>
       <div className="answerAuthor">
         <div className="answer_author">{ansBy}</div>

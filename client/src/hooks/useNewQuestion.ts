@@ -8,16 +8,13 @@ import { VoidFunctionType } from "../types/functionTypes";
  * @param handleQuestions the function to render the new question on the home page
  * @returns the state and logic required to add a new question
  */
-export const useNewQuestion = (handleQuestions: VoidFunctionType) => {
+export const useNewQuestion = (handleQuestions: VoidFunctionType, userId?:string) => {
   const [title, setTitle] = useState<string>("");
   const [text, setText] = useState<string>("");
   const [tag, setTag] = useState<string>("");
-  const [usrn, setUsrn] = useState<string>("");
-
   const [titleErr, setTitleErr] = useState<string>("");
   const [textErr, setTextErr] = useState<string>("");
   const [tagErr, setTagErr] = useState<string>("");
-  const [usrnErr, setUsrnErr] = useState<string>("");
 
   const postQuestion = async () => {
     let isValid = true;
@@ -54,11 +51,6 @@ export const useNewQuestion = (handleQuestions: VoidFunctionType) => {
 
     const tagObjects = tags.map((tag) => ({ name: tag }));
 
-    if (!usrn) {
-      setUsrnErr("Username cannot be empty");
-      isValid = false;
-    }
-
     if (!isValid) {
       return;
     }
@@ -67,7 +59,7 @@ export const useNewQuestion = (handleQuestions: VoidFunctionType) => {
       title: title,
       text: text,
       tags: tagObjects,
-      asked_by: usrn,
+      asked_by: userId? userId : "",
       ask_date_time: new Date(),
     };
 
@@ -84,12 +76,9 @@ export const useNewQuestion = (handleQuestions: VoidFunctionType) => {
     setText,
     tag,
     setTag,
-    usrn,
-    setUsrn,
     titleErr,
     textErr,
     tagErr,
-    usrnErr,
     postQuestion,
   };
 };

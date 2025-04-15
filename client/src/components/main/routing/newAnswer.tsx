@@ -2,11 +2,13 @@ import React from "react";
 import PageClass, { PageClassProps } from ".";
 import NewAnswer from "../newAnswer/newAnswerView";
 import { IdFunctionType } from "../../../types/functionTypes";
+import { UserResponseType } from "../../../types/entityTypes";
 
 interface NewAnswerPageClassProps
   extends Omit<PageClassProps, "qid" | "handleAnswer"> {
   qid: string;
   handleAnswer: IdFunctionType;
+  user: UserResponseType | null;
 }
 
 /**
@@ -16,6 +18,7 @@ interface NewAnswerPageClassProps
 export default class NewAnswerPageClass extends PageClass {
   qid: string;
   handleAnswer: IdFunctionType;
+  user: UserResponseType | null;
 
   // the constructor needs to set the question id and the function to render the new answer for a question
   constructor(props: NewAnswerPageClassProps) {
@@ -45,10 +48,11 @@ export default class NewAnswerPageClass extends PageClass {
 
     this.qid = props.qid;
     this.handleAnswer = props.handleAnswer;
+    this.user = props.user;
   }
 
   getContent(): React.ReactNode {
-    return <NewAnswer qid={this.qid} handleAnswer={this.handleAnswer} />;
+    return <NewAnswer qid={this.qid} handleAnswer={this.handleAnswer} userId={this.user?._id} />;
   }
 
   getSelected(): string {
