@@ -1,6 +1,6 @@
 import cors from "cors";
 import { Server } from "http"; // Import the Server type from Node.js
-import express, { type Express} from "express";
+import express, { type Express } from "express";
 import swaggerUi from "swagger-ui-express";
 import yaml from "yaml";
 import fs from "fs";
@@ -32,7 +32,7 @@ const CLIENT_URL: string = "http://localhost:3000";
 const port: number = 8000;
 
 // Initialize database connection
-DBConnection.getInstance();
+// DBConnection.getInstance();
 
 /**
  * Express app instance.
@@ -138,33 +138,6 @@ app.use(
 );
 
 /**
- * Starts the Express server and listens for incoming requests.
- * Logs the server URL on startup.
- * @type {Server}
- */
-const server: Server = app.listen(port, () => {
-  console.log(`Server starts at http://localhost:${port}`);
-});
-
-/**
- * Gracefully shuts down the server and disconnects from the MongoDB database on SIGINT (Ctrl+C).
- * Logs server and database disconnection statuses.
- */
-process.on("SIGINT", async () => {
-  server.close(() => {
-    console.log("Server closed.");
-  });
-
-  try {
-    await DBConnection.getInstance().disconnect(); // ✅ Uses the Singleton's disconnect method
-    process.exit(0);
-  } catch (err) {
-    console.error("Error during disconnection:", err);
-    process.exit(1);
-  }
-});
-
-/**
  * Routes for handling API requests related to tags, questions, and answers.
  */
 app.use('/tag', tagRouter);
@@ -176,7 +149,43 @@ app.use('/vote', voteRouter);
 app.use('/comment', commentRouter);
 
 /**
+ * Starts the Express server and listens for incoming requests.
+ * Logs the server URL on startup.
+ * @type {Server}
+ */
+let server: Server;
+// Only run server + connect DB if not in test
+if (process.env.NODE_ENV !== "test") {
+  DBConnection.getInstance();
+
+  server = app.listen(port, () => {
+    console.log(`Server starts at http://localhost:${port}`);
+  });
+
+  /**
+ * Gracefully shuts down the server and disconnects from the MongoDB database on SIGINT (Ctrl+C).
+ * Logs server and database disconnection statuses.
+ */
+  process.on("SIGINT", async () => {
+    server.close(() => {
+      console.log("Server closed.");
+    });
+
+    try {
+      await DBConnection.getInstance().disconnect();
+      process.exit(0);
+    } catch (err) {
+      console.error("Error during disconnection:", err);
+      process.exit(1);
+    }
+  });
+  module.exports = server; // ✅ Only export if defined
+} else {
+  module.exports = app; // ✅ During tests, export app
+}
+
+/**
  * Exports the server for testing or other use cases.
  * @module
  */
-module.exports = server;
+// module.exports = server;
