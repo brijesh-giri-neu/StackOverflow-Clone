@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import Question from "../../models/questions";
-import { PostType } from "../../types/types";
 import Answer from "../../models/answers";
 import Tag from "../../models/tags";
 import { convertToIAnswer, convertToIQuestion } from "../../utilities/formatUtils";
+import { IAnswerDocument, IQuestionDocument, IQuestion, IAnswer } from "../../types/types";
 
 jest.mock("../../utilities/formatUtils");
 
@@ -69,7 +69,6 @@ describe("Question Model - Static Methods", () => {
     it("findByIdAndIncrementViews should return incremented and populated question", async () => {
         const mockIncrement = jest.fn().mockResolvedValue(baseQuestion);
         const mockPopulate = jest.fn().mockReturnThis();
-        const mockLean = jest.fn().mockReturnThis();
         const mockQuestion = { ...baseQuestion, incrementViews: mockIncrement, toObject: () => baseQuestion };
 
         jest.spyOn(Question, "findById").mockReturnValue({
@@ -85,13 +84,7 @@ describe("Question Model - Static Methods", () => {
         const mockCreated = { ...baseQuestion, populate: jest.fn().mockResolvedValue(baseQuestion) };
         jest.spyOn(Question, "create").mockResolvedValue(mockCreated as any);
 
-        const result = await Question.createQuestion(
-            {
-                ...baseQuestion,
-                _id: baseQuestion._id.toString(),
-                ask_date_time: baseQuestion.ask_date_time.toISOString(),
-                tags: [{ name: "js" }]
-            });
+        const result = await Question.createQuestion({ ...baseQuestion, _id: baseQuestion._id.toString(), ask_date_time: baseQuestion.ask_date_time.toISOString(), tags: [{ name: "js" }] } as unknown as IQuestion);
         expect(result).toEqual(baseQuestion);
     });
 });
@@ -99,9 +92,8 @@ describe("Question Model - Static Methods", () => {
 describe("Question Model - Instance Methods", () => {
     it("incrementViews should increase views and save", async () => {
         const mockSave = jest.fn();
-        const instance = new Question(baseQuestion);
+        const instance = new Question({ ...baseQuestion });
         instance.save = mockSave;
-
         await instance.incrementViews();
         expect(mockSave).toHaveBeenCalled();
     });
@@ -109,12 +101,9 @@ describe("Question Model - Instance Methods", () => {
     it("addAnswer should unshift new answer and save", async () => {
         const mockSave = jest.fn();
         const newAnswerId = new mongoose.Types.ObjectId();
-
         const instance = new Question({ ...baseQuestion, answers: [] });
         instance.save = mockSave;
-
         await instance.addAnswer(newAnswerId);
-
         expect(instance.answers[0]).toBe(newAnswerId);
         expect(mockSave).toHaveBeenCalled();
     });
@@ -137,9 +126,46 @@ describe("Question Model - Virtuals", () => {
     });
 
     it("mostRecentActivity should return latest answer date if answers present", () => {
-        const answer1 = { ans_date_time: new Date("2024-01-01") };
-        const answer2 = { ans_date_time: new Date("2024-03-03") };
+        const answer1 = { ans_date_time: new Date("2024-01-01") } as IAnswerDocument;
+        const answer2 = { ans_date_time: new Date("2024-03-03") } as IAnswerDocument;
         const instance = new Question({ ...baseQuestion, answers: [answer1, answer2] });
         expect(instance.mostRecentActivity.getTime()).toBe(answer1.ans_date_time.getTime());
+    });
+});
+
+describe("Question Utilities - formatUtils", () => {
+    it("convertToIQuestion should convert ObjectIds and dates to string", () => {
+        const mockQuestion = {
+            _id: new mongoose.Types.ObjectId(),
+            title: "Sample Question",
+            text: "Content",
+            asked_by: mockUserId.toString(),
+            ask_date_time: new Date("2024-04-01"),
+            views: 0,
+            vote_score: 0,
+            tags: [{ _id: new mongoose.Types.ObjectId(), name: "nodejs" }],
+            answers: []
+        } as unknown as IQuestionDocument;
+
+        const result = convertToIQuestion(mockQuestion);
+        expect(result._id?.toString()).toBe(mockQuestion._id.toString());
+        expect(new Date(result.ask_date_time).toISOString()).toBe(mockQuestion.ask_date_time.toISOString());
+        expect(typeof result.asked_by).toBe("string");
+    });
+
+    it("convertToIAnswer should convert ObjectIds and dates to string", () => {
+        const mockAnswer = {
+            _id: new mongoose.Types.ObjectId(),
+            text: "answer text",
+            ans_by: mockUserId.toString(),
+            ans_date_time: new Date("2024-04-01"),
+            vote_score: 5
+        } as unknown as IAnswerDocument;
+
+        const result = convertToIAnswer(mockAnswer);
+        expect(result._id?.toString()).toBe(mockAnswer._id.toString());
+        expect(new Date(result.ans_date_time).toISOString()).toBe(mockAnswer.ans_date_time.toISOString());
+        expect(typeof result.ans_by).toBe("string");
+
     });
 });
