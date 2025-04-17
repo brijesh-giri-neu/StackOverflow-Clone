@@ -30,6 +30,7 @@
     "@types/swagger-ui-express": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^8.1.0",
     "@typescript-eslint/parser": "^8.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.9.0",
     "eslint-plugin-node": "^11.1.0",
     "globals": "^15.9.0",
@@ -44,7 +45,7 @@
   },
   "scripts": {
     "start": "ts-node server.ts",
-    "test": "jest",
+    "test": "cross-env NODE_ENV=test jest",
     "populate_db": "ts-node scripts/populate_db.ts",
     "populate1k_db": "ts-node scripts/populate1k_db.ts",
     "remove_db": "ts-node scripts/remove_db.ts"

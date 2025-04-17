@@ -3,11 +3,11 @@
 // Pass URL of your mongoDB instance as first argument(e.g., mongodb://127.0.0.1:27017/fake_so)
 
 import mongoose from "mongoose";
-
 import Answer from "../models/answers";
 import Question from "../models/questions";
 import Tag from "../models/tags";
-import { ITagDB, IAnswerDB, IQuestionDB } from "./script_types";
+import User from "../models/users";
+import { ITagDB, IAnswerDB, IQuestionDB, IUserDB } from "./script_types";
 import {
   Q1_DESC,
   Q1_TXT,
@@ -45,20 +45,39 @@ mongoose.connect(mongoDB);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+
+/**
+ * An asynchronous function to create a user in the Users collection of the database
+ * @param email - The user's email address (must be unique)
+ * @param displayName - The display name of the user
+ * @param password - The user's hashed password
+ * @returns A promise that resolves to the user object created in the database
+ */
+function userCreate(
+  email: string,
+  displayName: string,
+  password: string
+): Promise<IUserDB> {
+  const userDetail: IUserDB = { email, displayName, password };
+
+  const user = new User(userDetail);
+  return user.save();
+}
+
 /**
  * an asynchronous function to create a tag in the Tags collection of the database
  * @param name tag name
  * @returns a promise that resolves to the tag object created in the database
  */
 async function tagCreate(name: string): Promise<ITagDB> {
-   const tagDoc = await new Tag({ name }).save();
-  
-   const tagDB: ITagDB = {
-     _id: new mongoose.Types.ObjectId(tagDoc._id),
-     name: tagDoc.name
-   };
-   
-   return tagDB;
+  const tagDoc = await new Tag({ name }).save();
+
+  const tagDB: ITagDB = {
+    _id: new mongoose.Types.ObjectId(tagDoc._id),
+    name: tagDoc.name
+  };
+
+  return tagDB;
 }
 
 /**
@@ -70,10 +89,11 @@ async function tagCreate(name: string): Promise<ITagDB> {
  */
 function answerCreate(
   text: string,
-  ans_by: string,
-  ans_date_time: Date
+  ans_by: IUserDB,
+  ans_date_time: Date,
+  vote_score: number,
 ): Promise<IAnswerDB> {
-  const answerDetail: IAnswerDB = { text, ans_by, ans_date_time };
+  const answerDetail: IAnswerDB = { text, ans_by, ans_date_time, vote_score };
 
   const answer = new Answer(answerDetail);
   return answer.save();
@@ -95,9 +115,10 @@ function questionCreate(
   text: string,
   tags: ITagDB[],
   answers: IAnswerDB[],
-  asked_by: string,
+  asked_by: IUserDB,
   ask_date_time: Date,
-  views: number
+  views: number,
+  vote_score: number,
 ): Promise<IQuestionDB> {
   const qstnDetail: IQuestionDB = {
     title,
@@ -107,6 +128,7 @@ function questionCreate(
     asked_by,
     ask_date_time,
     views,
+    vote_score,
   };
   if (ask_date_time) qstnDetail.ask_date_time = ask_date_time;
   if (views) qstnDetail.views = views;
@@ -127,45 +149,65 @@ const populate = async () => {
     const t5 = await tagCreate("storage");
     const t6 = await tagCreate("website");
 
+    const user1 = await userCreate(
+      "test1@example.com",
+      "Test User 1",
+      "securepassword123"
+    );
+
+    const user2 = await userCreate(
+      "test2@example.com",
+      "Test User 2",
+      "securepassword123"
+    );
+
     const a1 = await answerCreate(
       A1_TXT,
-      "hamkalo",
-      new Date("2023-11-20T03:24:42")
+      user1,
+      new Date("2023-11-20T03:24:42"),
+      0
     );
     const a2 = await answerCreate(
       A2_TXT,
-      "azad",
-      new Date("2023-11-23T08:24:00")
+      user1,
+      new Date("2023-11-23T08:24:00"),
+      0
     );
     const a3 = await answerCreate(
       A3_TXT,
-      "abaya",
-      new Date("2023-11-18T09:24:00")
+      user1,
+      new Date("2023-11-18T09:24:00"),
+      0
     );
     const a4 = await answerCreate(
       A4_TXT,
-      "alia",
-      new Date("2023-11-12T03:30:00")
+      user2,
+      new Date("2023-11-12T03:30:00"),
+      0
     );
     const a5 = await answerCreate(
       A5_TXT,
-      "sana",
-      new Date("2023-11-01T15:24:19")
+      user2,
+      new Date("2023-11-01T15:24:19"),
+      0
     );
     const a6 = await answerCreate(
       A6_TXT,
-      "abhi3241",
-      new Date("2023-02-19T18:20:59")
+      user2,
+      new Date("2023-02-19T18:20:59"),
+      0
     );
     const a7 = await answerCreate(
       A7_TXT,
-      "mackson3332",
-      new Date("2023-02-22T17:19:00")
+      user2,
+      new Date("2023-02-22T17:19:00"),
+      0
     );
     const a8 = await answerCreate(
       A8_TXT,
-      "ihba001",
-      new Date("2023-03-22T21:17:53")
+      user1,
+      new Date("2023-03-22T21:17:53"),
+      0
     );
 
     await questionCreate(
@@ -173,36 +215,40 @@ const populate = async () => {
       Q1_TXT,
       [t1, t2],
       [a1, a2],
-      "Joji John",
+      user1,
       new Date("2022-01-20T03:00:00"),
-      10
+      10,
+      0
     );
     await questionCreate(
       Q2_DESC,
       Q2_TXT,
       [t3, t4, t2],
       [a3, a4, a5],
-      "saltyPeter",
+      user2,
       new Date("2023-01-10T11:24:30"),
-      121
+      121,
+      0
     );
     await questionCreate(
       Q3_DESC,
       Q3_TXT,
       [t5, t6],
       [a6, a7],
-      "monkeyABC",
+      user1,
       new Date("2023-02-18T01:02:15"),
-      200
+      200,
+      0
     );
     await questionCreate(
       Q4_DESC,
       Q4_TXT,
       [t3, t4, t5],
       [a8],
-      "elephantCDE",
+      user2,
       new Date("2023-03-10T14:28:01"),
-      103
+      103,
+      0
     );
 
     console.log("done");
