@@ -13,7 +13,6 @@ import { HttpError } from "express-openapi-validator/dist/framework/types";
 export const errorHandler = (err: HttpError, req: Request, res: Response, next: NextFunction) => {
     void next;
     if (err.status && err.errors) {
-      console.log("err", err);
       res.status(err.status).json({
         message: err.message,
         errors: err.errors,
