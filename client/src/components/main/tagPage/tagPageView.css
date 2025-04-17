@@ -3,17 +3,4 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 80px 20px;
 }
-
-.pagination-wrapper {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    padding: 0 rem 0;
-    display: flex;
-    justify-content: center;
-    z-index: 1000;
-    border-top: 1px solid #ddd; /* optional */
-}
   

@@ -32,7 +32,7 @@ export const useTagPage = ({ page, limit }: UseTagPageProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await getTagsWithQuestionNumber();
+        const res = await getTagsWithQuestionNumber(page, limit);
         setTlist(res.data || []);
         setPagination(res?.pagination || pagination);
       } catch (e) {
