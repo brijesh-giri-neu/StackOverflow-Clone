@@ -528,6 +528,10 @@ paths:
             type: string
             example: "Android studio [mobile]"
           description: Search term to filter questions by text, title, or tags.
+          explode: true
+          allowReserved: true
+          x-express-openapi-validator:
+            allowReservedCharacters: true
         - name: page
           in: query
           required: false
