@@ -36,12 +36,6 @@ jobs:
       working-directory: server
       run: npm test --coverage
 
-    - name: Post backend coverage to PR
-      uses: davelosert/jest-coverage-report-action@v1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: server
-
     - name: Lint server code
       working-directory: server
       run: npx eslint
