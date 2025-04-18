@@ -68,7 +68,7 @@ jobs:
 
     #--- Wait for Servers (10s timeout) ---
     - name: Wait for backend and frontend to be ready
-      run: npx wait-on http://localhost:8000/api-docs http://localhost:3000 --timeout 10000
+      run: npx wait-on http://localhost:8000/api-docs http://localhost:3000 --timeout 30000
       
     #--- Tests ---
     - name: Run Cypress tests
