@@ -115,7 +115,7 @@ describe("Vote Model - registerVote", () => {
         await expect(Vote.registerVote(vote)).rejects.toThrow("You cannot vote on your own post");
     });
 
-    it("should throw error if post is not found", async () => {
+    it("should throw error if post question is not found", async () => {
         (Question.findById as jest.Mock).mockReturnValueOnce({
             select: jest.fn().mockResolvedValue(null)
         });
@@ -128,5 +128,20 @@ describe("Vote Model - registerVote", () => {
         };
 
         await expect(Vote.registerVote(vote)).rejects.toThrow("Question not found");
+    });
+
+    it("should throw error if post answer is not found", async () => {
+        (Answer.findById as jest.Mock).mockReturnValueOnce({
+            select: jest.fn().mockResolvedValue(null)
+        });
+
+        const vote = {
+            userId,
+            postId,
+            type: VoteType.UpVote,
+            postType: PostType.Answer
+        };
+
+        await expect(Vote.registerVote(vote)).rejects.toThrow("Answer not found");
     });
 });

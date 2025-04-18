@@ -83,14 +83,14 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     mandatory={false}
                 />
                 <Input
-                    title="X link or username"
+                    title="X link"
                     id="twitter"
                     val={twitter}
                     setState={setTwitter}
                     mandatory={false}
                 />
                 <Input
-                    title="GitHub link or username"
+                    title="GitHub link"
                     id="github"
                     val={github}
                     setState={setGithub}
