@@ -163,7 +163,7 @@ if (process.env.NODE_ENV !== "test") {
   DBConnection.getInstance();
 
   server = app.listen(port, () => {
-    console.log(`Server starts at http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
   });
 
   /**
