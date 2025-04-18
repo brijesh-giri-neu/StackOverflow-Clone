@@ -30,7 +30,7 @@ const CLIENT_URL : string = process.env.CLIENT_URL || "http://localhost:3000";
  * Port on which the server listens.
  * @constant {number}
  */
-const port = process.env.PORT || 8000;
+const port = parseInt(process.env.PORT || "8000", 10);
 
 const secure = process.env.NODE_ENV !== undefined;
 const sameSite = (process.env.SAME_SITE as "lax" | "strict" | "none") || "lax";
