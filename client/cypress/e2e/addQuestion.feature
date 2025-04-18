@@ -22,5 +22,4 @@ Feature: Adding new questions
       | missingField  | errorMessage                      |
       | title         | Title cannot be empty             |
       | text          | Question text cannot be empty     |
-      | user          | Username cannot be empty          |
       | tags          | Should have at least one tag      |

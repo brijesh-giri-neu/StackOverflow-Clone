@@ -10,6 +10,12 @@ const tagData = [
     { tag: 'website', questions: 1 },
 ];
 
+const testUserForLogin = {
+    email: "test2@example.com",
+    password: "securepassword123",
+    displayName: "Test User 2",
+};
+
 const Q1_DESC = "Programmatically navigate using React router";
 
 const newQuestion = {
@@ -97,12 +103,13 @@ Then('The user should see the list of questions related to that tag', () => {
 //     And The user navigates to the "Tags" page
 //     Then The newly created tags must be visible with the correct question count
 
-Given('The user is on the homepage {string}', (url) => {
+Given('The user is logged in and on the homepage {string}', (url) => {
     cy.visit(url);
+    cy.login(testUserForLogin.email, testUserForLogin.password);
 });
 
 When('The user creates a new question with tags', () => {
-    createQuestion(newQuestion.title, newQuestion.text, newQuestion.tags, newQuestion.user, true, true);
+    createQuestion(newQuestion.title, newQuestion.text, newQuestion.tags, true, true);
     cy.contains("All Questions");
 });
 
@@ -122,12 +129,13 @@ Then('The newly created tags must be visible with the correct question count', (
 //     And The user clicks on the newly created tag
 //     Then The user should see the newly created question
 
-Given('The user is on the homepage {string}', (url) => {
+Given('The user is logged in and on the homepage {string}', (url) => {
     cy.visit(url);
+    cy.login(testUserForLogin.email, testUserForLogin.password);
 });
 
 When('The user creates a new question with tags', () => {
-    createQuestion(newQuestion.title, newQuestion.text, newQuestion.tags, newQuestion.user, true, true);
+    createQuestion(newQuestion.title, newQuestion.text, newQuestion.tags, true, true);
     cy.contains("All Questions");
 });
 

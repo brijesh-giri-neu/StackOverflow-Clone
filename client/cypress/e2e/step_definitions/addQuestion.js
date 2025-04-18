@@ -8,6 +8,12 @@ const newQuestion = {
     user: "elephantCDE"
 }
 
+const testUserForLogin = {
+    email: "test2@example.com",
+    password: "securepassword123",
+    displayName: "Test User 2",
+};
+
 // Scenario: Add a new question successfully
 //     Given The user has write access to the application "http://localhost:3000"
 //     When The user clicks the "Ask a Question" button
@@ -17,6 +23,7 @@ const newQuestion = {
 
 Given('The user has write access to the application {string}', (url) => {
     cy.visit(url);
+    cy.login(testUserForLogin.email, testUserForLogin.password);
 });
 
 When('The user clicks the {string} button', (buttonName) => {
@@ -24,7 +31,7 @@ When('The user clicks the {string} button', (buttonName) => {
 });
 
 And('fills out the necessary fields', () => {
-    createQuestion(newQuestion.title, newQuestion.text, newQuestion.tags, newQuestion.user, false, false);
+    createQuestion(newQuestion.title, newQuestion.text, newQuestion.tags, false, false);
 });
 
 And('clicks the {string} button', (buttonName) => {
@@ -34,7 +41,7 @@ And('clicks the {string} button', (buttonName) => {
 Then('The user should see the new question in the All Questions page with the metadata information', () => {
     cy.contains("All Questions");
     cy.get(".postTitle").first().should("contain", newQuestion.title);
-    cy.get(".question_author").first().should("contain", newQuestion.user);
+    cy.get(".question_author").first().should("contain", testUserForLogin.displayName);
     cy.get(".question_meta").first().should("contain", "0 seconds");
 });
 
@@ -49,6 +56,7 @@ Then('The user should see the new question in the All Questions page with the me
 
 Given('The user has write access to the application {string}', (url) => {
     cy.visit(url);
+    cy.login(testUserForLogin.email, testUserForLogin.password);
 });
 
 When('The user clicks the {string} button', (buttonName) => {
@@ -57,7 +65,7 @@ When('The user clicks the {string} button', (buttonName) => {
 
 And('fills out the form with all necessary fields except {string}', (missingField) => {
     let q = {...newQuestion, [missingField]: ''}
-    createQuestion(q.title, q.text, q.tags, q.user, false, false);
+    createQuestion(q.title, q.text, q.tags, false, false);
 });
 
 And('clicks the {string} button', (buttonName) => {

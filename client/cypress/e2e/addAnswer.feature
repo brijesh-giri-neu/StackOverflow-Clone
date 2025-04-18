@@ -23,5 +23,4 @@ Feature: Adding new answers
 
     Examples:
       | missingField | errorMessage                |
-      | username     | Username cannot be empty    |
       | text         | Answer text cannot be empty |

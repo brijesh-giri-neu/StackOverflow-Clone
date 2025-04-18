@@ -20,17 +20,14 @@ Feature: View Tags and their associated question counts
     Then The user should see the list of questions related to that tag
   
   Scenario: Create a new question with tags and verify the tags are displayed
-    Given The user is on the homepage "http://localhost:3000"
+    Given The user is logged in and on the homepage "http://localhost:3000"
     When The user creates a new question with tags
     And The user navigates to the "Tags" page
     Then The newly created tags must be visible with the correct question count
   
   Scenario: Create a new question with a new tag and find the question through the tag
-    Given The user is on the homepage "http://localhost:3000"
+    Given The user is logged in and on the homepage "http://localhost:3000"
     When The user creates a new question with tags
     And The user navigates to the "Tags" page
     And The user clicks on the newly created tag
     Then The user should see the newly created question
-  
-
-  

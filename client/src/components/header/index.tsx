@@ -48,6 +48,7 @@ const Header = ({
       </div>
       <div className="header-center">
         <input
+          id="searchBar"
           className="header-search"
           placeholder="Search ..."
           type="text"
