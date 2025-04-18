@@ -47,3 +47,7 @@ jobs:
     - name: Lint client code
       working-directory: client
       run: npx eslint
+      
+    - name: Run Cypress tests
+      working-directory: client
+      run: npx cypress run
