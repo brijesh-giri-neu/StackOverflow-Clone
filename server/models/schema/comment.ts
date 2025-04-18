@@ -10,7 +10,7 @@ import { ICommentDocument, ICommentModel, PostType } from "../../types/types";
  */
 const CommentSchema = new mongoose.Schema<ICommentDocument, ICommentModel>(
   {
-    text: { type: String, required: true, minlength: 1, maxlength: 1000 },
+    text: { type: String, required: true, minlength: 1, maxlength: 600 },
     postType: { type: String, enum: Object.values(PostType), required: true },
     postId: { type: mongoose.Schema.Types.ObjectId, required: true, refPath: "postType" },
     userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "User" },

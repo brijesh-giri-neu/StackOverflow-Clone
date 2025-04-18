@@ -56,7 +56,7 @@ CommentSchema.statics.addComment = async function (
     postType: PostType
   ): Promise<IComment[]> {
     const comments = await this.find({ postId, postType, isDeleted: false })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: 1 })
       .populate("userId", "displayName");
   
     return comments.map(comment => convertToIComment(comment));

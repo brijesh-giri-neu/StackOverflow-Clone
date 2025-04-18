@@ -356,7 +356,7 @@ components:
         text:
           type: string
           minLength: 1
-          maxLength: 1000
+          maxLength: 600
           example: "This is a comment."
 
     EditCommentRequest:
@@ -382,7 +382,7 @@ components:
         text:
           type: string
           minLength: 1
-          maxLength: 1000
+          maxLength: 600
           example: "Updated comment text"
 
     PaginationMetadata:
