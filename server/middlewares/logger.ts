@@ -35,7 +35,7 @@ const sensitiveFields = ["password", "token", "secret"];
  * @param obj - The object to sanitize for logging
  * @returns A shallow copy with sensitive fields masked
  */
-const redactSensitiveFields = (obj: unknown): unknown => {
+export const redactSensitiveFields = (obj: unknown): unknown => {
   if (Array.isArray(obj)) {
     return obj.map((item) => redactSensitiveFields(item));
   }
