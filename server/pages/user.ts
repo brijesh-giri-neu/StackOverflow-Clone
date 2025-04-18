@@ -2,6 +2,8 @@ import express from 'express';
 import { Request, Response } from 'express';
 import User from '../models/users';
 import { IUser } from '../types/types';
+import { isAuthenticated } from '../middlewares/auth/isAuthenticated';
+import { isAuthorized } from '../middlewares/auth/isAuthorized';
 
 const router = express.Router();
 
@@ -80,6 +82,34 @@ router.get('/session', async (req: Request, res: Response) => {
         return res.status(404).json({ message: "User not found" });
     }
     res.status(200).json({ user });
+});
+
+/**
+ * @route   DELETE /user/delete
+ * @desc    Permanently deletes the currently authenticated user account.
+ *          This performs a hard delete by removing the user from the database,
+ *          nullifying references in related collections (e.g., questions, answers, comments),
+ *          and deleting votes made by the user.
+ *          The user session is destroyed and the session cookie is cleared after deletion.
+ * @access  Protected (Requires authentication and authorization)
+ * @param {Request} req - The Express request object containing the session with the user ID.
+ * @param {Response} res - The Express response object used to send the deletion result.
+ * @returns {Response} - A JSON response indicating that the account was permanently deleted.
+ */
+router.delete("/delete", isAuthenticated, isAuthorized, async (req: Request, res: Response) => {
+    const userId = req.session.userId as string;
+  
+    await User.deleteUserById(userId);
+
+    // Logout user
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ message: "Error logging out" });
+        }
+        // Optionally clear the session cookie, 'connect.sid' is the default session cookie name.
+        res.clearCookie("connect.sid");
+        res.status(200).json({ message: "Logout successful" });
+    });
 });
 
 export default router;

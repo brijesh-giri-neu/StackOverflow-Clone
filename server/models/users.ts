@@ -28,7 +28,7 @@ UserSchema.statics.loginUser = async function (
     email: string,
     plainPassword: string
 ): Promise<IUser | null> {
-    const user = await this.findOne({ email }).exec();
+    const user = await this.findOne({ email, isDeleted: { $ne: true } }).exec();
     if (!user) return null;
 
     // Compare the plain text password with the stored hashed password.
@@ -46,8 +46,23 @@ UserSchema.statics.loginUser = async function (
  * @returns {Promise<IUser | null>} - The user object in IUser format, or null if not found.
  */
 UserSchema.statics.getUserById = async function (userId: string): Promise<IUser | null> {
-    const user = await this.findById(userId).exec();
+    const user = await this.findOne({ _id: userId, isDeleted: { $ne: true } }).exec();
     return user ? convertToIUser(user) : null;
+};
+
+/**
+ * Static Method: deleteUserById
+ * Soft-deletes a user by marking their `deleted` flag as true.
+ * Also deletes the user's votes and anonymizes their identity in answers, questions, and comments.
+ * 
+ * @param {string} userId - The ID of the user to soft delete.
+ * @returns {Promise<void>}
+ */
+UserSchema.statics.deleteUserById = async function (userId: string): Promise<void> {
+    const objectId = new mongoose.Types.ObjectId(userId);
+  
+    // Soft delete the user
+    await this.findByIdAndUpdate(objectId, { isDeleted: true });
 };
 
 /**

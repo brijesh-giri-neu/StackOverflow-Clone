@@ -2,7 +2,7 @@ import ProfileHeader from "./header/headerView";
 import ProfileDetails from "./details/detailsView";
 import { UserProfileType } from "../../../types/entityTypes";
 import { VoidFunctionType } from "../../../types/functionTypes";
-import { useUserLogout } from "../../../hooks/useUserLogout";
+import { useUserLogout, useUserDelete } from "../../../hooks/useUserLogout";
 
 interface MainProfileProps {
     userProfile: UserProfileType | null;
@@ -12,6 +12,8 @@ interface MainProfileProps {
 
 const MainProfile = ({ userProfile, handleLogout, setEditUserProfilePage }: MainProfileProps) => {
     const { logoutUser } = useUserLogout(handleLogout);
+    const { deleteUser } = useUserDelete(handleLogout);
+
     if (!userProfile) {
         return (
             <div className="main_profile">
@@ -26,6 +28,7 @@ const MainProfile = ({ userProfile, handleLogout, setEditUserProfilePage }: Main
                 displayName={userProfile.user.displayName}
                 setEditUserProfilePage={setEditUserProfilePage}
                 handleLogout={logoutUser}
+                handleProfileDelete={deleteUser}
             />
             <ProfileDetails userProfile={userProfile} />
         </div>

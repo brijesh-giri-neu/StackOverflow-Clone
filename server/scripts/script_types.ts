@@ -51,6 +51,7 @@ export interface IUserDB {
   email: string;
   displayName: string;
   password: string;
+  isDeleted?: boolean;
 }
 
 /**

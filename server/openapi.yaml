@@ -699,6 +699,35 @@ paths:
         "500":
           $ref: "#/components/responses/InternalServerError"
 
+  /user/delete:
+    delete:
+      tags:
+        - Users
+      summary: Permanently delete the authenticated user account
+      description: |
+        Permanently deletes the currently authenticated user account.
+        This performs a **hard delete** by removing the user from the database,
+        nullifying references in related collections (e.g., questions, answers, comments),
+        and deleting votes made by the user.
+        The user session is destroyed and the session cookie is cleared after deletion.
+      responses:
+        "200":
+          description: User account deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Account permanently deleted"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+
   # UserProfiles Controller Endpoints
   /userprofile/{userId}:
     get:

@@ -69,6 +69,7 @@ export interface IUser {
   email: string;
   displayName: string;
   password: string;
+  isDeleted?: boolean;
 }
 
 /**
@@ -234,6 +235,7 @@ export interface IUserModel extends mongoose.Model<IUserDocument> {
   registerUser(user: IUser): Promise<IUser>;
   loginUser(email: string, password: string): Promise<IUser>;
   getUserById(userId: string): Promise<IUser | null>;
+  deleteUserById(userId: string): Promise<void>;
 }
 
 /**

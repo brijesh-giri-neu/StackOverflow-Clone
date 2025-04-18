@@ -6,6 +6,7 @@ interface ProfileHeaderProps {
     displayName: string;
     setEditUserProfilePage: () => void;
     handleLogout: () => void;
+    handleProfileDelete: () => void;
 }
 
 const PencilIcon = FaPencilAlt as React.FC<React.SVGProps<SVGSVGElement>>;
@@ -15,6 +16,7 @@ const ProfileHeader = ({
     displayName,
     setEditUserProfilePage,
     handleLogout,
+    handleProfileDelete,
 }: ProfileHeaderProps) => {
     return (
         <div className="profile_header">
@@ -23,6 +25,10 @@ const ProfileHeader = ({
                 <h2 className="profile_name">{displayName}</h2>
             </div>
             <div className="profile_actions">
+                <button onClick={handleProfileDelete} className="delete_profile_button">
+                    <PencilIcon className="button_icon"/>
+                    <span>Delete Profile</span>
+                </button>
                 <button onClick={setEditUserProfilePage} className="edit_profile_button">
                     <PencilIcon className="button_icon"/>
                     <span>Edit Profile</span>
