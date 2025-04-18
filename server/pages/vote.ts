@@ -31,8 +31,8 @@ router.post('/', isAuthenticated, isAuthorized, appRateLimiter, async (req: Requ
             userId: userId,
         });
         res.status(200).json({ message: 'Vote registered successfully' });
-    } catch (err: any) {
-        if (err.message === "You cannot vote on your own post") {
+    } catch (err: unknown) {
+        if (err instanceof Error && err.message === "You cannot vote on your own post") {
             return res.status(403).json({ message: err.message });
         }
     }

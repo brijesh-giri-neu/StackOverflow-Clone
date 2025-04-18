@@ -35,22 +35,28 @@ const sensitiveFields = ["password", "token", "secret"];
  * @param obj - The object to sanitize for logging
  * @returns A shallow copy with sensitive fields masked
  */
-const redactSensitiveFields = (obj: any): any => {
-  if (typeof obj !== "object" || obj === null) return obj;
-
-  const clone: any = Array.isArray(obj) ? [] : {};
-
-  for (const key in obj) {
-    if (sensitiveFields.includes(key.toLowerCase())) {
-      clone[key] = "***REDACTED***";
-    } else if (typeof obj[key] === "object") {
-      clone[key] = redactSensitiveFields(obj[key]);
-    } else {
-      clone[key] = obj[key];
-    }
+const redactSensitiveFields = (obj: unknown): unknown => {
+  if (Array.isArray(obj)) {
+    return obj.map((item) => redactSensitiveFields(item));
   }
 
-  return clone;
+  if (typeof obj === "object" && obj !== null) {
+    const clone: Record<string, unknown> = {};
+
+    for (const [key, value] of Object.entries(obj)) {
+      if (sensitiveFields.includes(key.toLowerCase())) {
+        clone[key] = "***REDACTED***";
+      } else if (typeof value === "object" && value !== null) {
+        clone[key] = redactSensitiveFields(value);
+      } else {
+        clone[key] = value;
+      }
+    }
+
+    return clone;
+  }
+
+  return obj;
 };
 
 /**
