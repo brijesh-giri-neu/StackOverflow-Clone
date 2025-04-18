@@ -14,10 +14,18 @@ const GlobeIcon = FaGlobe as React.FC<React.SVGProps<SVGSVGElement>>;
 const TwitterIcon = FaTwitter as React.FC<React.SVGProps<SVGSVGElement>>;
 const GithubIcon = FaGithub as React.FC<React.SVGProps<SVGSVGElement>>;
 
+/**
+ * Props for the ProfileDetails component.
+ * Contains user profile data to be displayed.
+ */
 interface ProfileDetailsProps {
     userProfile: UserProfileType;
 }
 
+/**
+ * Displays detailed profile information for a user,
+ * including bio, title, location, and social/media links.
+ */
 const ProfileDetails = ({ userProfile }: ProfileDetailsProps) => {
     return (
         <div className="profile_details_container">

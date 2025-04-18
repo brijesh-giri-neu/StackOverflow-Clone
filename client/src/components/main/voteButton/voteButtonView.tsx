@@ -17,13 +17,28 @@ const SolidDownIcon = FaCircleDown as FC<SVGProps<SVGSVGElement>>;
 const RegularDownIcon = FaRegCircleDown as FC<SVGProps<SVGSVGElement>>;
 
 interface VoteButtonProps {
+    /** ID of the current user (optional if not logged in) */
     userId?: string;
+    /** ID of the post being voted on */
     postId: string;
+    /** Type of post being voted on ("Question" or "Answer") */
     postType: PostType;
+    /** Initial vote value from the user (if any) */
     initialVote?: VoteValueType;
+    /** Initial vote score for the post */
     voteScore: number;
 }
 
+/**
+ * A voting button component for questions or answers.
+ * Renders upvote/downvote buttons and displays the current vote score.
+ *
+ * @param userId - ID of the logged-in user
+ * @param postId - ID of the post being voted on
+ * @param postType - The type of the post (question or answer)
+ * @param initialVote - The user's existing vote on the post, if any
+ * @param voteScore - Initial vote count for the post
+ */
 const VoteButtons = ({
     userId,
     postId,

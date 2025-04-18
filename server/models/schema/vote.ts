@@ -26,5 +26,4 @@ const VoteSchema = new mongoose.Schema<IVoteDocument, IVoteModel>(
  */
 VoteSchema.index({ userId: 1, postId: 1 }, { unique: true });
 
-
 export default VoteSchema;

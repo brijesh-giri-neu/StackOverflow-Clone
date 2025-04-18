@@ -8,7 +8,8 @@ describe("User Routes", () => {
         _id: new mongoose.Types.ObjectId().toString(),
         email: "test@example.com",
         displayName: "TestUser",
-        password: "hashed_password"
+        password: "hashed_password",
+        isDeleted: false
     };
 
     beforeAll(() => {
@@ -163,6 +164,52 @@ describe("User Routes", () => {
 
             expect(response.statusCode).toBe(404);
             expect(response.body).toEqual({ message: "User not found" });
+        });
+    });
+
+    describe("DELETE /user/delete", () => {
+        it("should delete the authenticated user and logout", async () => {
+            const agent = request.agent(app);
+
+            // Mock user data
+            const user = {
+                _id: new mongoose.Types.ObjectId().toString(),
+                email: "delete_test@example.com",
+                displayName: "DeleteTestUser",
+                password: "testpass123"
+            };
+
+            // Mock user registration and login
+            User.findOne = jest.fn().mockResolvedValue(null); // For register
+            User.registerUser = jest.fn().mockResolvedValue(user);
+            User.loginUser = jest.fn().mockResolvedValue(user);
+            User.getUserById = jest.fn().mockResolvedValue(user); // for session
+            User.deleteUserById = jest.fn().mockResolvedValue(undefined); // for delete
+
+            // Register
+            await agent.post("/user/register").send({
+                email: user.email,
+                displayName: user.displayName,
+                password: user.password
+            });
+
+            // Login
+            await agent.post("/user/login").send({
+                email: user.email,
+                password: user.password
+            });
+
+            // Delete
+            const res = await agent.delete("/user/delete");
+
+            expect(User.deleteUserById).toHaveBeenCalledWith(user._id);
+            expect(res.statusCode).toBe(200);
+            expect(res.body).toEqual({ message: "Logout successful" });
+
+            // Verify session is cleared
+            const sessionRes = await agent.get("/user/session");
+            expect(sessionRes.statusCode).toBe(401);
+            expect(sessionRes.body).toEqual({ message: "Not authenticated" });
         });
     });
 

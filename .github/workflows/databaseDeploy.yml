@@ -1,0 +1,28 @@
+name: Deploy Database to Production
+
+on:
+  push:
+    branches: [ "deploy" ]
+
+jobs:
+  deploy-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm install
+
+      - name: Reset and populate production database
+        working-directory: server
+        run: |
+          npm run remove_db "${{ secrets.DB_CONNECTION_STRING }}"
+          npm run populate_db "${{ secrets.DB_CONNECTION_STRING }}"

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IUserDocument, IUserModel } from "../../types/types";
-import bcrypt from "bcrypt";
+import { hashPassword } from "../../services/passwordService";
 
 /**
  * The schema for a document in the User collection.
@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
         email: { type: String, required: true, unique: true, match: [/\S+@\S+\.\S+/, "Please enter a valid email address"] },
         displayName: { type: String, required: true, match: [/^[a-zA-Z0-9_ ]+$/, "Display name contains invalid characters"] },
         password: { type: String, required: true, minlength: [8, "Password must be at least 8 characters long"] },
+        isDeleted: { type: Boolean, default: false},
     },
     { collection: "User" }
 );
@@ -29,19 +30,12 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
  *
  * @param {Function} next - The callback function to signal completion of the middleware.
  */
+// NOTE: THIS BLOCK WILL NOT BE COVERED BY UNIT TESTS because execution of PRE-SAVE hook requires connecting to actual MongoDB database.
 UserSchema.pre<IUserDocument>("save", async function (next) {
     if (!this.isModified("password")) return next();
 
-    try {
-        const SALT_ROUNDS = 10;
-        const salt = await bcrypt.genSalt(SALT_ROUNDS);
-        const hash = await bcrypt.hash(this.password, salt);
-        this.password = hash;
-        next();
-    } catch (error) {
-        console.log(error);
-    }
+    this.password = await hashPassword(this.password);
+    next();
 });
-
 
 export default UserSchema;

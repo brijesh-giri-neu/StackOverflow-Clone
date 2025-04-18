@@ -95,5 +95,23 @@ const getUserSession = async (): Promise<UserResponseType | null> => {
     }
 };
 
+/**
+ * The function calls the API to permanently delete the currently authenticated user.
+ * It also clears the session cookie on the server and logs the user out.
+ * 
+ * @returns A promise that resolves to an object containing a success message.
+ */
+const deleteCurrentUser = async (): Promise<{ message: string }> => {
+    try {
+        const res = await api.delete(`${USER_API_URL}/delete`);
+        if (res.status !== 200) {
+            throw new Error("Error while deleting user");
+        }
+        return res.data;
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        throw error;
+    }
+};
 
-export { registerNewUser, loginExistingUser, logoutCurrentUser, getUserSession };
+export { registerNewUser, loginExistingUser, logoutCurrentUser, getUserSession, deleteCurrentUser };

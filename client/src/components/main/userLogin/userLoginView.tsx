@@ -4,11 +4,22 @@ import Form from "../baseComponents/form/formView";
 import { UserObjFunctionType, UserProfileObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 
 interface UserLoginProps {
+    /** Function to set the user object after successful login */
     setUser: UserObjFunctionType;
+    /** Function to set the user profile object after successful login */
     setUserProfile: UserProfileObjFunctionType;
+    /** Function to fetch and display all questions after login */
     handleQuestions: VoidFunctionType;
 }
 
+/**
+ * A user login form component.
+ * Allows users to enter email and password to log in.
+ *
+ * @param setUser - Sets the logged-in user state
+ * @param setUserProfile - Sets the user profile state
+ * @param handleQuestions - Fetches default questions after login
+ */
 const UserLogin = ({ setUser, setUserProfile, handleQuestions }: UserLoginProps) => {
     const {
         email,

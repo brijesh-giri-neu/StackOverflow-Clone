@@ -1,9 +1,9 @@
 import { Given, When, Then, And } from 'cypress-cucumber-preprocessor/steps';
 
 const testUserForRegistration = {
-    email: "test4@example.com",
+    email: "test6@example.com",
     password: "securepassword123",
-    displayName: "Test User 4",
+    displayName: "Test User 6",
 };
 
 const testUserForLogin = {
@@ -106,10 +106,10 @@ And('See a message indicating successful logout', () => {
 Given('The user is logged in and on the profile settings page', () => {
     cy.login(testUserForLogin.email, testUserForLogin.password);
     cy.get('.profile-icon').click();
-    cy.contains("Edit").click();
 });
 
 When('The user updates the {string} field', (field) => {
+    cy.contains("Edit").click();
     const fieldIdMap = {
         "Display Name": "#displayName",
         "Location": "#location",
@@ -146,26 +146,20 @@ Then('The system should save the changes and reflect the updated {string} on the
 
 // Scenario: User deletes their account
 //         Given The user is logged in and on the profile settings page
-//         When The user initiates the account deletion process
-//         And Confirms the deletion
+//         When The user initiates the account deletion process and confirms the deletion
 //         Then The account should be deactivated
 //         And The user should be logged out
 
-When('The user initiates the account deletion process', () => {
-    cy.get('button').contains("Delete Account").click();
-});
-
-And('Confirms the deletion', () => {
-    cy.get('button').contains("Confirm").click();
+When('The user initiates the account deletion process and confirms the deletion', () => {
+    cy.contains("Delete").click();
 });
 
 Then('The account should be deactivated', () => {
-    cy.contains("Account deleted");
+    cy.contains("Account deleted successfully").should("exist");
 });
 
 And('The user should be logged out', () => {
-    cy.url().should('include', '/login');
-    cy.contains("You have been logged out");
+    cy.get('button').contains("Login");
 });
 
 // Scenario: Prevent registration with an invalid email format

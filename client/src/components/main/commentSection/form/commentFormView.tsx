@@ -2,6 +2,11 @@ import Textarea from "../../baseComponents/textarea/textAreaView";
 import Form from "../../baseComponents/form/formView";
 import { useCommentForm } from "../../../../hooks/useCommentForm";
 import "./commentFormView.css";
+
+/**
+ * Props for the CommentForm component.
+ * Includes initial text (if editing), submission handler, and optional cancel handler.
+ */
 interface Props {
   initialText?: string;
   isEditing?: boolean;
@@ -9,6 +14,10 @@ interface Props {
   onCancel?: () => void;
 }
 
+/**
+ * A form component for adding or editing a comment.
+ * Displays a textarea input and action buttons for submit/cancel.
+ */
 const CommentForm = ({ initialText = "", isEditing, onSubmit, onCancel }: Props) => {
   const {
     text,

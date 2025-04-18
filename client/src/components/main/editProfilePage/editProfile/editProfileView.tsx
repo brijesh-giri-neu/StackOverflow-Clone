@@ -1,4 +1,3 @@
-
 import { UserProfileType } from "../../../../types/entityTypes";
 import { UserProfileObjFunctionType } from "../../../../types/functionTypes";
 import { useEditProfile } from "../../../../hooks/useEditProfile";
@@ -9,11 +8,19 @@ import Textarea from "../../baseComponents/textarea/textAreaView";
 
 import "./editProfileView.css";
 
+/**
+ * Props for the EditProfilePage component.
+ * Includes the current user profile and a function to update the profile view.
+ */
 interface EditProfilePageProps {
     userProfile: UserProfileType;
     setProfilePage: UserProfileObjFunctionType;
 }
 
+/**
+ * A form-based component that allows users to edit their profile information.
+ * Includes public fields, links, private info, and validation on save.
+ */
 const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) => {
     const {
         displayName,
@@ -83,14 +90,14 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
                     mandatory={false}
                 />
                 <Input
-                    title="X link or username"
+                    title="X link"
                     id="twitter"
                     val={twitter}
                     setState={setTwitter}
                     mandatory={false}
                 />
                 <Input
-                    title="GitHub link or username"
+                    title="GitHub link"
                     id="github"
                     val={github}
                     setState={setGithub}
