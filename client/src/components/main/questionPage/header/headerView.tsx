@@ -5,6 +5,10 @@ import {
   MessageFunctionType,
 } from "../../../../types/functionTypes";
 
+/**
+ * Props for the QuestionHeader component.
+ * Includes title text, question count, user ID, and handlers for ordering and asking a question.
+ */
 interface QuestionHeaderProps {
   title_text: string;
   qcnt: number;
@@ -13,6 +17,10 @@ interface QuestionHeaderProps {
   handleNewQuestion: VoidFunctionType;
 }
 
+/**
+ * Displays the header for the question page with a title, question count,
+ * sort buttons, and an "Ask a Question" button (if user is logged in).
+ */
 const QuestionHeader = ({
   title_text,
   qcnt,

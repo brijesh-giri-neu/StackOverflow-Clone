@@ -2,11 +2,12 @@ import { addComment, editComment, deleteComment, getCommentsForPost } from "../s
 import { PostType, CommentType } from "../types/entityTypes";
 
 /**
- * Custom hook to handle comment operations: add, edit, and delete.
- * 
- * @param postId - The ID of the post (question or answer)
- * @param postType - The type of the post ("Question" | "Answer")
- * @param userId - The ID of the currently logged-in user (optional)
+ * Custom hook to handle comment operations for a given post.
+ *
+ * @param postId - The ID of the post (question or answer).
+ * @param postType - The type of the post ("Question" or "Answer").
+ * @param userId - The ID of the currently logged-in user (optional).
+ * @returns Handlers to add, edit, delete, and fetch comments.
  */
 export const useComment = (
     postId: string,

@@ -5,9 +5,13 @@ import { UserProfileResponseType } from "../types/entityTypes";
 /**
  * A custom hook to fetch a user profile by its userId.
  *
- * @param userId - The unique identifier of the user.
- * @returns An object containing the fetched user profile or null if not available.
- */
+ * @param {string | undefined} userId - The unique identifier of the user whose profile is to be fetched.
+ * 
+ * @returns {{
+*   profile: UserProfileResponseType | null
+* }} An object containing:
+* - `profile`: The fetched user profile if available, otherwise `null`.
+*/
 export const useUserProfile = (userId: string | undefined) => {
     const [profile, setProfile] = useState<UserProfileResponseType | null>(null);
 

@@ -4,12 +4,21 @@ import { UserProfileType } from "../../../types/entityTypes";
 import { VoidFunctionType } from "../../../types/functionTypes";
 import { useUserLogout, useUserDelete } from "../../../hooks/useUserLogout";
 
+/**
+ * Props for the MainProfile component.
+ * Includes the user profile and functions to handle logout and profile editing.
+ */
 interface MainProfileProps {
     userProfile: UserProfileType | null;
     handleLogout: VoidFunctionType;
     setEditUserProfilePage: VoidFunctionType
 }
 
+/**
+ * Main profile view component.
+ * Displays the profile header and details if user is logged in,
+ * otherwise shows a message prompting login.
+ */
 const MainProfile = ({ userProfile, handleLogout, setEditUserProfilePage }: MainProfileProps) => {
     const { logoutUser } = useUserLogout(handleLogout);
     const { deleteUser } = useUserDelete(handleLogout);

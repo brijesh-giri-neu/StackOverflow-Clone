@@ -94,7 +94,7 @@ router.get('/session', async (req: Request, res: Response) => {
  */
 router.delete("/delete", isAuthenticated, isAuthorized, async (req: Request, res: Response) => {
     const userId = req.session.userId as string;
-  
+
     await User.deleteUserById(userId);
 
     // Logout user

@@ -4,8 +4,24 @@ import { registerNewUser } from "../services/userService";
 import { toast } from "react-toastify";
 
 /**
- * A custom hook for handling user registration logic, including validation.
- * @returns registration logic including form state and error handling.
+ * A custom hook for managing user registration logic and form validation.
+ * 
+ * @param {VoidFunctionType} handleQuestions - A callback to be triggered after successful registration (e.g., to show questions).
+ * @param {UserObjFunctionType} setUser - Function to update the global user state.
+ * @param {UserProfileObjFunctionType} setUserProfile - Function to update the user's profile state.
+ * 
+ * @returns {Object} The form state, error messages, and a `registerUser` function to trigger registration.
+ * @property {string} email - Current email input value.
+ * @property {Function} setEmail - Setter for email value with validation error clearing.
+ * @property {string} password - Current password input value.
+ * @property {Function} setPassword - Setter for password value with validation error clearing.
+ * @property {string} displayName - Current display name input value.
+ * @property {Function} setDisplayName - Setter for display name with validation error clearing.
+ * @property {string} emailErr - Error message for the email field.
+ * @property {string} passwordErr - Error message for the password field.
+ * @property {string} displayNameErr - Error message for the display name field.
+ * @property {string} registrationErr - General error message related to registration.
+ * @property {Function} registerUser - Function to validate form input and send a registration request.
  */
 export const useUserRegistration = (
     handleQuestions: VoidFunctionType,

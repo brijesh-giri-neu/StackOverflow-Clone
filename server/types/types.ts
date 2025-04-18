@@ -112,7 +112,7 @@ export interface ITagDocument
  * A type representing a user document schema in the Users collection,
  * where the _id field is explicitly defined as mongoose.Types.ObjectId.
  */
-export interface IUserDocument 
+export interface IUserDocument
   extends Omit<mongoose.Document, "_id">, Omit<IUser, "_id"> {
   _id: mongoose.Types.ObjectId;
 }
@@ -185,7 +185,7 @@ export interface IQuestionModel extends mongoose.Model<IQuestionDocument> {
 export interface ITagModel extends mongoose.Model<ITag> {
   findOrCreateMany(tagNames: string[]): Promise<ITag[]>;
   validateTags(tagIds: mongoose.Types.ObjectId[]): Promise<boolean>;
-  getTagQuestionCount() : Promise<TagCountResponse>;
+  getTagQuestionCount(): Promise<TagCountResponse>;
 }
 
 /**
@@ -250,12 +250,26 @@ export interface IUserProfileModel extends mongoose.Model<IUserProfileDocument> 
   updateUserProfile(userId: mongoose.Types.ObjectId, profile: IUserProfile): Promise<IUserProfile>;
 }
 
+/**
+ * Enum representing the type of a vote.
+ * 
+ * @property {number} DownVote - A downvote, decreases vote score.
+ * @property {number} UpVote - An upvote, increases vote score.
+ * @property {number} NoVote - Represents no active vote from the user.
+ */
 export enum VoteType {
   DownVote = -1,
   UpVote = 1,
   NoVote = 0,
 }
 
+/**
+ * Enum representing the type of post a vote or comment can be attached to.
+ * 
+ * @property {string} None - No post type selected.
+ * @property {string} Question - A question post.
+ * @property {string} Answer - An answer post.
+ */
 export enum PostType {
   None = "None",
   Question = "Question",
@@ -263,6 +277,16 @@ export enum PostType {
 }
 
 // TODO: Refactor the posts into a single collection that references Questions and Answers collection
+
+/**
+ * A type representing a vote document (used for both questions and answers).
+ * 
+ * @property {string} [_id] - The unique identifier of the vote (optional for new documents).
+ * @property {VoteType} type - The type of vote (up, down, or none).
+ * @property {mongoose.Types.ObjectId} postId - The ID of the post (question or answer) being voted on.
+ * @property {PostType} postType - The type of the post.
+ * @property {mongoose.Types.ObjectId} userId - The ID of the user who cast the vote.
+ */
 export interface IVote {
   _id?: string;
   type: VoteType;
@@ -271,15 +295,35 @@ export interface IVote {
   userId: mongoose.Types.ObjectId;
 }
 
+/**
+ * A Mongoose document type representing a vote stored in MongoDB.
+ */
 export interface IVoteDocument
-  extends Omit<mongoose.Document, "_id">, Omit<IVote, "_id">{
+  extends Omit<mongoose.Document, "_id">, Omit<IVote, "_id"> {
   _id: mongoose.Types.ObjectId;
 }
 
+/**
+ * A Mongoose model interface for the Vote collection.
+ * 
+ * @method registerVote - Creates or updates a vote for a post by a user, adjusting vote_score accordingly.
+ */
 export interface IVoteModel extends mongoose.Model<IVoteDocument> {
   registerVote(vote: IVote): Promise<null>;
 }
 
+/**
+ * A comment made on a post (question or answer).
+ * 
+ * @property {string} [_id] - The unique identifier of the comment (optional for new comments).
+ * @property {string} text - The content of the comment.
+ * @property {mongoose.Types.ObjectId} postId - The ID of the post the comment is associated with.
+ * @property {PostType} postType - The type of the post.
+ * @property {mongoose.Types.ObjectId} userId - The ID of the user who made the comment.
+ * @property {boolean} [isDeleted] - Flag indicating whether the comment has been soft-deleted.
+ * @property {Date} [createdAt] - Timestamp of when the comment was created.
+ * @property {Date} [updatedAt] - Timestamp of the last update to the comment.
+ */
 export interface IComment {
   _id?: string;
   text: string;
@@ -291,11 +335,22 @@ export interface IComment {
   updatedAt?: Date;
 }
 
-export interface ICommentDocument 
-  extends Omit<mongoose.Document, "_id">, Omit<IComment, "_id">{
+/**
+ * A Mongoose document type for a Comment.
+ */
+export interface ICommentDocument
+  extends Omit<mongoose.Document, "_id">, Omit<IComment, "_id"> {
   _id: mongoose.Types.ObjectId;
 }
 
+/**
+ * A Mongoose model interface for the Comment collection.
+ * 
+ * @method addComment - Adds a new comment to a post.
+ * @method editComment - Edits an existing comment's text (only if owned by the user).
+ * @method deleteComment - Soft-deletes a comment based on ID and user ownership.
+ * @method getCommentsForPost - Retrieves all non-deleted comments for a post (question or answer).
+ */
 export interface ICommentModel extends mongoose.Model<ICommentDocument> {
   addComment(comment: IComment): Promise<IComment>;
   editComment(comment: IComment): Promise<IComment | null>;
@@ -303,6 +358,14 @@ export interface ICommentModel extends mongoose.Model<ICommentDocument> {
   getCommentsForPost(postId: mongoose.Types.ObjectId, postType: PostType): Promise<IComment[]>;
 }
 
+/**
+ * Metadata about a paginated result set.
+ * 
+ * @property {number} totalItems - Total number of items available.
+ * @property {number} totalPages - Total number of pages available.
+ * @property {number} currentPage - Current page being returned.
+ * @property {number} pageSize - Number of items per page.
+ */
 export interface PaginationMetadata {
   totalItems: number;
   totalPages: number;
@@ -310,6 +373,13 @@ export interface PaginationMetadata {
   pageSize: number;
 }
 
+/**
+ * Generic structure for paginated results returned from a query.
+ * 
+ * @template T - The type of items being paginated.
+ * @property {T[]} paginatedItems - The items on the current page.
+ * @property {PaginationMetadata} pagination - Metadata describing the pagination state.
+ */
 export interface PaginatedResult<T> {
   paginatedItems: T[];
   pagination: PaginationMetadata;

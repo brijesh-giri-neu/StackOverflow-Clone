@@ -34,7 +34,7 @@ UserSchema.statics.loginUser = async function (
     // Compare the plain text password with the stored hashed password.
     const passwordMatches = await bcrypt.compare(plainPassword, user.password);
     if (!passwordMatches) return null;
-    
+
     return convertToIUser(user);
 };
 
@@ -60,7 +60,7 @@ UserSchema.statics.getUserById = async function (userId: string): Promise<IUser 
  */
 UserSchema.statics.deleteUserById = async function (userId: string): Promise<void> {
     const objectId = new mongoose.Types.ObjectId(userId);
-  
+
     // Soft delete the user
     await this.findByIdAndUpdate(objectId, { isDeleted: true });
 };

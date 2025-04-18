@@ -87,20 +87,27 @@ router.get('/getQuestion', async (req: Request, res: Response) => {
     const searchString = search?.toString();
     const pageString = page.toString();
     const limitString = limit.toString();
-    
+
     let filteredQuestions: IQuestion[] = await sortQuestions(orderString);
     if (search) {
         filteredQuestions = filterQuestions(filteredQuestions, searchString);
     }
 
     const { paginatedItems, pagination } = paginate<IQuestion>(filteredQuestions, pageString, limitString);
-  
+
     res.status(200).json({
         data: paginatedItems,
         pagination,
     });
 });
 
+/**
+ * Helper function to enrich a question and its answers with the current user's vote data.
+ *
+ * @param {IQuestion} question - The question to enrich with vote metadata.
+ * @param {string} userId - The ID of the user whose votes are being fetched.
+ * @returns {Promise<IQuestion & { currentUserVote: VoteType, answers: any[] }>} - The enriched question object.
+ */
 async function enrichQuestionWithUserVotes(question: IQuestion, userId: string) {
     const allPostIds = [
         question._id,
