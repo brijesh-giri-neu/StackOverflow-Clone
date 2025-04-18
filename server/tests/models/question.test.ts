@@ -67,17 +67,18 @@ describe("Question Model - Static Methods", () => {
     });
 
     it("findByIdAndIncrementViews should return incremented and populated question", async () => {
-        const mockIncrement = jest.fn().mockResolvedValue(baseQuestion);
+        const baseQuestion2 = new Question({ ...baseQuestion, answers: [new mongoose.Types.ObjectId()] });
+        const mockIncrement = jest.fn().mockResolvedValue(baseQuestion2);
         const mockPopulate = jest.fn().mockReturnThis();
-        const mockQuestion = { ...baseQuestion, incrementViews: mockIncrement, toObject: () => baseQuestion };
+        const mockQuestion = { ...baseQuestion2, incrementViews: mockIncrement, toObject: () => baseQuestion2 };
 
         jest.spyOn(Question, "findById").mockReturnValue({
             populate: mockPopulate,
             then: (cb: any) => cb(mockQuestion)
         } as any);
 
-        const result = await Question.findByIdAndIncrementViews(baseQuestion._id.toString());
-        expect(result).toEqual(baseQuestion);
+        const result = await Question.findByIdAndIncrementViews(baseQuestion2._id.toString());
+        expect(result).toEqual(baseQuestion2);
     });
 
     it("createQuestion should create a new question and return it", async () => {
