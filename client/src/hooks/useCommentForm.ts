@@ -16,9 +16,15 @@ export const useCommentForm = (
 
   const handleSubmit = () => {
     if (!text.trim()) {
-      setTextErr("Comment text cannot be empty");
+      setTextErr("Cannot post empty comment");
       return;
     }
+
+    if (text.length > 600) {
+      setTextErr("Comment cannot exceed 600 characters");
+      return;
+    }
+    
     onSubmit(text.trim());
     setText("");
     setTextErr("");

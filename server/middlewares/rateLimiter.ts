@@ -16,7 +16,7 @@ import rateLimit from "express-rate-limit";
  * registration, or any rate-sensitive API routes.
  */
 export const appRateLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50, // limit each IP to 50 requests per windowMs
+  windowMs: 5 * 1000, // 5 seconds
+  max: 1, // limit each IP to 1 requests per windowMs
   message: "Too many requests from this IP, please try again later."
 });

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { UserObjFunctionType, UserProfileObjFunctionType, VoidFunctionType } from "../types/functionTypes";
 import { registerNewUser } from "../services/userService";
+import { toast } from "react-toastify";
 
 /**
  * A custom hook for handling user registration logic, including validation.
@@ -91,7 +92,7 @@ export const useUserRegistration = (
                         twitter: "",
                         github: "",
                     });
-
+                    toast.success("User registered successfully");
                     handleQuestions();
                 }
                 handleQuestions();
