@@ -57,11 +57,7 @@ router.post('/login', async (req: Request, res: Response) => {
  * @returns {Response} - A JSON response indicating logout success or an error.
  */
 router.post("/logout", (req: Request, res: Response) => {
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ message: "Error logging out" });
-        }
-        // Optionally clear the session cookie, 'connect.sid' is the default session cookie name.
+    req.session.destroy(() => {
         res.clearCookie("connect.sid");
         res.status(200).json({ message: "Logout successful" });
     });

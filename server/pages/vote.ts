@@ -18,10 +18,6 @@ const router = express.Router();
  */
 router.post('/', isAuthenticated, isAuthorized, appRateLimiter, async (req: Request, res: Response) => {
     const { postId, postType, type, userId } = req.body;
-    
-    if (!postId || !postType || (type !== 1 && type !== -1 && type !== 0)) {
-        return res.status(400).json({ message: 'Invalid vote payload' });
-    }
 
     try {
         await Vote.registerVote({

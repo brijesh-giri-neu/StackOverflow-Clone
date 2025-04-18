@@ -13,11 +13,6 @@ router.post('/add', isAuthenticated, isAuthorized, async (req: Request, res: Res
     const { postId, postType, text } = req.body;
     const userId = req.session.userId;
 
-    // Validation
-    if (!postId || !postType || !userId || !text) {
-        return res.status(400).json({ message: 'Invalid comment payload' });
-    }
-
     const comment = await Comment.addComment({
         postId: new mongoose.Types.ObjectId(postId),
         postType: postType as PostType,
@@ -31,11 +26,6 @@ router.post('/add', isAuthenticated, isAuthorized, async (req: Request, res: Res
 router.post('/edit', isAuthenticated, isAuthorized, async (req: Request, res: Response) => {
     const { _id ,postId, postType, text } = req.body;
     const userId = req.session.userId;
-
-    // Validation
-    if (!_id || !postId || !postType || !userId || !text) {
-        return res.status(400).json({ message: 'Invalid comment payload' });
-    }
 
     const comment = await Comment.editComment({
         _id: _id,   // Need commentId to edit existing comment
