@@ -73,7 +73,7 @@ describe("Answer Model - Static Methods", () => {
                 { ans_date_time: new Date("2024-03-30") }
             ];
 
-            const result = await Answer.getLatestAnswerDate(answers as any);
+            const result = await Answer.getLatestAnswerDate(answers as Array<object>);
             expect(result?.getTime()).toBe(latest.getTime());
         });
 

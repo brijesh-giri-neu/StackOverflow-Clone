@@ -1,3 +1,4 @@
+import 'express-async-errors';
 import cors from "cors";
 import { Server } from "http"; // Import the Server type from Node.js
 import express, { type Express } from "express";
@@ -88,11 +89,6 @@ app.use(
 );
 
 /**
- * Register error handler middleware
- */
-app.use(errorHandler);
-
-/**
  * Path to the OpenAPI specification YAML file.
  * @constant {string}
  */
@@ -149,6 +145,11 @@ app.use('/vote', voteRouter);
 app.use('/comment', commentRouter);
 
 /**
+ * Register error handler middleware after every other middleware, right after routers for async error handler to work.
+ */
+app.use(errorHandler);
+
+/**
  * Starts the Express server and listens for incoming requests.
  * Logs the server URL on startup.
  * @type {Server}
@@ -179,13 +180,8 @@ if (process.env.NODE_ENV !== "test") {
       process.exit(1);
     }
   });
-  module.exports = server; // ✅ Only export if defined
+  module.exports = server; // Only export if defined
 } else {
-  module.exports = app; // ✅ During tests, export app
+  module.exports = app; // During tests, export app
 }
 
-/**
- * Exports the server for testing or other use cases.
- * @module
- */
-// module.exports = server;

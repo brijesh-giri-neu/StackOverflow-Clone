@@ -101,10 +101,10 @@ router.get('/getQuestion', async (req: Request, res: Response) => {
     });
 });
 
-async function enrichQuestionWithUserVotes(question: any, userId: string) {
+async function enrichQuestionWithUserVotes(question: IQuestion, userId: string) {
     const allPostIds = [
         question._id,
-        ...question.answers.map((a: any) => a._id),
+        ...question.answers.map((a) => a._id),
     ];
 
     const votes = await Vote.find({
@@ -117,14 +117,14 @@ async function enrichQuestionWithUserVotes(question: any, userId: string) {
         voteMap[vote.postId.toString()] = vote.type;
     });
 
-    const enrichedAnswers = question.answers.map((a: any) => ({
-        ...(a.toObject?.() ?? a),
-        currentUserVote: voteMap[a._id.toString()] ?? VoteType.NoVote,
+    const enrichedAnswers = question.answers.map((a) => ({
+        ...a,
+        currentUserVote: voteMap[a._id!.toString()] ?? VoteType.NoVote,
     }));
 
     return {
         ...question,
-        currentUserVote: voteMap[question._id.toString()] ?? VoteType.NoVote,
+        currentUserVote: voteMap[question._id!.toString()] ?? VoteType.NoVote,
         answers: enrichedAnswers,
     };
 }

@@ -8,14 +8,15 @@ import { RequestHandler } from "express";
  *
  * @param obj - The object to sanitize
  */
-const sanitizeObject = (obj: any): void => {
-  if (typeof obj !== "object" || obj === null) return;
+const sanitizeObject = (obj: object): void => {
+  const typedObj = obj as Record<string, unknown>;
 
-  for (const key in obj) {
-    if (typeof obj[key] === "string") {
-      obj[key] = xss(obj[key]);
-    } else if (typeof obj[key] === "object") {
-      sanitizeObject(obj[key]); // recursive
+  for (const key in typedObj) {
+    const value = typedObj[key];
+    if (typeof value === "string") {
+      typedObj[key] = xss(value);
+    } else if (typeof value === "object" && value !== null) {
+      sanitizeObject(value as object);
     }
   }
 };

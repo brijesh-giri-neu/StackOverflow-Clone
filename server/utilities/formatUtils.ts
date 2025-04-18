@@ -1,4 +1,4 @@
-import { IAnswerDocument, IAnswer, IQuestionDocument, IQuestion, IUserProfile, IUserProfileDocument, IUser, IUserDocument, ICommentDocument, IComment, PostType } from '../types/types';
+import { IAnswerDocument, IAnswer, IQuestionDocument, IQuestion, IUserProfile, IUserProfileDocument, IUser, IUserDocument, ICommentDocument, IComment } from '../types/types';
 import mongoose from 'mongoose';
 
 /**
@@ -14,7 +14,7 @@ export function convertToIAnswer(answer: IAnswerDocument): IAnswer {
         text: answer.text,
         ans_by: answer.ans_by instanceof mongoose.Types.ObjectId
         ? answer.ans_by.toString()
-        : (answer.ans_by as any)?.displayName?.toString() || "",
+        : answer.ans_by?.displayName?.toString() || "",
         ans_date_time: answer.ans_date_time.toISOString(),
         vote_score: answer.vote_score,
     };
@@ -35,7 +35,7 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
         text: question.text,
         asked_by: question.asked_by instanceof mongoose.Types.ObjectId
             ? question.asked_by.toString()
-            : (question.asked_by as any)?.displayName?.toString() || "",
+            : question.asked_by?.displayName?.toString() || "",
         views: question.views,
         ask_date_time: question.ask_date_time.toISOString(),
         vote_score: question.vote_score,
@@ -52,7 +52,7 @@ export function convertToIQuestion(question: IQuestionDocument): IQuestion {
                     text: ans.text,
                     ans_by: ans.ans_by instanceof mongoose.Types.ObjectId
                     ? ans.ans_by
-                    : (ans.ans_by as any)?.displayName?.toString() || "",
+                    : ans.ans_by?.displayName?.toString() || "",
                     ans_date_time: ans.ans_date_time.toISOString(),
                     vote_score: ans.vote_score,
                 };
@@ -118,6 +118,14 @@ export function convertToIUser(user: IUserDocument): IUser {
     };
 }
 
+/**
+ * Converts a Mongoose ICommentDocument to a plain IComment object.
+ * This is useful for preparing comment data for API responses by ensuring the `_id` field is a string
+ * and preserving all relevant fields such as timestamps and deletion status.
+ *
+ * @param {ICommentDocument} comment - The Mongoose comment document to be converted.
+ * @returns {IComment} - The converted comment object with `_id` as a string and all fields retained.
+ */
 export function convertToIComment(comment: ICommentDocument): IComment {
     return {
         _id: comment._id.toString(),

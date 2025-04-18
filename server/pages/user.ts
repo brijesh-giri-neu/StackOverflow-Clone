@@ -35,18 +35,13 @@ router.post('/register', async (req: Request, res: Response) => {
  * @returns {Response} - A JSON response indicating whether the login was successful.
  */
 router.post('/login', async (req: Request, res: Response) => {
-    try {
-        const { email, password } = req.body;
-        const user = await User.loginUser(email, password);
-        if (user) {
-            req.session.userId = user._id;
-            res.status(200).json({ message: "Login successful", user });
-        } else {
-            res.status(401).json({ message: "Invalid credentials" });
-        }
-    } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ message: "An error occurred during login" });
+    const { email, password } = req.body;
+    const user = await User.loginUser(email, password);
+    if (user) {
+        req.session.userId = user._id;
+        res.status(200).json({ message: "Login successful", user });
+    } else {
+        res.status(401).json({ message: "Invalid credentials" });
     }
 });
 
@@ -62,7 +57,6 @@ router.post('/login', async (req: Request, res: Response) => {
 router.post("/logout", (req: Request, res: Response) => {
     req.session.destroy((err) => {
         if (err) {
-            console.error("Logout error:", err);
             return res.status(500).json({ message: "Error logging out" });
         }
         // Optionally clear the session cookie, 'connect.sid' is the default session cookie name.
@@ -81,16 +75,11 @@ router.get('/session', async (req: Request, res: Response) => {
         return res.status(401).json({ message: "Not authenticated" });
     }
 
-    try {
-        const user = await User.getUserById(req.session.userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json({ user });
-    } catch (error) {
-        console.error("Error fetching user:", error);
-        res.status(500).json({ message: "Internal server error" });
+    const user = await User.getUserById(req.session.userId);
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
+    res.status(200).json({ user });
 });
 
 export default router;
