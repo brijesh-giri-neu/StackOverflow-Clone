@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
  *
  * @param {Function} next - The callback function to signal completion of the middleware.
  */
+// NOTE: THIS BLOCK WILL NOT BE COVERED BY UNIT TESTS because execution of PRE-SAVE hook requires connecting to actual MongoDB database.
 UserSchema.pre<IUserDocument>("save", async function (next) {
     if (!this.isModified("password")) return next();
 

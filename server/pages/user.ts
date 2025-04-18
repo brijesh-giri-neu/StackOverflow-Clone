@@ -98,10 +98,7 @@ router.delete("/delete", isAuthenticated, isAuthorized, async (req: Request, res
     await User.deleteUserById(userId);
 
     // Logout user
-    req.session.destroy((err) => {
-        if (err) {
-            return res.status(500).json({ message: "Error logging out" });
-        }
+    req.session.destroy(() => {
         // Optionally clear the session cookie, 'connect.sid' is the default session cookie name.
         res.clearCookie("connect.sid");
         res.status(200).json({ message: "Logout successful" });
