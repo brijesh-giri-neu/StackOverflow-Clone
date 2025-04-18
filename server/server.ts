@@ -24,13 +24,13 @@ import { inputSanitizer } from "./middlewares/inputSanitizer";
  * Client URL for CORS configuration.
  * @constant {string}
  */
-const CLIENT_URL: string = "http://localhost:3000";
+const CLIENT_URL : string = process.env.CLIENT_URL || "http://localhost:3000";
 
 /**
  * Port on which the server listens.
  * @constant {number}
  */
-const port: number = 8000;
+const port = process.env.PORT || 8000;
 
 // Initialize database connection
 // DBConnection.getInstance();
@@ -40,6 +40,9 @@ const port: number = 8000;
  * @type {Express}
  */
 const app: Express = express();
+
+// Required for trusting proxy headers on Render
+app.set("trust proxy", 1);
 
 /**
  * Middleware for handling Cross-Origin Resource Sharing (CORS).
