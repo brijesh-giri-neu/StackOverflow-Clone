@@ -150,8 +150,9 @@ And('The user navigates to any question', () => {
     cy.contains(Q2_DESC).click();
 });
 
-When('The user goes to the {string} page', (sectionName) => {
+When('The user goes to the {string} page to answer', (sectionName) => {
     cy.login(testUserForLogin.email, testUserForLogin.password);
+    cy.contains(Q2_DESC).click();
     cy.contains(sectionName).click();
 });
 
