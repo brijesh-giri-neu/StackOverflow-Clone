@@ -11,6 +11,12 @@ After(() => {
     cy.exec("npm run --prefix ../server remove_db mongodb://127.0.0.1:27017/fake_so");
 });
 
+const testUserForLogin = {
+    email: "test2@example.com",
+    password: "securepassword123",
+    displayName: "Test User 2",
+};
+
 // Titles used in seeded data
 const Q1_TITLE = "Programmatically navigate using React router";
 const Q2_TITLE = "android studio save string shared preference, start activity and load the saved string";
@@ -110,8 +116,9 @@ Given('The user is viewing the homepage {string}', (url) => {
 });
 
 And('The user clicks on {string} and has created a new question', (buttonName) => {
+    cy.login(testUserForLogin.email, testUserForLogin.password);
     cy.contains(buttonName).click();
-    createQuestion(Q5_TITLE, "Test Question A Text", "javascript", "mks1", false, true);
+    createQuestion(Q5_TITLE, "Test Question A Text", "javascript", false, true);
     cy.contains("All Questions");
 });
 
