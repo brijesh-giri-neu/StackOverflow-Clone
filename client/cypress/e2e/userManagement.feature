@@ -38,8 +38,7 @@ Feature: User Account Management
 
     Scenario: User deletes their account
         Given The user is logged in and on the profile settings page
-        When The user initiates the account deletion process
-        And Confirms the deletion
+        When The user initiates the account deletion process and confirms the deletion
         Then The account should be deactivated
         And The user should be logged out
 
