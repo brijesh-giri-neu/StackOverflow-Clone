@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IUserDocument, IUserModel } from "../../types/types";
-import bcrypt from "bcrypt";
+import { hashPassword } from "../../services/passwordService";
 
 /**
  * The schema for a document in the User collection.
@@ -34,15 +34,8 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
 UserSchema.pre<IUserDocument>("save", async function (next) {
     if (!this.isModified("password")) return next();
 
-    try {
-        const SALT_ROUNDS = 10;
-        const salt = await bcrypt.genSalt(SALT_ROUNDS);
-        const hash = await bcrypt.hash(this.password, salt);
-        this.password = hash;
-        next();
-    } catch (error) {
-        console.log(error);
-    }
+    this.password = await hashPassword(this.password);
+    next();
 });
 
 
