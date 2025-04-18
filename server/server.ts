@@ -32,8 +32,8 @@ const CLIENT_URL : string = process.env.CLIENT_URL || "http://localhost:3000";
  */
 const port = process.env.PORT || 8000;
 
-// Initialize database connection
-// DBConnection.getInstance();
+const secure = process.env.NODE_ENV !== undefined;
+const sameSite = (process.env.SAME_SITE as "lax" | "strict" | "none") || "lax";
 
 /**
  * Express app instance.
@@ -83,10 +83,10 @@ app.use(
     saveUninitialized: false,       // only save session if something is stored
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,       // session expiration: 24 hour (adjust as needed)
-      secure: false,                // set true if serving over HTTPS
       // Feature: Securing Authentication Cookies
       httpOnly: true,     // Prevents client-side JavaScript from accessing the cookie (protects against XSS)
-      sameSite: true,     // Ensures cookies are sent only with same-site requests (protects against CSRF)
+      secure,     // true on Render, false locally, set true if serving over HTTPS
+      sameSite,   // "None" on Render, "Lax" locally, Ensures cookies are sent only with same-site requests (protects against CSRF)
     },
   })
 );
