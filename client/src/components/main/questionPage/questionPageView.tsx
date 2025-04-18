@@ -9,7 +9,7 @@ import {
   OrderFunctionType,
   SetQuestionPageFunctionType,
 } from "../../../types/functionTypes";
-import Pagination from "../../pagination";
+import Pagination from "../../pagination/paginationView";
 
 export interface QuestionPageProps {
   title_text?: string;
@@ -62,14 +62,12 @@ const QuestionPage = ({
       {title_text === "Search Results" && !qlist.length && (
         <div className="bold_title right_padding">No Questions Found</div>
       )}
-      <div className="pagination-wrapper">
-        <Pagination
-          currentPage={pagination.currentPage}
-          totalPages={pagination.totalPages}
-          pageSize={pagination.pageSize}
-          setPage={(newPage, pageSize) => setQuestionPage(search, title_text, newPage, pageSize)}
-        />
-      </div>
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        pageSize={pagination.pageSize}
+        setPage={(newPage, pageSize) => setQuestionPage(search, title_text, newPage, pageSize)}
+      />
     </>
   );
 };

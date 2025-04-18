@@ -20,7 +20,7 @@ export const usePagination = ({
   }: PaginationProps) => {
     const pageRef = useRef(currentPage);
     const [localPageSize, setLocalPageSize] = useState(pageSize);
-  
+
     /**
      * Navigate to the next page, if not on the last one.
      */

@@ -6,7 +6,7 @@ import {
   ClickTagFunctionType,
   SetTagPageFunctionType,
 } from "../../../types/functionTypes";
-import Pagination from "../../pagination";
+import Pagination from "../../pagination/paginationView";
 
 // The type definition for the props of the TagPage component
 interface TagPageProps {
@@ -44,14 +44,12 @@ const TagPage = ({ page, limit, userId, clickTag, handleNewQuestion, setTagPage 
           <Tag key={idx} t={t} clickTag={clickTag} />
         ))}
       </div>
-      <div className="pagination-wrapper">
-        <Pagination
-            currentPage={pagination.currentPage}
-            totalPages={pagination.totalPages}
-            pageSize={pagination.pageSize}
-            setPage={(newPage, pageSize) => setTagPage(newPage, pageSize)}
-          />
-      </div>
+      <Pagination
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          pageSize={pagination.pageSize}
+          setPage={(newPage, pageSize) => setTagPage(newPage, pageSize)}
+        />
     </>
   );
 };

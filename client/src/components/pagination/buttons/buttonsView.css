@@ -36,27 +36,6 @@
   cursor: not-allowed;
 }
 
-.page-size-selector {
-    display: flex;
-    align-items: center;
-    margin-right: 5rem;
-    gap: 0.5rem;
-  }
-  
-.page-size-selector select {
-    padding: 0.25rem;
-}
-
-/* Wrapper container for pagination and selector */
-.pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; /* allow wrapping on small screens */
-    padding: 1rem 0;
-    gap: 1rem;
-}
-
 /* Left-side controls */
 .pagination-controls  {
     display: flex;
