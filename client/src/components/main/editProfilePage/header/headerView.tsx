@@ -2,6 +2,10 @@ import React from "react";
 import "./headerView.css";
 import { FaSignOutAlt } from "react-icons/fa";
 
+/**
+ * Props for the ProfileHeader component used in edit mode.
+ * Includes the user's display name and a logout handler.
+ */
 interface ProfileHeaderProps {
     displayName: string;
     handleLogout: () => void;
@@ -9,6 +13,9 @@ interface ProfileHeaderProps {
 
 const LogoutIcon = FaSignOutAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 
+/**
+ * Displays a profile header with the user's name and a logout button.
+ */
 const ProfileHeader = ({ displayName, handleLogout }: ProfileHeaderProps) => {
     return (
         <div className="profile_header">

@@ -47,6 +47,25 @@
     background-color: #d9701d;
 }
 
+.delete_profile_button,
+.logout_button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #f48024;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.delete_profile_button:hover,
+.logout_button:hover {
+    background-color: #d9701d;
+}
+
+
 .button_icon {
     display: inline-block;
     vertical-align: middle;

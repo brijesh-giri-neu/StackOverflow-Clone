@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
         email: { type: String, required: true, unique: true, match: [/\S+@\S+\.\S+/, "Please enter a valid email address"] },
         displayName: { type: String, required: true, match: [/^[a-zA-Z0-9_ ]+$/, "Display name contains invalid characters"] },
         password: { type: String, required: true, minlength: [8, "Password must be at least 8 characters long"] },
+        isDeleted: { type: Boolean, default: false},
     },
     { collection: "User" }
 );
@@ -29,6 +30,7 @@ const UserSchema = new mongoose.Schema<IUserDocument, IUserModel>(
  *
  * @param {Function} next - The callback function to signal completion of the middleware.
  */
+// NOTE: THIS BLOCK WILL NOT BE COVERED BY UNIT TESTS because execution of PRE-SAVE hook requires connecting to actual MongoDB database.
 UserSchema.pre<IUserDocument>("save", async function (next) {
     if (!this.isModified("password")) return next();
 
@@ -42,6 +44,5 @@ UserSchema.pre<IUserDocument>("save", async function (next) {
         console.log(error);
     }
 });
-
 
 export default UserSchema;

@@ -1,16 +1,31 @@
 import "./index.css";
 import { useState, ChangeEvent, KeyboardEvent } from "react";
-import { QuestionsPageQueryFuntionType, UserProfileObjFunctionType, VoidFunctionType } from "../../types/functionTypes";
+import {
+  QuestionsPageQueryFuntionType,
+  UserProfileObjFunctionType,
+  VoidFunctionType
+} from "../../types/functionTypes";
 import { UserProfileType, UserResponseType } from "../../types/entityTypes";
 
+/**
+ * Props for the Header component.
+ */
 interface HeaderProps {
+  /** Currently logged-in user, or null if not logged in */
   user: UserResponseType | null;
+  /** Profile data for the logged-in user, or null */
   userProfile: UserProfileType | null;
+  /** Current search input */
   search: string;
+  /** Function to update the question page based on search input */
   setQuestionPage: QuestionsPageQueryFuntionType;
+  /** Function to show the user registration page */
   setUserRegistrationPage: VoidFunctionType;
+  /** Function to show the user login page */
   setUserLoginPage: VoidFunctionType;
+  /** Function to navigate to the user's profile page */
   setProfilePage: UserProfileObjFunctionType;
+  /** Function to fetch and display all questions */
   handleQuestions: VoidFunctionType;
 }
 
@@ -30,10 +45,18 @@ const Header = ({
 }: HeaderProps) => {
   const [val, setVal] = useState<string>(search);
 
+  /**
+   * Handles changes in the search input field.
+   * @param e Input change event
+   */
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setVal(e.target.value);
   };
 
+  /**
+   * Triggers search when Enter key is pressed.
+   * @param e Keyboard event
+   */
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();

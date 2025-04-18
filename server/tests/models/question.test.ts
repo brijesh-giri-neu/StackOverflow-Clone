@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
+import { Types } from "mongoose";
 import Question from "../../models/questions";
 import Answer from "../../models/answers";
 import Tag from "../../models/tags";
 import { convertToIAnswer, convertToIQuestion } from "../../utilities/formatUtils";
 import { IAnswerDocument, IQuestionDocument, IQuestion, IAnswer } from "../../types/types";
+import {IAnswerDB} from "../../scripts/script_types";
 
 jest.mock("../../utilities/formatUtils");
 
@@ -67,17 +69,18 @@ describe("Question Model - Static Methods", () => {
     });
 
     it("findByIdAndIncrementViews should return incremented and populated question", async () => {
-        const mockIncrement = jest.fn().mockResolvedValue(baseQuestion);
+        const baseQuestion2 = new Question({ ...baseQuestion, answers: [new mongoose.Types.ObjectId()] });
+        const mockIncrement = jest.fn().mockResolvedValue(baseQuestion2);
         const mockPopulate = jest.fn().mockReturnThis();
-        const mockQuestion = { ...baseQuestion, incrementViews: mockIncrement, toObject: () => baseQuestion };
+        const mockQuestion = { ...baseQuestion2, incrementViews: mockIncrement, toObject: () => baseQuestion2 };
 
         jest.spyOn(Question, "findById").mockReturnValue({
             populate: mockPopulate,
             then: (cb: any) => cb(mockQuestion)
         } as any);
 
-        const result = await Question.findByIdAndIncrementViews(baseQuestion._id.toString());
-        expect(result).toEqual(baseQuestion);
+        const result = await Question.findByIdAndIncrementViews(baseQuestion2._id.toString());
+        expect(result).toEqual(baseQuestion2);
     });
 
     it("createQuestion should create a new question and return it", async () => {
@@ -167,5 +170,171 @@ describe("Question Utilities - formatUtils", () => {
         expect(new Date(result.ans_date_time).toISOString()).toBe(mockAnswer.ans_date_time.toISOString());
         expect(typeof result.ans_by).toBe("string");
 
+    });
+
+    it("mostRecentActivity should return latest answer date from populated IAnswerDB", () => {
+        const answer1: IAnswerDB = {
+            _id: new mongoose.Types.ObjectId(),
+            text: "Old answer",
+            ans_by: new mongoose.Types.ObjectId(),
+            ans_date_time: new Date("2024-06-01T00:00:00Z"),
+            vote_score: 1
+        };
+
+        const answer2: IAnswerDB = {
+            _id: new mongoose.Types.ObjectId(),
+            text: "New answer",
+            ans_by: new mongoose.Types.ObjectId(),
+            ans_date_time: new Date("2024-07-01T00:00:00Z"),
+            vote_score: 2
+        };
+
+        const instance = new Question({
+            _id: new mongoose.Types.ObjectId(),
+            title: "Sample",
+            text: "Test question",
+            asked_by: new mongoose.Types.ObjectId(),
+            ask_date_time: new Date("2024-01-01T00:00:00Z"),
+            views: 0,
+            vote_score: 0,
+            tags: [],
+            answers: [answer1, answer2]
+        });
+
+        Object.defineProperty(instance, "hasAnswers", {
+            get: () => true
+        });
+
+        const result = instance.mostRecentActivity;
+
+        expect(result.toISOString()).toBe("2024-01-01T00:00:00.000Z");
+    });
+
+    it("should convert and return question with sorted answers", async () => {
+        const answerId = new mongoose.Types.ObjectId();
+        const ansDate = new Date("2024-04-20T00:00:00Z");
+
+        const mockAnswerDoc: IAnswerDocument = {
+            _id: answerId,
+            text: "Answer Text",
+            ans_by: new mongoose.Types.ObjectId(),
+            ans_date_time: ansDate,
+            vote_score: 2,
+            toObject: () => ({
+                _id: answerId,
+                text: "Answer Text",
+                ans_by: "user",
+                ans_date_time: ansDate,
+                vote_score: 2,
+            }),
+        } as unknown as IAnswerDocument;
+
+        const baseQ = new Question({
+            ...baseQuestion,
+            answers: [mockAnswerDoc._id],
+        });
+
+        const mockIncrement = jest.fn().mockResolvedValue(baseQ);
+        const mockToObject = jest.fn().mockReturnValue(baseQ);
+
+        const mockFinalDoc = {
+            ...baseQ,
+            incrementViews: mockIncrement,
+            toObject: mockToObject,
+        };
+
+        // Chain mock: findById().populate().populate()
+        const mockPopulate2 = jest.fn().mockReturnValue(mockFinalDoc); // second .populate()
+        const mockPopulate1 = jest.fn().mockReturnValue({ populate: mockPopulate2 }); // first .populate()
+        jest.spyOn(Question, "findById").mockReturnValue({ populate: mockPopulate1 } as any);
+
+        jest.spyOn(Answer, "getMostRecent").mockResolvedValueOnce([mockAnswerDoc]);
+
+        (convertToIQuestion as jest.Mock).mockImplementation((q) => q);
+        (convertToIAnswer as jest.Mock).mockImplementation((a) => a);
+
+        const result = await Question.findByIdAndIncrementViews(baseQ._id.toString());
+
+        expect(result?.answers).toHaveLength(1);
+    });
+
+    it("findByIdAndIncrementViews should return null if question not found", async () => {
+        jest.spyOn(Question, "findById").mockReturnValueOnce({
+            populate: jest.fn().mockReturnThis(),
+            then: (cb: any) => cb(null) // <- simulate DB not finding a document
+        } as any);
+
+        const result = await Question.findByIdAndIncrementViews(new mongoose.Types.ObjectId().toString());
+        expect(result).toBeNull();
+    });
+
+    it("getActiveQuestions should include unanswered questions", async () => {
+        const mockQuestion = {
+            ...baseQuestion,
+            answers: [] // ❗ No answers = unanswered
+        };
+
+        jest.spyOn(Question, "find").mockReturnValueOnce({
+            populate: jest.fn().mockReturnThis(),
+            lean: jest.fn().mockResolvedValueOnce([mockQuestion])
+        } as any);
+
+        // ❗ Simulate unanswered question by returning undefined
+        jest.spyOn(Answer, "getLatestAnswerDate").mockResolvedValueOnce(undefined);
+
+        const result = await Question.getActiveQuestions();
+
+        expect(result).toHaveLength(1);
+        expect(result[0]).toEqual(expect.objectContaining({ title: mockQuestion.title }));
+    });
+
+    it("getActiveQuestions should sort both answered and unanswered questions", async () => {
+        const q1 = {
+            ...baseQuestion,
+            _id: new mongoose.Types.ObjectId(),
+            ask_date_time: new Date("2024-01-01"),
+            answers: []
+        };
+
+        const q2 = {
+            ...baseQuestion,
+            _id: new mongoose.Types.ObjectId(),
+            ask_date_time: new Date("2024-02-01"),
+            answers: []
+        };
+
+        const q3 = {
+            ...baseQuestion,
+            _id: new mongoose.Types.ObjectId(),
+            ask_date_time: new Date("2024-03-01"),
+            answers: [{}], // Simulate answered
+            mostRecentActivity: new Date("2024-04-01")
+        };
+
+        const q4 = {
+            ...baseQuestion,
+            _id: new mongoose.Types.ObjectId(),
+            ask_date_time: new Date("2024-04-01"),
+            answers: [{}], // Simulate answered
+            mostRecentActivity: new Date("2024-05-01")
+        };
+
+        // Return 4 questions: 2 unanswered, 2 answered
+        jest.spyOn(Question, "find").mockReturnValueOnce({
+            populate: jest.fn().mockReturnThis(),
+            lean: jest.fn().mockResolvedValueOnce([q1, q2, q3, q4])
+        } as any);
+
+        // Mark q1 & q2 as unanswered (no latest answer date)
+        jest.spyOn(Answer, "getLatestAnswerDate")
+            .mockResolvedValueOnce(undefined) // q1
+            .mockResolvedValueOnce(undefined) // q2
+            .mockResolvedValueOnce(q3.mostRecentActivity) // q3
+            .mockResolvedValueOnce(q4.mostRecentActivity); // q4
+
+        const result = await Question.getActiveQuestions();
+
+        expect(result).toHaveLength(4);
+        // Optional: check order if needed
     });
 });

@@ -7,6 +7,12 @@ import { ICommentDocument, ICommentModel, PostType } from "../../types/types";
  * A comment belongs to a user and targets either a Question or an Answer.
  *
  * @type {mongoose.Schema<ICommentDocument, ICommentModel>}
+ * 
+ * @property {string} text - The content of the comment (Required, 1–600 characters).
+ * @property {PostType} postType - The type of the post the comment is attached to ("Question" or "Answer").
+ * @property {mongoose.Types.ObjectId} postId - Reference to the specific Question or Answer document (based on `postType`).
+ * @property {mongoose.Types.ObjectId} userId - Reference to the user who created the comment.
+ * @property {boolean} isDeleted - Flag indicating if the comment was soft-deleted (Defaults to false).
  */
 const CommentSchema = new mongoose.Schema<ICommentDocument, ICommentModel>(
   {

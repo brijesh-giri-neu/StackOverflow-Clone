@@ -7,7 +7,11 @@ import Answer from "../models/answers";
 import Question from "../models/questions";
 import Tag from "../models/tags";
 import User from "../models/users";
-import { ITagDB, IAnswerDB, IQuestionDB, IUserDB } from "./script_types";
+import Vote from "../models/votes";
+import Comment from "../models/comments";
+import UserProfile from "../models/userProfiles";
+import { PostType, VoteType } from "../types/types";
+import { ITagDB, IAnswerDB, IQuestionDB, IUserDB, IUserProfileDB, IVoteDB, ICommentDB } from "./script_types";
 import {
   Q1_DESC,
   Q1_TXT,
@@ -26,6 +30,7 @@ import {
   A7_TXT,
   A8_TXT,
 } from "../data/posts_strings";
+
 
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
@@ -138,6 +143,96 @@ function questionCreate(
 }
 
 /**
+ * An asynchronous function to create a user profile in the UserProfiles collection.
+ * @param user - The user reference (must be an existing user document)
+ * @param fullName - The full name of the user
+ * @param location - (Optional) location string
+ * @param title - (Optional) user's title or professional role
+ * @param aboutMe - (Optional) bio or description
+ * @param website - (Optional) website link
+ * @param twitter - (Optional) Twitter/X link
+ * @param github - (Optional) GitHub link
+ * @returns A promise that resolves to the created UserProfile object
+ */
+function userProfileCreate(
+  user: IUserDB,
+  fullName?: string,
+  location?: string,
+  title?: string,
+  aboutMe?: string,
+  website?: string,
+  twitter?: string,
+  github?: string
+): Promise<IUserProfileDB> {
+  const profileDetail: IUserProfileDB = {
+    user,
+    fullName,
+    location,
+    title,
+    aboutMe,
+    website,
+    twitter,
+    github,
+  };
+
+  const profile = new UserProfile(profileDetail);
+  return profile.save();
+}
+
+
+/**
+ * An asynchronous function to create a vote in the Vote collection.
+ *
+ * @param {VoteType} type - The type of vote (1 for upvote, -1 for downvote).
+ * @param {PostType} postType - The type of post being voted on ("Question" or "Answer").
+ * @param {mongoose.Types.ObjectId} postId - The ID of the question or answer being voted on.
+ * @param {mongoose.Types.ObjectId} userId - The ID of the user casting the vote.
+ * @returns {Promise<IVoteDB>} A promise that resolves to the vote document created in the database.
+ */
+function createVote(
+  type: VoteType,
+  postType: PostType,
+  postId: mongoose.Types.ObjectId,
+  userId: mongoose.Types.ObjectId
+): Promise<IVoteDB> {
+  const voteDetail: IVoteDB = {
+    type,
+    postType,
+    postId,
+    userId,
+  };
+
+  const vote = new Vote(voteDetail);
+  return vote.save();
+}
+
+/**
+ * An asynchronous function to create a comment in the Comment collection.
+ *
+ * @param {string} text - The content of the comment (must be 1–600 characters).
+ * @param {PostType} postType - Indicates whether the comment is on a Question or an Answer.
+ * @param {mongoose.Types.ObjectId} postId - The ID of the post being commented on.
+ * @param {mongoose.Types.ObjectId} userId - The ID of the user writing the comment.
+ * @returns {Promise<ICommentDB>} A promise that resolves to the saved comment document.
+ */
+function createComment(
+  text: string,
+  postType: PostType,
+  postId: mongoose.Types.ObjectId,
+  userId: mongoose.Types.ObjectId
+): Promise<ICommentDB> {
+  const commentDetail: ICommentDB = {
+    text,
+    postType,
+    postId,
+    userId
+  };
+
+  const comment = new Comment(commentDetail);
+  return comment.save();
+}
+
+/**
  * an asynchronous function to populate the database with tags, answers, and questions
  */
 const populate = async () => {
@@ -159,6 +254,79 @@ const populate = async () => {
       "test2@example.com",
       "Test User 2",
       "securepassword123"
+    );
+
+    const user3 = await userCreate(
+      "test3@example.com",
+      "Test User 3",
+      "securepassword123"
+    );
+
+    const user4 = await userCreate(
+      "test4@example.com",
+      "Test User 4",
+      "securepassword123"
+    );
+
+    const user5 = await userCreate(
+      "test5@example.com",
+      "Test User 5",
+      "securepassword123"
+    );
+
+    await userProfileCreate(
+      user1,
+      "Alice Doe",
+      "Boston",
+      "Developer",
+      "I build things for the web.",
+      "https://alice.dev",
+      "https://twitter.com/alice",
+      "https://github.com/alice"
+    );
+
+    await userProfileCreate(
+      user2,
+      "Bob Smith",
+      "NYC",
+      "Engineer",
+      "Passionate about infrastructure and AI.",
+      "https://bobsmith.io",
+      "https://twitter.com/bobsmith",
+      "https://github.com/bobsmith"
+    );
+
+    await userProfileCreate(
+      user3,
+      "Charlie Johnson",
+      "Seattle",
+      "Frontend Developer",
+      "Focused on React and TypeScript.",
+      "https://charlie.dev",
+      "https://twitter.com/charliecode",
+      "https://github.com/charliejohnson"
+    );
+
+    await userProfileCreate(
+      user4,
+      "Dana Lopez",
+      "Austin",
+      "Data Scientist",
+      "Turning data into insights.",
+      "https://dana.codes",
+      "https://twitter.com/danalopez",
+      "https://github.com/danalopez"
+    );
+
+    await userProfileCreate(
+      user5,
+      "Evan Zhang",
+      "San Francisco",
+      "DevOps Engineer",
+      "I love automating everything.",
+      "https://evan.dev",
+      "https://twitter.com/evanzhang",
+      "https://github.com/evanzhang"
     );
 
     const a1 = await answerCreate(
@@ -207,10 +375,10 @@ const populate = async () => {
       A8_TXT,
       user1,
       new Date("2023-03-22T21:17:53"),
-      0
+      -2
     );
 
-    await questionCreate(
+    const q1 = await questionCreate(
       Q1_DESC,
       Q1_TXT,
       [t1, t2],
@@ -220,7 +388,7 @@ const populate = async () => {
       10,
       0
     );
-    await questionCreate(
+    const q2 = await questionCreate(
       Q2_DESC,
       Q2_TXT,
       [t3, t4, t2],
@@ -240,7 +408,7 @@ const populate = async () => {
       200,
       0
     );
-    await questionCreate(
+    const q4 = await questionCreate(
       Q4_DESC,
       Q4_TXT,
       [t3, t4, t5],
@@ -248,8 +416,30 @@ const populate = async () => {
       user2,
       new Date("2023-03-10T14:28:01"),
       103,
-      0
+      2
     );
+
+    // Votes on Question Q2
+    await createVote(VoteType.UpVote, PostType.Question, q2._id!, user1._id!);
+    await createVote(VoteType.DownVote, PostType.Question, q2._id!, user3._id!);
+
+    // Votes on Question Q4
+    await createVote(VoteType.UpVote, PostType.Question, q4._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q4._id!, user1._id!);
+
+    // Votes on answer a8 (belongs to Q4)
+    await createVote(VoteType.DownVote, PostType.Answer, a8._id!, user3._id!);
+    await createVote(VoteType.DownVote, PostType.Answer, a8._id!, user4._id!);
+
+    // 3 Comments on questions (Q1, Q2, Q4)
+    await createComment("This question really helped me understand routing.", PostType.Question, q1._id!, user3._id!);
+    await createComment("I encountered this issue too — thanks for asking!", PostType.Question, q2._id!, user4._id!);
+    await createComment("Good to see someone else using shared preferences!", PostType.Question, q4._id!, user5._id!);
+
+    // 3 Comments on answers (a1, a5, a8)
+    await createComment("This is the cleanest solution I've seen.", PostType.Answer, a1._id!, user2._id!);
+    await createComment("Thanks! Your answer worked perfectly.", PostType.Answer, a5._id!, user1._id!);
+    await createComment("Very detailed explanation. Appreciate it!", PostType.Answer, a8._id!, user3._id!);
 
     console.log("done");
   } catch (err) {

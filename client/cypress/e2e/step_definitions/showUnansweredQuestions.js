@@ -4,16 +4,22 @@ const UNANSWERED_QUESTION = "Unanswered test question";
 
 Before({ tags: "@showUnansweredQuestions" }, () => {
     cy.visit("http://localhost:3000");
+    cy.login(testUserForLogin.email, testUserForLogin.password);
     createQuestion(
         UNANSWERED_QUESTION,
         "This is a test question with no answers.",
         "bdd, test",
-        "testUser",
         true,
         true
     );
     cy.contains(UNANSWERED_QUESTION);
 });
+
+const testUserForLogin = {
+    email: "test2@example.com",
+    password: "securepassword123",
+    displayName: "Test User 2",
+};
 
 // Scenario: Show all unanswered questions
 //     Given The user can access the homepage "http://localhost:3000"
@@ -66,7 +72,8 @@ Given('The user is viewing the homepage {string}', (url) => {
 });
 
 And('The user answers a question that was previously unanswered', () => {
-    createAnswer(UNANSWERED_QUESTION, "testAnswerUser", "This is an answer.", true, true);
+    cy.login(testUserForLogin.email, testUserForLogin.password);
+    createAnswer(UNANSWERED_QUESTION, "This is an answer.", true, true);
     cy.contains(UNANSWERED_QUESTION);
 });
 

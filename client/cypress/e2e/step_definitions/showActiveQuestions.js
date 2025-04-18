@@ -18,6 +18,12 @@ function verifyActiveOrder() {
     });
 }
 
+const testUserForLogin = {
+    email: "test2@example.com",
+    password: "securepassword123",
+    displayName: "Test User 2",
+};
+
 // Scenario: Show all questions in active order on user request
 //     Given The user can access the homepage "http://localhost:3000"
 //     And can see the homepage "All Questions"
@@ -98,18 +104,19 @@ Given('The user is viewing the homepage {string}', (url) => {
 });
 
 And('The user has created a new question', () => {
-    createQuestion(Q5_TITLE, "Test Question A Text", "javascript", "mks1", true, true);
+    cy.login(testUserForLogin.email, testUserForLogin.password);
+    createQuestion(Q5_TITLE, "Test Question A Text", "javascript", true, true);
     cy.contains(Q5_TITLE);
     cy.contains("All Questions");
 });
 
 And('answers the new question', () => {
-    createAnswer(Q5_TITLE, "abc3", "Answer Question A", true);
+    createAnswer(Q5_TITLE, "Answer Question A", true);
 });
 
 And('The user answers an existing question from the {string} page', (pageName) => {
     cy.contains(pageName).click();
-    createAnswer(Q4_TITLE, "abc4", "Answer Question D", true);
+    createAnswer(Q4_TITLE, "Answer Question D", true);
 });
 
 When('The user clicks on the {string} tab in the {string} page', (tabName, pageName) => {

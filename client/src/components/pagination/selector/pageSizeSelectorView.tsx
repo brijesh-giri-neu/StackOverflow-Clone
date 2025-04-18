@@ -1,8 +1,11 @@
 import "./pageSizeSelectorView.css";
 
 interface PageSizeSelectorProps {
+  /** Currently selected number of items per page */
   value: number;
+  /** Callback triggered when a new page size is selected */
   onChange: (size: number) => void;
+  /** Optional array of available page size options */
   options?: number[];
 }
 
