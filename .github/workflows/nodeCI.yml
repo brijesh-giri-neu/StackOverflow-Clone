@@ -38,10 +38,6 @@ jobs:
     - name: Lint server code
       working-directory: server
       run: npx eslint
-      
-    - name: Build server
-      working-directory: server
-      run: npm run build
 
     # --- Client CI ---
     - name: Install client dependencies
@@ -79,7 +75,6 @@ jobs:
         working-directory: server
         run: |
           npm install
-          npm run build
           npm start &
         env:
           NODE_ENV: test
