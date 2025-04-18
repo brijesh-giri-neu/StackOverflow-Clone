@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { PostType, VoteType } from "../types/types";
 
 /**
  * The types in this file are used to define the shape of the documents
@@ -68,12 +69,54 @@ export interface IUserDB {
  */
 export interface IUserProfileDB {
   _id?: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId; // Reference to the User document
-  fullName: string;
+  user: IUserDB | mongoose.Types.ObjectId;
+  fullName?: string;
   location?: string;
   title?: string;
   aboutMe?: string;
   website?: string;
   twitter?: string;
   github?: string;
+}
+
+/**
+ * Represents the structure of a vote object used in database operations.
+ *
+ * @interface IVoteDB
+ * @property {mongoose.Types.ObjectId} [_id] - Optional MongoDB-generated unique identifier for the vote document.
+ * @property {VoteType} type - Type of the vote: 1 for upvote, -1 for downvote.
+ * @property {PostType} postType - Indicates whether the vote is for a Question or an Answer.
+ * @property {mongoose.Types.ObjectId} postId - ID of the post (Question or Answer) that the vote applies to.
+ * @property {mongoose.Types.ObjectId} userId - ID of the user who cast the vote.
+ */
+export interface IVoteDB {
+  _id?: mongoose.Types.ObjectId;
+  type: VoteType;
+  postType: PostType;
+  postId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
+}
+
+/**
+ * Represents the structure of a Comment document used for database operations.
+ *
+ * @interface ICommentDB
+ * @property {mongoose.Types.ObjectId} [_id] - Optional MongoDB-generated unique identifier.
+ * @property {string} text - The content of the comment (1–600 characters).
+ * @property {PostType} postType - The type of post being commented on ("Question" or "Answer").
+ * @property {mongoose.Types.ObjectId} postId - The ID of the target question or answer.
+ * @property {mongoose.Types.ObjectId} userId - The ID of the user who wrote the comment.
+ * @property {boolean} [isDeleted] - Flag to indicate if the comment has been soft deleted.
+ * @property {Date} [createdAt] - Timestamp when the comment was created.
+ * @property {Date} [updatedAt] - Timestamp when the comment was last updated.
+ */
+export interface ICommentDB {
+  _id?: mongoose.Types.ObjectId;
+  text: string;
+  postType: PostType;
+  postId: mongoose.Types.ObjectId;
+  userId: mongoose.Types.ObjectId;
+  isDeleted?: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

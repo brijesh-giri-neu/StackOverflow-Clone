@@ -1,6 +1,6 @@
 import React from "react";
 import "./headerView.css";
-import { FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
+import { FaPencilAlt, FaSignOutAlt, FaTrashAlt } from "react-icons/fa";
 
 interface ProfileHeaderProps {
     displayName: string;
@@ -11,6 +11,7 @@ interface ProfileHeaderProps {
 
 const PencilIcon = FaPencilAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 const LogoutIcon = FaSignOutAlt as React.FC<React.SVGProps<SVGSVGElement>>;
+const BinIcon = FaTrashAlt as React.FC<React.SVGProps<SVGSVGElement>>;
 
 const ProfileHeader = ({
     displayName,
@@ -25,16 +26,16 @@ const ProfileHeader = ({
                 <h2 className="profile_name">{displayName}</h2>
             </div>
             <div className="profile_actions">
-                <button onClick={handleProfileDelete} className="delete_profile_button">
-                    <PencilIcon className="button_icon"/>
-                    <span>Delete Profile</span>
-                </button>
                 <button onClick={setEditUserProfilePage} className="edit_profile_button">
-                    <PencilIcon className="button_icon"/>
+                    <PencilIcon className="button_icon" />
                     <span>Edit Profile</span>
                 </button>
+                <button onClick={handleProfileDelete} className="delete_profile_button">
+                    <BinIcon className="button_icon" />
+                    <span>Delete Profile</span>
+                </button>
                 <button onClick={handleLogout} className="logout_button">
-                    <LogoutIcon className="button_icon"/>
+                    <LogoutIcon className="button_icon" />
                     <span>Logout</span>
                 </button>
             </div>
