@@ -7,13 +7,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
+    "rootDir": ".",                     
     "typeRoots": ["./expressTypes", "./node_modules/@types"]
   },
   "include": [
     "./**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "tests"
   ]
 }

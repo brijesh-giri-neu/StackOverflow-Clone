@@ -24,22 +24,25 @@ import { inputSanitizer } from "./middlewares/inputSanitizer";
  * Client URL for CORS configuration.
  * @constant {string}
  */
-const CLIENT_URL: string = "http://localhost:3000";
+const CLIENT_URL : string = process.env.CLIENT_URL || "http://localhost:3000";
 
 /**
  * Port on which the server listens.
  * @constant {number}
  */
-const port: number = 8000;
+const port = parseInt(process.env.PORT || "8000", 10);
 
-// Initialize database connection
-// DBConnection.getInstance();
+const secure = process.env.NODE_ENV !== undefined;
+const sameSite = (process.env.SAME_SITE as "lax" | "strict" | "none") || "lax";
 
 /**
  * Express app instance.
  * @type {Express}
  */
 const app: Express = express();
+
+// Required for trusting proxy headers on Render
+app.set("trust proxy", 1);
 
 /**
  * Middleware for handling Cross-Origin Resource Sharing (CORS).
@@ -80,10 +83,10 @@ app.use(
     saveUninitialized: false,       // only save session if something is stored
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,       // session expiration: 24 hour (adjust as needed)
-      secure: false,                // set true if serving over HTTPS
       // Feature: Securing Authentication Cookies
       httpOnly: true,     // Prevents client-side JavaScript from accessing the cookie (protects against XSS)
-      sameSite: true,     // Ensures cookies are sent only with same-site requests (protects against CSRF)
+      secure,     // true on Render, false locally, set true if serving over HTTPS
+      sameSite,   // "None" on Render, "Lax" locally, Ensures cookies are sent only with same-site requests (protects against CSRF)
     },
   })
 );
@@ -161,7 +164,7 @@ if (process.env.NODE_ENV !== "test") {
   DBConnection.getInstance();
 
   server = app.listen(port, () => {
-    console.log(`Server starts at http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
   });
 
   /**
