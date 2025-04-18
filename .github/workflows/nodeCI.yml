@@ -59,12 +59,16 @@ jobs:
     #--- Run Server ---
     - name: Run Server
       working-directory: server
-      run: npm start
+      run: npm start &
       
     #--- Run Client ---
     - name: Run Client
       working-directory: client
-      run: npm start
+      run: npm start &
+
+    #--- Wait for Servers (10s timeout) ---
+    - name: Wait for backend and frontend to be ready
+      run: npx wait-on http://localhost:8000/api-docs http://localhost:3000 --timeout 10000
       
     #--- Tests ---
     - name: Run Cypress tests
