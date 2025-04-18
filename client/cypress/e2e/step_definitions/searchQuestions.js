@@ -5,6 +5,12 @@ const Q2_DESC = "android studio save string shared preference, start activity an
 const Q3_DESC = "Object storage for a web application";
 const Q4_DESC = "Quick question about storage on android";
 
+const testUserForLogin = {
+    email: "test2@example.com",
+    password: "securepassword123",
+    displayName: "Test User 2",
+};
+
 // Scenario: Search for a question using text content that does not exist
 //     Given The user has read access to the application "http://localhost:3000"
 //     When The user searches for a non-existent text
@@ -119,6 +125,7 @@ Then('The user should see questions that match the keyword in the title or text,
 //     Then The user should see questions matching the tag tagName
 
 When('The user goes to the {string} page', (sectionName) => {
+    cy.login(testUserForLogin.email, testUserForLogin.password);
     cy.contains(sectionName).click();
 });
 
@@ -143,7 +150,9 @@ And('The user navigates to any question', () => {
     cy.contains(Q2_DESC).click();
 });
 
-When('The user goes to the {string} page', (sectionName) => {
+When('The user goes to the {string} page to answer', (sectionName) => {
+    cy.login(testUserForLogin.email, testUserForLogin.password);
+    cy.contains(Q2_DESC).click();
     cy.contains(sectionName).click();
 });
 

@@ -159,6 +159,7 @@ app.use(errorHandler);
  */
 let server: Server;
 // Only run server + connect DB if not in test
+// NOTE: THIS BLOCK WILL CANNOT BE COVERED BY UNIT TESTS, as it instantiates actual server and connects to actual database.
 if (process.env.NODE_ENV !== "test") {
   DBConnection.getInstance();
 

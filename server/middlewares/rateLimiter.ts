@@ -8,8 +8,8 @@ import rateLimit from "express-rate-limit";
  * a defined time window.
  *
  * Configuration:
- * - `windowMs`: 15 minutes (time window for rate limiting)
- * - `max`: 50 requests allowed per IP during the window
+ * - `windowMs`: 5 seconds (time window for rate limiting)
+ * - `max`: 1 requests allowed per IP during the window
  * - `message`: Custom error message returned when the limit is exceeded
  *
  * This middleware is especially useful for public-facing endpoints like login,

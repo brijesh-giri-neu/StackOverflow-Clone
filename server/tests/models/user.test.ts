@@ -12,6 +12,7 @@ describe("User Model - Static Methods & Hooks", () => {
         email: "test@example.com",
         displayName: "Test User",
         password: "password123",
+        isDeleted: false
     };
 
     afterEach(() => {
@@ -70,7 +71,7 @@ describe("User Model - Static Methods & Hooks", () => {
 
             const result = await User.loginUser(mockUserInput.email, mockUserInput.password);
 
-            expect(User.findOne).toHaveBeenCalledWith({ email: mockUserInput.email });
+            expect(User.findOne).toHaveBeenCalledWith({ email: mockUserInput.email, isDeleted: { $ne: true } });
             expect(bcrypt.compare).toHaveBeenCalledWith(mockUserInput.password, foundUser.password);
             expect(result).toEqual(expectedUser);
         });
@@ -108,6 +109,7 @@ describe("User Model - Static Methods & Hooks", () => {
                 email: mockUserInput.email,
                 displayName: mockUserInput.displayName,
                 password: "hashedPassword",
+                isDeleted: false,
                 toObject: function () { return this; }
             };
 
@@ -117,24 +119,30 @@ describe("User Model - Static Methods & Hooks", () => {
                 displayName: foundUser.displayName
             };
 
-            jest.spyOn(User, "findById").mockReturnValueOnce({
+            jest.spyOn(User, "findOne").mockReturnValueOnce({
+                where: jest.fn().mockReturnThis(),
+                ne: jest.fn().mockReturnThis(),
                 exec: jest.fn().mockResolvedValue(foundUser)
             } as any);
             (convertToIUser as jest.Mock).mockReturnValue(converted);
 
             const result = await User.getUserById(mockUserId);
 
-            expect(User.findById).toHaveBeenCalledWith(mockUserId);
+            expect(User.findOne).toHaveBeenCalledWith({ _id: mockUserId, isDeleted: { $ne: true } });
             expect(convertToIUser).toHaveBeenCalledWith(foundUser);
             expect(result).toEqual(converted);
         });
 
         it("should return null if user not found", async () => {
-            jest.spyOn(User, "findById").mockReturnValueOnce({
+            const mockUserId = new mongoose.Types.ObjectId().toHexString();
+
+            const mockFindOne = jest.spyOn(User, "findOne").mockReturnValueOnce({
                 exec: jest.fn().mockResolvedValue(null)
             } as any);
 
-            const result = await User.getUserById(new mongoose.Types.ObjectId().toHexString());
+            const result = await User.getUserById(mockUserId);
+
+            expect(mockFindOne).toHaveBeenCalledWith({ _id: mockUserId, isDeleted: { $ne: true } });
             expect(result).toBeNull();
         });
     });
@@ -168,4 +176,22 @@ describe("User Model - Static Methods & Hooks", () => {
             expect(bcrypt.hash).toHaveBeenCalledWith("plaintextPassword", mockSalt);
         });
     });
+
+    describe("deleteUserById", () => {
+        it("should mark the user as deleted", async () => {
+            const mockUserId = new mongoose.Types.ObjectId().toHexString();
+
+            const mockUpdate = jest
+                .spyOn(User, "findByIdAndUpdate")
+                .mockResolvedValue(null as any);
+
+            await User.deleteUserById(mockUserId);
+
+            expect(mockUpdate).toHaveBeenCalledWith(
+                new mongoose.Types.ObjectId(mockUserId),
+                { isDeleted: true }
+            );
+        });
+    });
+
 });

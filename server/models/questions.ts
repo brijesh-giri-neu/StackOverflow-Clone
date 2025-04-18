@@ -13,7 +13,13 @@ import { convertToIAnswer, convertToIQuestion } from "../utilities/formatUtils";
 QuestionSchema.statics.getNewestQuestions = async function (): Promise<IQuestion[]> {
   return this.find()
     .sort({ ask_date_time: -1 })
-    .populate("answers", "ans_date_time")
+    .populate({
+      path: "answers",
+      populate: {
+        path: "ans_by",
+        select: "displayName"
+      }
+    })
     .populate("tags")
     .populate("asked_by", "displayName")
     .lean()
@@ -42,7 +48,14 @@ QuestionSchema.statics.getUnansweredQuestions = async function (): Promise<IQues
  * @returns {Promise<IQuestion[]>} - A promise that resolves to an array of active questions.
  */
 QuestionSchema.statics.getActiveQuestions = async function (): Promise<IQuestion[]> {
-  const questions : IQuestionDocument[] = await this.find().populate('answers').populate('tags').populate("asked_by", "displayName").lean();
+  const questions : IQuestionDocument[] = await this.find()
+  .populate({
+    path: "answers",
+    populate: {
+      path: "ans_by",
+      select: "displayName"
+    }
+  }).populate('tags').populate("asked_by", "displayName").lean();
   
   const answeredQuestions: IQuestionDocument[] = [];
   const unansweredQuestions: IQuestionDocument[] = [];

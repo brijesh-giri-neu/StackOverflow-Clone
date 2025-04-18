@@ -3,6 +3,16 @@ import { getUserSession } from "../services/userService";
 import { getUserProfile } from "../services/userProfileService";
 import { UserObjFunctionType, UserProfileObjFunctionType } from "../types/functionTypes";
 
+
+/**
+ * A custom React hook that attempts to restore the logged-in user's session on initial load.
+ * 
+ * If a valid session is found, it sets both the user and the user's profile in the app state.
+ * Falls back to an empty profile if user profile retrieval fails.
+ *
+ * @param {UserObjFunctionType} setUser - Function to update the logged-in user in state.
+ * @param {UserProfileObjFunctionType} setUserProfile - Function to update the user's profile in state.
+ */
 export const useUserSession = (
     setUser: UserObjFunctionType,
     setUserProfile: UserProfileObjFunctionType

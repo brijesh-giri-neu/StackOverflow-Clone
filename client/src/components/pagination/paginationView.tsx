@@ -16,15 +16,15 @@ const Pagination = ({
     totalPages,
     pageSize,
     setPage,
-  }: PaginationProps): JSX.Element => {
+}: PaginationProps): JSX.Element => {
     const {
-      handleNext,
-      handlePrev,
-      handlePageSizeChange,
-      showPrev,
-      pageNumber,
-      totalPages: total,
-      localPageSize,
+        handleNext,
+        handlePrev,
+        handlePageSizeChange,
+        showPrev,
+        pageNumber,
+        totalPages: total,
+        localPageSize,
     } = usePagination({ currentPage, totalPages, pageSize, setPage });
 
     return (

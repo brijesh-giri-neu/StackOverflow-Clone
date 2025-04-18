@@ -47,7 +47,7 @@ Feature: Search questions by search string or tag name
   Scenario: Search for a question by tag or text from the "Answer Question" page
     Given The user has read access to the application "http://localhost:3000"
     And The user navigates to any question
-    When The user goes to the "Answer Question" page
+    When The user goes to the "Answer Question" page to answer
     And The user searches for [tagName]
     Then The user should see questions matching the tag tagName
 

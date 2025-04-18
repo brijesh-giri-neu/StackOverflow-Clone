@@ -4,8 +4,10 @@ import { IUserProfileDocument, IUserProfileModel } from "../../types/types";
 /**
  * The schema for a document in the UserProfile collection.
  * 
+ * @type {mongoose.Schema<IUserProfileDocument, IUserProfileModel>}
+ * 
  * @property {mongoose.Schema.Types.ObjectId} user - A reference to the User document (Required, unique).
- * @property {string} fullName - The user's full name (Required).
+ * @property {string} fullName - The user's full name.
  * @property {string} [location] - The user's location.
  * @property {string} [title] - The user's title or professional role.
  * @property {string} [aboutMe] - A short bio or description of the user.

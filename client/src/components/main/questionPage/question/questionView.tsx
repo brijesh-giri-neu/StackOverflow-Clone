@@ -6,6 +6,10 @@ import {
 } from "../../../../types/functionTypes";
 import { Tag, AnswerResponseType } from "../../../../types/entityTypes";
 
+/**
+ * Props for the Question component.
+ * Includes question data and handlers for tag clicks and answer navigation.
+ */
 interface QuestionProps {
   q: {
     _id: string;
@@ -20,6 +24,14 @@ interface QuestionProps {
   handleAnswer: IdFunctionType;
 }
 
+
+/**
+ * Renders a question preview card with title, tags, stats, and author info.
+ *
+ * @param q - The question object containing title, tags, answers, and metadata.
+ * @param clickTag - Handler for when a tag is clicked.
+ * @param handleAnswer - Handler for when the question is clicked (to view/answer it).
+ */
 const Question = ({ q, clickTag, handleAnswer }: QuestionProps) => {
   return (
     <div

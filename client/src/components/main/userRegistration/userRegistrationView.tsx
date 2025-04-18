@@ -4,11 +4,22 @@ import Form from "../baseComponents/form/formView"; // Reuse form component
 import { UserObjFunctionType, UserProfileObjFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 
 interface UserRegistrationProps {
-    setUser: UserObjFunctionType,
-    setUserProfile: UserProfileObjFunctionType,
+    /** Setter to update the logged-in user state */
+    setUser: UserObjFunctionType;
+    /** Setter to update the user's profile state */
+    setUserProfile: UserProfileObjFunctionType;
+    /** Function to fetch and display all questions */
     handleQuestions: VoidFunctionType;
 }
 
+/**
+ * A user registration form component.
+ * Allows users to enter their email, password, and display name to create a new account.
+ *
+ * @param setUser - Function to update the user state after registration
+ * @param setUserProfile - Function to update the user's profile after registration
+ * @param handleQuestions - Function to fetch questions after successful registration
+ */
 const UserRegistration = ({ setUser, setUserProfile, handleQuestions }: UserRegistrationProps) => {
     const {
         email,

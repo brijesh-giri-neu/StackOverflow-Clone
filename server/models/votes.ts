@@ -8,6 +8,8 @@ import Answer from "./answers";
  * Static Method: registerVote
  * 
  * Handles the registration or updating of a vote made by a user on a post (either a Question or an Answer).
+ * Ensures users cannot vote on their own posts, calculates vote score deltas,
+ * and updates or creates a vote entry while updating the related post's vote_score.
  * 
  * @param {IVote} vote - The vote object containing userId, postId, postType, and vote type (up/down).
  * @returns {Promise<null>} Returns null after updating the vote and vote_score.
@@ -36,7 +38,14 @@ VoteSchema.statics.registerVote = async function (vote: IVote): Promise<null> {
     return null;
 };
 
-
+/**
+ * Utility function to prevent a user from voting on their own post.
+ * 
+ * @param {mongoose.Types.ObjectId} postId - ID of the post being voted on
+ * @param {PostType} postType - Type of the post (Question or Answer)
+ * @param {mongoose.Types.ObjectId} userId - ID of the user attempting to vote
+ * @throws Will throw an error if the user is the author of the post
+ */
 async function checkIfVotingOwnPost(postId: mongoose.Types.ObjectId, postType: PostType, userId: mongoose.Types.ObjectId) {
     let postAuthorId: string | null = null;
 
@@ -55,6 +64,13 @@ async function checkIfVotingOwnPost(postId: mongoose.Types.ObjectId, postType: P
     }
 }
 
+/**
+ * Utility function to increment or decrement a post's vote score.
+ * 
+ * @param {mongoose.Types.ObjectId} postId - ID of the post to update
+ * @param {PostType} postType - Type of the post (Question or Answer)
+ * @param {number} delta - The amount to change the vote score by
+ */
 async function updateVoteScore(postId: mongoose.Types.ObjectId, postType: PostType, delta: number) {
     const update = { $inc: { vote_score: delta } };
 

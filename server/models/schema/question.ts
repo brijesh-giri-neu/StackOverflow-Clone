@@ -3,12 +3,12 @@ import { IQuestionDocument, IQuestionModel } from "../../types/types";
 
 /**
  * The schema for a document in the Question collection.
- * 
+ *
  * The schema is created using the constructor in mongoose.Schema class.
  * The schema is defined with two generic parameters: IQuestionDocument and IQuestionModel.
  * IQQuestionDocument is used to define the instance methods of the Question document.
  * IQuestionModel is used to define the static methods of the Question model.
- * 
+ *
  * @type {mongoose.Schema<IQuestionDocument, IQuestionModel>}
  *
  * @property {string} title - The title of the question (Required).
@@ -35,7 +35,7 @@ const QuestionSchema = new mongoose.Schema<IQuestionDocument, IQuestionModel>(
 
 /**
  * Instance Method: Increment the view count for a question.
- * 
+ *
  * @returns {Promise<IQuestionDocument>} - Returns the updated question document.
  */
 QuestionSchema.methods.incrementViews = async function (this: IQuestionDocument): Promise<IQuestionDocument> {
@@ -46,7 +46,7 @@ QuestionSchema.methods.incrementViews = async function (this: IQuestionDocument)
 
 /**
  * Instance Method: Add an answer to a question.
- * 
+ *
  * @param {mongoose.Types.ObjectId} answerId - The ID of the answer to be added.
  * @returns {Promise<IQuestionDocument>} - Returns the updated question document.
  */
@@ -76,6 +76,7 @@ QuestionSchema.virtual("mostRecentActivity").get(function (this: IQuestionDocume
   if (!this.hasAnswers) {
     return this.ask_date_time;
   }
+
   const timestamps = [
     this.ask_date_time.getTime(),
     ...this.answers

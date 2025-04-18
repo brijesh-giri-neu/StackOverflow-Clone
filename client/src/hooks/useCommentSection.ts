@@ -1,8 +1,16 @@
-// hooks/useCommentSection.ts
 import { useState, useEffect } from "react";
 import { CommentType, PostType } from "../types/entityTypes";
 import { useComment } from "./useComment";
 
+/**
+ * A custom hook to manage the comment section for a post (question or answer).
+ * It handles fetching, submitting, editing, and deleting comments.
+ *
+ * @param postId - The ID of the post.
+ * @param postType - The type of the post (Question or Answer).
+ * @param userId - The ID of the logged-in user (optional).
+ * @returns An object with comment list, editing state, loading state, and handlers for comment actions.
+ */
 export const useCommentSection = (
   postId: string,
   postType: PostType,
