@@ -63,14 +63,16 @@ const AnswerPage = ({
           initial_vote={a.currentUserVote}
         />
       ))}
-      <button
-        className="bluebtn ansButton"
-        onClick={() => {
-          handleNewAnswer();
-        }}
-      >
-        Answer Question
-      </button>
+      {userId && (
+        <button
+          className="bluebtn ansButton"
+          onClick={() => {
+            handleNewAnswer();
+          }}
+        >
+          Answer Question
+        </button>
+      )}
     </>
   );
 };
