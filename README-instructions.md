@@ -48,8 +48,11 @@ Go to live application:
    ```bash
     cd client
     npm install
+    npm start
     npx cypress run
    ```
+   
+- **NOTE: We have some flakiness in Cypress tests as some of them seem to be intermittently failing due to timeout errors.**  
 
 ## Instructions to generate the coverage report for jest tests.
 1. **Generate Jest Report**:
