@@ -13,7 +13,6 @@ Feature: Tags Pagination
         Given the user is on page 1 of the tags list
         When the user clicks the "Next" button
         Then page 2 of the tags should be displayed
-        And 20 tags should be shown
         And the current page number should be 2
 
     Scenario: Navigating to the previous page

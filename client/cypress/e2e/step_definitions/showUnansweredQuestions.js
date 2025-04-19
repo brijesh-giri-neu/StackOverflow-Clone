@@ -2,18 +2,20 @@ import { Given, When, Then, And, Before } from "cypress-cucumber-preprocessor/st
 import { createQuestion, createAnswer } from "../../support/utils";
 const UNANSWERED_QUESTION = "Unanswered test question";
 
-Before({ tags: "@showUnansweredQuestions" }, () => {
+function seedUnansweredQuestion() {
     cy.visit("http://localhost:3000");
     cy.login(testUserForLogin.email, testUserForLogin.password);
+
     createQuestion(
         UNANSWERED_QUESTION,
         "This is a test question with no answers.",
         "bdd, test",
         true,
         true
-    );
+    );
+
     cy.contains(UNANSWERED_QUESTION);
-});
+}
 
 const testUserForLogin = {
     email: "test2@example.com",
@@ -27,7 +29,8 @@ const testUserForLogin = {
 //     When The user clicks on the "Unanswered" tab
 //     Then The user should see only questions in the database that have no answers
 
-Given('The user can access the homepage {string}', (url) => {
+Given('The user can access the homepage to view unanswered {string}', (url) => {
+    seedUnansweredQuestion();
     cy.visit(url);
 });
 
@@ -48,7 +51,8 @@ Then('The user should see only questions in the database that have no answers', 
 //     When The user clicks on the "Unanswered" order
 //     Then The user should see only questions in the database that have no answers
 
-Given('The user is viewing questions in {string}', (currentOrder) => {
+Given('The user is viewing questions to view unanswered in {string}', (currentOrder) => {
+    seedUnansweredQuestion();
     cy.visit("http://localhost:3000");
     cy.contains(currentOrder).click();
 });
@@ -67,7 +71,8 @@ Then('The user should see only questions in the database that have no answers', 
 //     When The user clicks on the "Unanswered" tab
 //     Then That question should not appear in the list
 
-Given('The user is viewing the homepage {string}', (url) => {
+Given('The user is viewing the homepage to view unanswered {string}', (url) => {
+    seedUnansweredQuestion();
     cy.visit(url);
 });
 
@@ -96,7 +101,8 @@ Then('That question should not appear in the list', () => {
 //     And clicks on the "Unanswered" tab
 //     Then The user should see only questions in the database that have no answers
 
-Given('The user is viewing the homepage {string}', (url) => {
+Given('The user is viewing the homepage to view unanswered {string}', (url) => {
+    seedUnansweredQuestion();
     cy.visit(url);
 });
 

@@ -28,17 +28,17 @@ In tests, user creation is mocked using static methods like User.registerUser an
 We ran a CodeQL analysis and reviewed flagged issues. Below are explanations for the false positives:
 
 1. SQL Injection
-   We are sanitizing user-input by escaping any JavaScript or NoSQL code to protect against No-SQL injection using our custom inputSanitizer middleware. However, the static analyzer fails to detect this, as the actual sanitization logic is wrapped in packages used by our application: 'express-mongo-sanitize' and 'xss' 
+   - We are sanitizing user-input by escaping any JavaScript or NoSQL code to protect against No-SQL injection using our custom inputSanitizer middleware. However, the static analyzer fails to detect this, as the actual sanitization logic is wrapped in packages used by our application: 'express-mongo-sanitize' and 'xss' 
 
 2. Rate Limiting
-   The report flags the absence of rate limiting. However, this has been implemented on Voting feature using rate-limiter middleware.
+   - The report flags the absence of rate limiting. However, this has been implemented on Voting feature using rate-limiter middleware.
 
 3. CSRF
-   CodeQL assumes potential CSRF due to session-based authentication. However:
+   - CodeQL assumes potential CSRF due to session-based authentication. However:
    - We use SameSite=Strict depending on env on cookies to mitigate CSRF vectors
 
 4. Regex Denial of Service (ReDoS)
-   We are sanitizing user-input by escaping any special characters to protect against this using our custom inputSanitizer middleware. However, the static analyzer fails to detect this.
+   - We are sanitizing user-input by escaping any special characters to protect against this using our custom inputSanitizer middleware. However, the static analyzer fails to detect this.
 
 ## CI/CD Workflow (GitHub Actions)
 
@@ -53,3 +53,7 @@ Each push or pull request on main runs:
 
 - The code gets deployed to the following link:
 🔗 **https://fake-stack-overflow-hima-brijesh.onrender.com/**
+
+## NOTE:
+- We have some flakiness in Cypress tests as some of them seem to be intermittently failing due to timeout errors.
+- Specifically the test ` 1) View unanswered questions after answering an existing question` fails as sometimes the required button becomes unavailable due to page updating asynchronously.

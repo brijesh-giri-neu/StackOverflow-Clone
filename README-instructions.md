@@ -48,8 +48,12 @@ Go to live application:
    ```bash
     cd client
     npm install
+    npm start
     npx cypress run
    ```
+   
+- **NOTE: We have some flakiness in Cypress tests as some of them seem to be intermittently failing due to timeout errors.**  
+- Specifically the test ` 1) View unanswered questions after answering an existing question` fails as sometimes the required button becomes unavailable due to page updating asynchronously.
 
 ## Instructions to generate the coverage report for jest tests.
 1. **Generate Jest Report**:
@@ -79,6 +83,10 @@ Go to live application:
 4. Analyze the code and generate report using the following command:
 
    `$ ~/codeql/codeql database analyze <path/to/codeql-database> --format="sarif-latest" --output <path/to/report/report.sarif>`
+
+## You can refer to existing report files
+- Go to server `Reports.zip` and extract.
+- It has two directories: `coverage` containging coverage report and `CodeQL Report` containing `report.sarif`
 
 ## Instructions to set environment variables that one may need to run any scripts or tests.
 - None required, all environment variables are taken care by the start scripts.
