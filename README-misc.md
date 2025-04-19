@@ -56,3 +56,4 @@ Each push or pull request on main runs:
 
 ## NOTE:
 - We have some flakiness in Cypress tests as some of them seem to be intermittently failing due to timeout errors.
+- Specifically the test ` 1) View unanswered questions after answering an existing question` fails as sometimes the required button becomes unavailable due to page updating asynchronously.
