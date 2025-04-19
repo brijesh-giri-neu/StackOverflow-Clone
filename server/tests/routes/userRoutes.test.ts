@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "../../models/users";
+
 const request = require("supertest");
 const app = require("../../server");
 
