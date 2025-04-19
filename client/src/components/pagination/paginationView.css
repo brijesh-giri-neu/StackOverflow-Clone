@@ -6,6 +6,7 @@
     flex-wrap: wrap; /* allow wrapping on small screens */
     padding: 1rem 0;
     gap: 1rem;
+    flex-wrap: nowrap;
 }
 
 .pagination-wrapper {
