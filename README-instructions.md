@@ -80,6 +80,10 @@ Go to live application:
 
    `$ ~/codeql/codeql database analyze <path/to/codeql-database> --format="sarif-latest" --output <path/to/report/report.sarif>`
 
+## You can refer to existing report files
+- Go to server `Reports.zip` and extract.
+- It has two directories: `coverage` containging coverage report and `CodeQL Report` containing `report.sarif`
+
 ## Instructions to set environment variables that one may need to run any scripts or tests.
 - None required, all environment variables are taken care by the start scripts.
 
