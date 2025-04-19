@@ -2,7 +2,7 @@ name: Deploy Database to Production
 
 on:
   push:
-    branches: [ "deploy" ]
+    branches: [ ]
 
 jobs:
   deploy-db:
