@@ -187,5 +187,26 @@ describe("Question Routes", () => {
             expect(response.body).toHaveProperty("data");
             expect(response.body).toHaveProperty("pagination");
         });
+
+        // NOTE: Non-functional requirement, ACCEPTANCE SCENARIO TESTS, LAST 3 BACKEND TEST POINTS
+        it("should return pagination metadata in response", async () => {
+            Question.find = jest.fn().mockResolvedValue([
+                { _id: "q1", title: "Q1", views: 5, vote_score: 1, tags: [], asked_by: "User1", ask_date_time: new Date(), answers: [] }
+            ]);
+
+            const response = await request(app).get("/question/getQuestion?page=1&limit=10");
+
+            expect(response.statusCode).toBe(200);
+            expect(response.body).toHaveProperty("pagination");
+
+            const { pagination } = response.body;
+            expect(pagination).toMatchObject({
+                totalItems: expect.any(Number),
+                totalPages: expect.any(Number),
+                currentPage: 1,
+                pageSize: 10
+            });
+        });
+
     });
 });
