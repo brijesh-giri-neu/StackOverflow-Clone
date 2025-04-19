@@ -4,7 +4,22 @@ import Main from "./main/mainView";
 import { useFakeStackOverflow } from "../hooks/useFakeStackOverflow";
 import { useUserSession } from '../hooks/useUserSession';
 
-const FakeStackOverflow = () => {
+/**
+ * The root component for the Fake Stack Overflow application.
+ *
+ * This component ties together the layout and functionality of the app.
+ * It initializes session state (user and userProfile), configures
+ * navigation handlers via a central custom hook `useFakeStackOverflow`,
+ * and renders the Header and Main content area based on the current page state.
+ *
+ * Key responsibilities:
+ * - Maintain and inject global state (search, user, userProfile, etc.)
+ * - Route between pages using page classes (via `pageInstance`)
+ *
+ * @component
+ * @returns {JSX.Element} The rendered Fake Stack Overflow app layout.
+ */
+const FakeStackOverflow = (): JSX.Element => {
   const {
     search,
     user,
@@ -20,6 +35,7 @@ const FakeStackOverflow = () => {
     handleTags,
   } = useFakeStackOverflow();
 
+  // Initializes user and profile from session storage or API call
   useUserSession(setUser, setUserProfile);
 
   return (
@@ -52,4 +68,3 @@ const FakeStackOverflow = () => {
 };
 
 export default FakeStackOverflow;
-
