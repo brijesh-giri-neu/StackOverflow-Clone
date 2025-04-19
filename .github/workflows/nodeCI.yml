@@ -57,6 +57,10 @@ jobs:
       run: npx eslint
 
     #--- Run Server ---
+    - name: Build Server (Generate JS files)
+      working-directory: server
+      run: npm run build
+      
     - name: Run Server
       working-directory: server
       run: npm start &
