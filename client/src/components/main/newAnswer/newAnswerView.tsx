@@ -1,6 +1,5 @@
 import "./newAnswerView.css";
 import Form from "../baseComponents/form/formView";
-import Input from "../baseComponents/input/inputView";
 import Textarea from "../baseComponents/textarea/textAreaView";
 import { useNewAnswer } from "../../../hooks/useNewAnswer";
 import { QuestionIdFunctionType } from "../../../types/functionTypes";
