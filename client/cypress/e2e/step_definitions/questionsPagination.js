@@ -7,11 +7,11 @@ const testUserForLogin = {
     displayName: "Test User 2",
 };
 
-Before({ tags: "@questionsPagination" }, () => {
+function seedSampleQuestions(count = 7) {
     cy.visit("http://localhost:3000");
     cy.login(testUserForLogin.email, testUserForLogin.password);
 
-    for (let i = 1; i <= 7; i++) {
+    for (let i = 1; i <= count; i++) {
         createQuestion(
             `Sample Title ${i}`,
             `Sample Text ${i}`,
@@ -21,7 +21,7 @@ Before({ tags: "@questionsPagination" }, () => {
         );
         cy.contains("All Questions", { timeout: 5000 });
     }
-});
+}
 
 const BASE_URL = "http://localhost:3000";
 
@@ -31,6 +31,7 @@ const BASE_URL = "http://localhost:3000";
 //         And the current page number should be highlighted
 
 Given("the user is on the questions page", () => {
+    seedSampleQuestions();
     cy.visit(BASE_URL);
 });
 
@@ -50,6 +51,7 @@ And("the current page number should be highlighted", () => {
 //         And the current page number should be 2
 
 Given("the user is on page 1 of the questions list", () => {
+    seedSampleQuestions();
     cy.visit(BASE_URL);
     cy.get(".page-info").should("contain", "Page 1 of");
 });
@@ -73,6 +75,7 @@ And("the current page number should be 2", () => {
 //         And the current page number should be 1
 
 Given("the user is on page 2 of the questions list", () => {
+    seedSampleQuestions();
     cy.visit(BASE_URL);
     cy.contains("Next").click();
     cy.get(".page-info").should("contain", "Page 2 of");
