@@ -40,9 +40,9 @@
 .pagination-controls  {
     display: flex;
     align-items: center;
+    justify-content: flex-start; /* or center or space-between as needed */
     gap: 0.5rem;
     margin-left: 2rem;
-    flex-wrap: wrap; /* fallback if space is still tight */
-    flex: 1 1 auto;   /* allows it to grow and shrink properly */
-    min-width: 250px; /* or more, depending on button size */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    white-space: nowrap; /* Prevent internal line breaks */
 }
