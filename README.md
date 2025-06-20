@@ -21,9 +21,7 @@ A full-stack Q&A web application inspired by Stack Overflow, built using the **M
 
 ## Installation & Setup  
 
-See [readme-instructions.md](readme-instructions.md) for full setup steps.
-
-5. **Open in browser:** `http://localhost:3000`
+See [README-instructions.md](README-instructions.md) for full setup steps.
 
 ## Running Tests  
 To run **end-to-end tests** with **Cypress**, use:  
