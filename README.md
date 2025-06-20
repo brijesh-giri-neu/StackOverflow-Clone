@@ -21,28 +21,7 @@ A full-stack Q&A web application inspired by Stack Overflow, built using the **M
 
 ## Installation & Setup  
 
-1. **Clone the repository**  
-   ```sh
-   git clone https://github.com/yourusername/repository-name.git
-   cd repository-name
-   ```
-
-2. **Install dependencies**  
-   ```sh
-   npm install
-   ```
-
-3. **Run the backend server**  
-   ```sh
-   cd server
-   node index.js
-   ```
-
-4. **Run the frontend**  
-   ```sh
-   cd client
-   npm start
-   ```
+See [readme-instructions.md](readme-instructions.md) for full setup steps.
 
 5. **Open in browser:** `http://localhost:3000`
 
