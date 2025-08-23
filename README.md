@@ -34,7 +34,7 @@ npm run test
 - Content Moderation and Flagging
 - Real-time updates with WebSockets
 - API Rate Limits & Abuse Prevention – Ensure fair use and prevent bot spam
-- Improved UI with Material-UI/Tailwind  
+- Improved UI with Material-UI/Tailwind
 
 ## Contributing  
 Feel free to submit issues or pull requests! 💡  
