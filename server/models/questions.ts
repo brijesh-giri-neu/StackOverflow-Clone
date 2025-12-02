@@ -23,7 +23,7 @@ QuestionSchema.statics.getNewestQuestions = async function (): Promise<IQuestion
     .populate("tags")
     .populate("asked_by", "displayName")
     .lean()
-    .then(questions => questions.map(convertToIQuestion));
+    .then(questions => questions.map(q => convertToIQuestion(q as unknown as IQuestionDocument)));
 };
 
 /**
@@ -38,7 +38,7 @@ QuestionSchema.statics.getUnansweredQuestions = async function (): Promise<IQues
     .populate("tags")
     .populate("asked_by", "displayName")
     .lean()
-    .then(questions => questions.map(convertToIQuestion));
+    .then(questions => questions.map(q => convertToIQuestion(q as unknown as IQuestionDocument)));
 };
 
 
@@ -48,7 +48,7 @@ QuestionSchema.statics.getUnansweredQuestions = async function (): Promise<IQues
  * @returns {Promise<IQuestion[]>} - A promise that resolves to an array of active questions.
  */
 QuestionSchema.statics.getActiveQuestions = async function (): Promise<IQuestion[]> {
-  const questions : IQuestionDocument[] = await this.find()
+  const questions = await this.find()
   .populate({
     path: "answers",
     populate: {
@@ -57,12 +57,13 @@ QuestionSchema.statics.getActiveQuestions = async function (): Promise<IQuestion
     }
   }).populate('tags').populate("asked_by", "displayName").lean();
   
-  const answeredQuestions: IQuestionDocument[] = [];
-  const unansweredQuestions: IQuestionDocument[] = [];
+  const answeredQuestions: Array<IQuestionDocument & { mostRecentActivity: Date; category: string }> = [];
+  const unansweredQuestions: Array<IQuestionDocument & { mostRecentActivity: Date; category: string }> = [];
   
   const answerDatesPromises = questions.map(async (q) => {
-    const latestAnswerDate = await Answer.getLatestAnswerDate(q.answers);
-    const categorizedQuestion = categorizeQuestion(q, latestAnswerDate);
+    const question = q as unknown as IQuestionDocument;
+    const latestAnswerDate = await Answer.getLatestAnswerDate(question.answers);
+    const categorizedQuestion = categorizeQuestion(question, latestAnswerDate);
 
     if (categorizedQuestion.category === 'answered') {
       answeredQuestions.push(categorizedQuestion);
@@ -128,7 +129,7 @@ QuestionSchema.statics.createQuestion = async function (
  * @param {Date | undefined} latestAnswerDate - The latest answer date, or undefined if there is no answer.
  * @returns {IQuestionDocument} - The question with a new `mostRecentActivity` and `category` properties.
  */
-const categorizeQuestion = (q: IQuestionDocument, latestAnswerDate: Date | undefined) => {
+const categorizeQuestion = (q: IQuestionDocument, latestAnswerDate: Date | undefined): IQuestionDocument & { mostRecentActivity: Date; category: string } => {
   const mostRecentActivity = latestAnswerDate || q.ask_date_time;
   const category = latestAnswerDate ? 'answered' : 'unanswered';
   return { ...q, mostRecentActivity, category };
@@ -142,7 +143,10 @@ const categorizeQuestion = (q: IQuestionDocument, latestAnswerDate: Date | undef
  * @param {IQuestionDocument[]} unansweredQuestions - The array of unanswered questions to be sorted.
  * @returns {IQuestionDocument[]} - A single array with the sorted answered and unanswered questions.
  */
-const sortQuestions = (answeredQuestions: IQuestionDocument[], unansweredQuestions: IQuestionDocument[]) => {
+const sortQuestions = (
+  answeredQuestions: Array<IQuestionDocument & { mostRecentActivity: Date; category: string }>, 
+  unansweredQuestions: Array<IQuestionDocument & { mostRecentActivity: Date; category: string }>
+): Array<IQuestionDocument & { mostRecentActivity: Date; category: string }> => {
   answeredQuestions.sort((a, b) => b.mostRecentActivity.getTime() - a.mostRecentActivity.getTime());
   unansweredQuestions.sort((a, b) => b.ask_date_time.getTime() - a.ask_date_time.getTime());
   return [...answeredQuestions, ...unansweredQuestions];
