@@ -68,13 +68,16 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
           {userId && (
             <>
               {comments.length === 0 && !showForm && (
-                <button
-                  type="button"
-                  className="comment_toggle_link"
-                  onClick={() => setShowForm(true)}
-                >
-                  Add a comment
-                </button>
+                <div className="comment-header">
+                  <div></div>
+                  <button
+                    type="button"
+                    className="comment_toggle_link comment_header_toggle"
+                    onClick={() => setShowForm(true)}
+                  >
+                    Add a comment
+                  </button>
+                </div>
               )}
               {showForm && (
                 <CommentForm
