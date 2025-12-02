@@ -1,18 +1,21 @@
 .profile_title {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #212529;
 }
 
 .section_title {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    color: #232629;
-    border-bottom: 1px solid #e4e6e8;
-    padding-bottom: 0.3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #212529;
+  border-bottom: 2px solid #dee2e6;
+  padding-bottom: 0.25rem;
 }
 
 .profile_section {
-    margin-bottom: 1.5rem;
-    padding-left: 0.6rem;
+  margin-bottom: 2rem;
+  padding-left: 0.5rem;
 }

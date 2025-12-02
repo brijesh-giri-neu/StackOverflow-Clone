@@ -27,7 +27,7 @@ const AnswerHeader = ({
       <div className="button_container">
         {userId && (
           <button
-            className="bluebtn"
+            className="btn btn-primary"
             onClick={() => {
               handleNewQuestion();
             }}

@@ -1,50 +1,102 @@
 .question {
-    display: flex;
-    flex-direction: row;
-    border-top: #000000 1px dashed;
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #dee2e6;
+  padding: 1.5rem;
+  transition: background-color 0.15s ease-in-out;
+  cursor: pointer;
+  gap: 1.5rem;
+}
+
+.question:hover {
+  background-color: #f8f9fa;
 }
 
 .postStats {
-    color: #bbbbbb;
-    text-align: center;
-    width: 10%;
+  text-align: center;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.postStats > div {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.postStats > div:first-child {
+  color: #198754;
+  background-color: #d1e7dd;
+}
+
+.postStats > div:last-child {
+  color: #0d6efd;
+  background-color: #cfe2ff;
 }
 
 .question_mid {
-    width: 60%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .postTitle {
-    color: cornflowerblue;
+  color: #0d6efd;
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+  transition: color 0.15s ease-in-out;
+}
+
+.postTitle:hover {
+  color: #0a58ca;
 }
 
 .question_tags {
-    margin-top: 1%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
 }
 
 .question_tag_button {
-    color: #ffffff;
-    background: gray;
-    border-width: 0;
-    border-radius: 8px;
-    margin-left: 2%;
-    padding: 1% 3% 1% 3%;
+  color: #39739d;
+  background-color: #e1ecf4;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  font-weight: 500;
 }
 
-.question_tag_button:first-child {
-    margin-left: 0;
+.question_tag_button:hover {
+  background-color: #cee0ed;
+  color: #0d6efd;
 }
 
 .lastActivity {
-    width: 30%;
-    display: flex;
-    flex-direction: row;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  font-size: 0.875rem;
+  color: #6c757d;
 }
 
 .question_author {
-    color: red;
+  color: #0d6efd;
+  font-weight: 500;
 }
 
 .question_meta {
-    color: #bbbbbb;
+  color: #6c757d;
+  font-size: 0.8rem;
 }

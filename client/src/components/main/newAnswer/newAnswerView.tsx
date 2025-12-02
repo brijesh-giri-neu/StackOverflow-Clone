@@ -33,7 +33,7 @@ const NewAnswer = ({ qid, handleAnswer, userId }: NewAnswerProps) => {
         err={textErr}
       />
       <div className="btn_indicator_container">
-        <button className="form_postBtn" onClick={postAnswer}>
+        <button className="btn btn-primary form_postBtn" onClick={postAnswer}>
           Post Answer
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>

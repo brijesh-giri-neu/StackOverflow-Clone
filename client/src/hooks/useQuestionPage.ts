@@ -37,7 +37,12 @@ export const useQuestionPage = ({ order, search, page, limit }: UseQuestionPageP
       try {
         const res = await getQuestionsByFilter(order, search, page, limit);
         setQlist(res.data || []);
-        setPagination(res?.pagination || pagination);
+        setPagination(res?.pagination || {
+          totalItems: 0,
+          totalPages: 0,
+          currentPage: 1,
+          pageSize: limit,
+        });
       } catch (error) {
         console.error("Error fetching questions:", error);
       }

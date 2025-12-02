@@ -1,7 +1,8 @@
 .answer_question_meta {
-    color: #bbbbbb;
+  color: #6c757d;
+  font-size: 0.875rem;
 }
 
 .ansButton {
-    margin: 2% 0 2% 2%;
+  margin: 2rem 0 2rem 2rem;
 }

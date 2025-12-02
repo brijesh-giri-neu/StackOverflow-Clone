@@ -1,3 +1,4 @@
+import "./commentsView.css";
 import { PostType } from "../../../types/entityTypes";
 import CommentForm from "./form/commentFormView";
 import CommentList from "./list/commentListView";

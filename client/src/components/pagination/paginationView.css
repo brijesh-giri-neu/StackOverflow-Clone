@@ -1,21 +1,19 @@
-/* Wrapper container for pagination and selector */
 .pagination {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap; /* allow wrapping on small screens */
-    padding: 1rem 0;
-    gap: 1rem;
-    flex-wrap: nowrap;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 1.5rem 0;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
 .pagination-wrapper {
-    position: fixed;
-    bottom: 0;
-    width: 85%;
-    height: 8%;
-    padding: 0 rem 0;
-    display: flex;
-    justify-content: center;
-    border-top: 1px solid #ddd; /* optional */
+  width: 100%;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid #dee2e6;
+  background-color: #fff;
+  margin-top: 2rem;
 }

@@ -120,7 +120,7 @@ const EditProfilePage = ({ userProfile, setProfilePage }: EditProfilePageProps) 
 
             {/* ===== Submit Button & Info ===== */}
             <div className="btn_indicator_container">
-                <button className="form_postBtn" onClick={handleSave}>
+                <button className="btn btn-primary form_postBtn" onClick={handleSave}>
                     Save Profile
                 </button>
                 <div className="mandatory_indicator">* indicates mandatory fields</div>

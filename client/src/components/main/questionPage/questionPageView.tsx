@@ -63,6 +63,7 @@ const QuestionPage = ({
         title_text={title_text}
         qcnt={pagination.totalItems}
         userId={userId}
+        order={order}
         setQuestionOrder={setQuestionOrder}
         handleNewQuestion={handleNewQuestion}
       />

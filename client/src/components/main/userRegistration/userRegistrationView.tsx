@@ -50,6 +50,7 @@ const UserRegistration = ({ setUser, setUserProfile, handleQuestions }: UserRegi
                 val={password}
                 setState={setPassword}
                 err={passwordErr}
+                type="password"
             />
             <Input
                 title="Display Name"
@@ -59,12 +60,12 @@ const UserRegistration = ({ setUser, setUserProfile, handleQuestions }: UserRegi
                 err={displayNameErr}
             />
             {registrationErr && (
-                <div className="form_error" style={{ color: "red", marginTop: "8px", marginBottom: "18px" }}>
+                <div className="text-danger mb-3 mt-2">
                     {registrationErr}
                 </div>
             )}
             <div className="btn_indicator_container">
-                <button className="form_postBtn" onClick={registerUser}>
+                <button className="btn btn-primary form_postBtn" onClick={registerUser}>
                     Register
                 </button>
                 <div className="mandatory_indicator">* indicates mandatory fields</div>

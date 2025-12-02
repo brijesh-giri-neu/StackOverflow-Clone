@@ -65,7 +65,7 @@ const AnswerPage = ({
       ))}
       {userId && (
         <button
-          className="bluebtn ansButton"
+          className="btn btn-primary ansButton"
           onClick={() => {
             handleNewAnswer();
           }}

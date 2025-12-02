@@ -1,72 +1,91 @@
 .profile_header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem;
-    border-bottom: 1px solid #e4e6e8;
-    background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2rem;
+  border-bottom: 1px solid #dee2e6;
+  background-color: #fff;
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  margin-bottom: 1.5rem;
 }
 
 .profile_left {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .user_icon {
-    margin-right: 1rem;
-    color: #6a737c;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #dee2e6;
+  object-fit: cover;
 }
 
 .profile_name {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #232629;
-    margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #212529;
+  margin: 0;
 }
 
 .profile_actions {
-    display: flex;
-    gap: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .edit_profile_button,
+.logout_button,
+.delete_profile_button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.edit_profile_button {
+  background-color: #0d6efd;
+}
+
+.edit_profile_button:hover {
+  background-color: #0b5ed7;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
 .logout_button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #f48024;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 3px;
+  background-color: #6c757d;
 }
 
-.edit_profile_button:hover,
 .logout_button:hover {
-    background-color: #d9701d;
+  background-color: #5c636a;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
 
-.delete_profile_button,
-.logout_button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background-color: #f48024;
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 3px;
+.delete_profile_button {
+  background-color: #dc3545;
 }
 
-.delete_profile_button:hover,
-.logout_button:hover {
-    background-color: #d9701d;
+.delete_profile_button:hover {
+  background-color: #bb2d3b;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
 }
-
 
 .button_icon {
-    display: inline-block;
-    vertical-align: middle;
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 0.9rem;
 }

@@ -1,4 +1,6 @@
+/* Bootstrap classes are used, but we can add custom styling if needed */
 .btn {
-    background: #ffffff;
-    border: #000000 1px solid;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
 }
