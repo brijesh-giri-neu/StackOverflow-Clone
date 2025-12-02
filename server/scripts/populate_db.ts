@@ -21,6 +21,22 @@ import {
   Q3_TXT,
   Q4_DESC,
   Q4_TXT,
+  Q5_DESC,
+  Q5_TXT,
+  Q6_DESC,
+  Q6_TXT,
+  Q7_DESC,
+  Q7_TXT,
+  Q8_DESC,
+  Q8_TXT,
+  Q9_DESC,
+  Q9_TXT,
+  Q10_DESC,
+  Q10_TXT,
+  Q11_DESC,
+  Q11_TXT,
+  Q12_DESC,
+  Q12_TXT,
   A1_TXT,
   A2_TXT,
   A3_TXT,
@@ -29,6 +45,22 @@ import {
   A6_TXT,
   A7_TXT,
   A8_TXT,
+  A9_TXT,
+  A10_TXT,
+  A11_TXT,
+  A12_TXT,
+  A13_TXT,
+  A14_TXT,
+  A15_TXT,
+  A16_TXT,
+  A17_TXT,
+  A18_TXT,
+  A19_TXT,
+  A20_TXT,
+  A21_TXT,
+  A22_TXT,
+  A23_TXT,
+  A24_TXT,
 } from "../data/posts_strings";
 
 
@@ -243,6 +275,18 @@ const populate = async () => {
     const t4 = await tagCreate("shared-preferences");
     const t5 = await tagCreate("storage");
     const t6 = await tagCreate("website");
+    const t7 = await tagCreate("nodejs");
+    const t8 = await tagCreate("python");
+    const t9 = await tagCreate("css");
+    const t10 = await tagCreate("sql");
+    const t11 = await tagCreate("typescript");
+    const t12 = await tagCreate("docker");
+    const t13 = await tagCreate("git");
+    const t14 = await tagCreate("rest-api");
+    const t15 = await tagCreate("authentication");
+    const t16 = await tagCreate("async-await");
+    const t17 = await tagCreate("flexbox");
+    const t18 = await tagCreate("react-native");
 
     const user1 = await userCreate(
       "test1@example.com",
@@ -272,6 +316,36 @@ const populate = async () => {
       "test5@example.com",
       "Test User 5",
       "securepassword123"
+    );
+
+    const user6 = await userCreate(
+      "sarah.chen@example.com",
+      "Sarah Chen",
+      "password1234"
+    );
+
+    const user7 = await userCreate(
+      "mike.wilson@example.com",
+      "Mike Wilson",
+      "mypassword12"
+    );
+
+    const user8 = await userCreate(
+      "emma.brown@example.com",
+      "Emma Brown",
+      "securepass99"
+    );
+
+    const user9 = await userCreate(
+      "david.lee@example.com",
+      "David Lee",
+      "davidpass88"
+    );
+
+    const user10 = await userCreate(
+      "lisa.anderson@example.com",
+      "Lisa Anderson",
+      "lisapass77"
     );
 
     await userProfileCreate(
@@ -329,6 +403,61 @@ const populate = async () => {
       "https://github.com/evanzhang"
     );
 
+    await userProfileCreate(
+      user6,
+      "Sarah Chen",
+      "Los Angeles",
+      "Full Stack Developer",
+      "Building scalable web applications with modern technologies.",
+      "https://sarahchen.dev",
+      "https://twitter.com/sarahchen",
+      "https://github.com/sarahchen"
+    );
+
+    await userProfileCreate(
+      user7,
+      "Mike Wilson",
+      "Chicago",
+      "Backend Engineer",
+      "Specializing in microservices and distributed systems.",
+      "https://mikewilson.io",
+      "https://twitter.com/mikewilson",
+      "https://github.com/mikewilson"
+    );
+
+    await userProfileCreate(
+      user8,
+      "Emma Brown",
+      "Portland",
+      "UI/UX Designer & Developer",
+      "Creating beautiful and functional user interfaces.",
+      "https://emmabrown.design",
+      "https://twitter.com/emmabrown",
+      "https://github.com/emmabrown"
+    );
+
+    await userProfileCreate(
+      user9,
+      "David Lee",
+      "Denver",
+      "Software Architect",
+      "Designing robust and maintainable software systems.",
+      "https://davidlee.tech",
+      "https://twitter.com/davidlee",
+      "https://github.com/davidlee"
+    );
+
+    await userProfileCreate(
+      user10,
+      "Lisa Anderson",
+      "Miami",
+      "Security Engineer",
+      "Passionate about application security and best practices.",
+      "https://lisaanderson.security",
+      "https://twitter.com/lisaanderson",
+      "https://github.com/lisaanderson"
+    );
+
     const a1 = await answerCreate(
       A1_TXT,
       user1,
@@ -378,6 +507,118 @@ const populate = async () => {
       -2
     );
 
+    const a9 = await answerCreate(
+      A9_TXT,
+      user3,
+      new Date("2023-04-15T10:30:00"),
+      0
+    );
+
+    const a10 = await answerCreate(
+      A10_TXT,
+      user4,
+      new Date("2023-04-16T14:20:00"),
+      0
+    );
+
+    const a11 = await answerCreate(
+      A11_TXT,
+      user5,
+      new Date("2023-05-01T09:15:00"),
+      0
+    );
+
+    const a12 = await answerCreate(
+      A12_TXT,
+      user6,
+      new Date("2023-05-02T11:45:00"),
+      0
+    );
+
+    const a13 = await answerCreate(
+      A13_TXT,
+      user7,
+      new Date("2023-05-10T16:30:00"),
+      0
+    );
+
+    const a14 = await answerCreate(
+      A14_TXT,
+      user8,
+      new Date("2023-05-11T08:20:00"),
+      0
+    );
+
+    const a15 = await answerCreate(
+      A15_TXT,
+      user9,
+      new Date("2023-05-20T13:10:00"),
+      0
+    );
+
+    const a16 = await answerCreate(
+      A16_TXT,
+      user10,
+      new Date("2023-05-21T15:00:00"),
+      0
+    );
+
+    const a17 = await answerCreate(
+      A17_TXT,
+      user1,
+      new Date("2023-06-01T10:00:00"),
+      0
+    );
+
+    const a18 = await answerCreate(
+      A18_TXT,
+      user2,
+      new Date("2023-06-02T12:30:00"),
+      0
+    );
+
+    const a19 = await answerCreate(
+      A19_TXT,
+      user3,
+      new Date("2023-06-10T14:15:00"),
+      0
+    );
+
+    const a20 = await answerCreate(
+      A20_TXT,
+      user4,
+      new Date("2023-06-11T09:45:00"),
+      0
+    );
+
+    const a21 = await answerCreate(
+      A21_TXT,
+      user5,
+      new Date("2023-06-15T11:20:00"),
+      0
+    );
+
+    const a22 = await answerCreate(
+      A22_TXT,
+      user6,
+      new Date("2023-06-16T13:00:00"),
+      0
+    );
+
+    const a23 = await answerCreate(
+      A23_TXT,
+      user7,
+      new Date("2023-06-20T15:30:00"),
+      0
+    );
+
+    const a24 = await answerCreate(
+      A24_TXT,
+      user8,
+      new Date("2023-06-21T10:10:00"),
+      0
+    );
+
     const q1 = await questionCreate(
       Q1_DESC,
       Q1_TXT,
@@ -419,6 +660,94 @@ const populate = async () => {
       2
     );
 
+    const q5 = await questionCreate(
+      Q5_DESC,
+      Q5_TXT,
+      [t2, t7, t16],
+      [a9, a10],
+      user3,
+      new Date("2023-04-10T08:00:00"),
+      245,
+      0
+    );
+
+    const q6 = await questionCreate(
+      Q6_DESC,
+      Q6_TXT,
+      [t8],
+      [a11, a12],
+      user4,
+      new Date("2023-04-25T12:00:00"),
+      189,
+      0
+    );
+
+    const q7 = await questionCreate(
+      Q7_DESC,
+      Q7_TXT,
+      [t9, t17],
+      [a13, a14],
+      user5,
+      new Date("2023-05-05T10:00:00"),
+      312,
+      0
+    );
+
+    const q8 = await questionCreate(
+      Q8_DESC,
+      Q8_TXT,
+      [t10],
+      [a15, a16],
+      user6,
+      new Date("2023-05-15T14:00:00"),
+      156,
+      0
+    );
+
+    const q9 = await questionCreate(
+      Q9_DESC,
+      Q9_TXT,
+      [t1, t11],
+      [a17, a18],
+      user7,
+      new Date("2023-05-25T09:00:00"),
+      278,
+      0
+    );
+
+    const q10 = await questionCreate(
+      Q10_DESC,
+      Q10_TXT,
+      [t12],
+      [a19, a20],
+      user8,
+      new Date("2023-06-05T11:00:00"),
+      167,
+      0
+    );
+
+    const q11 = await questionCreate(
+      Q11_DESC,
+      Q11_TXT,
+      [t13],
+      [a21, a22],
+      user9,
+      new Date("2023-06-10T13:00:00"),
+      134,
+      0
+    );
+
+    const q12 = await questionCreate(
+      Q12_DESC,
+      Q12_TXT,
+      [t14, t15],
+      [a23, a24],
+      user10,
+      new Date("2023-06-15T15:00:00"),
+      298,
+      0
+    );
+
     // Votes on Question Q2
     await createVote(VoteType.UpVote, PostType.Question, q2._id!, user1._id!);
     await createVote(VoteType.DownVote, PostType.Question, q2._id!, user3._id!);
@@ -427,19 +756,138 @@ const populate = async () => {
     await createVote(VoteType.UpVote, PostType.Question, q4._id!, user5._id!);
     await createVote(VoteType.UpVote, PostType.Question, q4._id!, user1._id!);
 
+    // Votes on Question Q5
+    await createVote(VoteType.UpVote, PostType.Question, q5._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q5._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q5._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q5._id!, user5._id!);
+
+    // Votes on Question Q6
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user6._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user7._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q6._id!, user8._id!);
+
+    // Votes on Question Q7
+    await createVote(VoteType.UpVote, PostType.Question, q7._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q7._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q7._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q7._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q7._id!, user6._id!);
+
+    // Votes on Question Q8
+    await createVote(VoteType.UpVote, PostType.Question, q8._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q8._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q8._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q8._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q8._id!, user7._id!);
+
+    // Votes on Question Q9
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user6._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q9._id!, user8._id!);
+
+    // Votes on Question Q10
+    await createVote(VoteType.UpVote, PostType.Question, q10._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q10._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q10._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q10._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q10._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q10._id!, user7._id!);
+
+    // Votes on Question Q11
+    await createVote(VoteType.UpVote, PostType.Question, q11._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q11._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q11._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q11._id!, user4._id!);
+
+    // Votes on Question Q12
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user6._id!);
+    await createVote(VoteType.UpVote, PostType.Question, q12._id!, user8._id!);
+
     // Votes on answer a8 (belongs to Q4)
     await createVote(VoteType.DownVote, PostType.Answer, a8._id!, user3._id!);
     await createVote(VoteType.DownVote, PostType.Answer, a8._id!, user4._id!);
 
-    // 3 Comments on questions (Q1, Q2, Q4)
+    // Votes on answer a9 (belongs to Q5)
+    await createVote(VoteType.UpVote, PostType.Answer, a9._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a9._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a9._id!, user4._id!);
+
+    // Votes on answer a11 (belongs to Q6)
+    await createVote(VoteType.UpVote, PostType.Answer, a11._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a11._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a11._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a11._id!, user6._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a11._id!, user7._id!);
+
+    // Votes on answer a13 (belongs to Q7)
+    await createVote(VoteType.UpVote, PostType.Answer, a13._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a13._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a13._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a13._id!, user4._id!);
+
+    // Votes on answer a17 (belongs to Q9)
+    await createVote(VoteType.UpVote, PostType.Answer, a17._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a17._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a17._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a17._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a17._id!, user5._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a17._id!, user6._id!);
+
+    // Votes on answer a19 (belongs to Q10)
+    await createVote(VoteType.UpVote, PostType.Answer, a19._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a19._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a19._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a19._id!, user5._id!);
+
+    // Votes on answer a23 (belongs to Q12)
+    await createVote(VoteType.UpVote, PostType.Answer, a23._id!, user1._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a23._id!, user2._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a23._id!, user3._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a23._id!, user4._id!);
+    await createVote(VoteType.UpVote, PostType.Answer, a23._id!, user5._id!);
+
+    // Comments on questions
     await createComment("This question really helped me understand routing.", PostType.Question, q1._id!, user3._id!);
     await createComment("I encountered this issue too — thanks for asking!", PostType.Question, q2._id!, user4._id!);
     await createComment("Good to see someone else using shared preferences!", PostType.Question, q4._id!, user5._id!);
+    await createComment("Great question! I've been struggling with this as well.", PostType.Question, q5._id!, user6._id!);
+    await createComment("This is a common issue when working with async code. Thanks for the detailed explanation!", PostType.Question, q5._id!, user7._id!);
+    await createComment("Performance questions are always interesting. Looking forward to the answers.", PostType.Question, q6._id!, user8._id!);
+    await createComment("Flexbox can be tricky at first. Once you get the hang of it, it's very powerful.", PostType.Question, q7._id!, user9._id!);
+    await createComment("SQL JOINs are fundamental but can be confusing. Good question!", PostType.Question, q8._id!, user10._id!);
+    await createComment("TypeScript with React is a great combination once you understand the typing.", PostType.Question, q9._id!, user1._id!);
+    await createComment("Docker issues can be frustrating. Hope you find a solution!", PostType.Question, q10._id!, user2._id!);
+    await createComment("Merge conflicts are part of team development. Good strategies here!", PostType.Question, q11._id!, user3._id!);
+    await createComment("Security is crucial. This is an important topic to discuss.", PostType.Question, q12._id!, user4._id!);
 
-    // 3 Comments on answers (a1, a5, a8)
+    // Comments on answers
     await createComment("This is the cleanest solution I've seen.", PostType.Answer, a1._id!, user2._id!);
     await createComment("Thanks! Your answer worked perfectly.", PostType.Answer, a5._id!, user1._id!);
     await createComment("Very detailed explanation. Appreciate it!", PostType.Answer, a8._id!, user3._id!);
+    await createComment("Perfect example! This is exactly what I needed.", PostType.Answer, a9._id!, user5._id!);
+    await createComment("I prefer Promise chaining too, but async/await is more readable for complex flows.", PostType.Answer, a10._id!, user6._id!);
+    await createComment("Great point about generator expressions. Memory efficiency matters!", PostType.Answer, a12._id!, user7._id!);
+    await createComment("The height issue is often overlooked. Thanks for pointing that out!", PostType.Answer, a13._id!, user8._id!);
+    await createComment("ROW_NUMBER() is a powerful function. Thanks for the example!", PostType.Answer, a16._id!, user9._id!);
+    await createComment("React.FC is helpful but some teams prefer explicit typing. Both work!", PostType.Answer, a17._id!, user10._id!);
+    await createComment("Docker logs are essential for debugging. Good tip!", PostType.Answer, a19._id!, user1._id!);
+    await createComment("Communication is key when resolving conflicts. Well said!", PostType.Answer, a21._id!, user2._id!);
+    await createComment("Security best practices are crucial. Thanks for the comprehensive answer!", PostType.Answer, a23._id!, user3._id!);
+    await createComment("Passport.js is a great library. It handles so much for you.", PostType.Answer, a24._id!, user4._id!);
 
     console.log("done");
   } catch (err) {
