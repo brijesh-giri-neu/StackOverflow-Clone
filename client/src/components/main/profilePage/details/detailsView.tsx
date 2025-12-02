@@ -27,11 +27,16 @@ interface ProfileDetailsProps {
  * including bio, title, location, and social/media links.
  */
 const ProfileDetails = ({ userProfile }: ProfileDetailsProps) => {
+    const hasRightContent =
+        !!userProfile.location ||
+        !!userProfile.website ||
+        !!userProfile.twitter ||
+        !!userProfile.github;
+
     return (
         <div className="profile_details_container">
             {/* Left Column: Display Name, Title, About Me */}
             <div className="profile_details_left">
-                <h1 className="display_name">{userProfile.user.displayName}</h1>
                 {userProfile.title && (
                     <span className="title_badge">{userProfile.title}</span>
                 )}
@@ -41,38 +46,40 @@ const ProfileDetails = ({ userProfile }: ProfileDetailsProps) => {
             </div>
 
             {/* Right Column: Location & Links with Icons */}
-            <div className="profile_details_right">
-                {userProfile.location && (
-                    <div className="info_line">
-                        <MapMarkerIcon className="info_icon" />
-                        <span>{userProfile.location}</span>
-                    </div>
-                )}
-                {userProfile.website && (
-                    <div className="info_line">
-                        <GlobeIcon className="info_icon" />
-                        <a href={userProfile.website} target="_blank" rel="noopener noreferrer">
-                            Website
-                        </a>
-                    </div>
-                )}
-                {userProfile.twitter && (
-                    <div className="info_line">
-                        <TwitterIcon className="info_icon" />
-                        <a href={userProfile.twitter} target="_blank" rel="noopener noreferrer">
-                            Twitter
-                        </a>
-                    </div>
-                )}
-                {userProfile.github && (
-                    <div className="info_line">
-                        <GithubIcon className="info_icon" />
-                        <a href={userProfile.github} target="_blank" rel="noopener noreferrer">
-                            GitHub
-                        </a>
-                    </div>
-                )}
-            </div>
+            {hasRightContent && (
+                <div className="profile_details_right">
+                    {userProfile.location && (
+                        <div className="info_line">
+                            <MapMarkerIcon className="info_icon" />
+                            <span>{userProfile.location}</span>
+                        </div>
+                    )}
+                    {userProfile.website && (
+                        <div className="info_line">
+                            <GlobeIcon className="info_icon" />
+                            <a href={userProfile.website} target="_blank" rel="noopener noreferrer">
+                                Website
+                            </a>
+                        </div>
+                    )}
+                    {userProfile.twitter && (
+                        <div className="info_line">
+                            <TwitterIcon className="info_icon" />
+                            <a href={userProfile.twitter} target="_blank" rel="noopener noreferrer">
+                                Twitter
+                            </a>
+                        </div>
+                    )}
+                    {userProfile.github && (
+                        <div className="info_line">
+                            <GithubIcon className="info_icon" />
+                            <a href={userProfile.github} target="_blank" rel="noopener noreferrer">
+                                GitHub
+                            </a>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

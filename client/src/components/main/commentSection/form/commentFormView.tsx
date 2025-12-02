@@ -43,11 +43,11 @@ const CommentForm = ({ initialText = "", isEditing, onSubmit, onCancel }: Props)
           </div>
 
           <div className="btn_indicator_container">
-            <button className="form_postBtn" onClick={handleSubmit}>
+            <button className="btn btn-primary form_postBtn" onClick={handleSubmit}>
               {isEditing ? "Update Comment" : "Post Comment"}
             </button>
-            {isEditing && onCancel && (
-              <button className="form_postBtn secondary" onClick={handleCancel}>
+            {onCancel && (
+              <button className="btn btn-secondary form_postBtn secondary" onClick={handleCancel}>
                 Cancel
               </button>
             )}

@@ -1,0 +1,11 @@
+.main_profile {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.main_profile h2 {
+  text-align: center;
+  color: #6c757d;
+  margin-top: 3rem;
+}

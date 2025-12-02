@@ -1,19 +1,41 @@
-/* All the CSS related to answers Page*/
 .answer {
-    display: flex;
-    flex-direction: row;
-    border-bottom: #000000 1px dashed;
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #dee2e6;
+  padding: 1.5rem 0;
+  gap: 1rem;
+}
+
+.answer_question_content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.answer_question_content:has(.comment-section),
+.answer_question_content:has(.comment_form_container) {
+  justify-content: flex-start;
 }
 
 .answerText {
-    width: 75%;
-    margin-left: 2%
+  line-height: 1.6;
+  color: #212529;
+  font-size: 0.95rem;
+  text-align: justify;
 }
 
 .answerAuthor {
-    margin-left: 1%;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  font-size: 0.875rem;
 }
 
 .answer_author {
-    color: green;
+  color: #198754;
+  font-weight: 500;
 }

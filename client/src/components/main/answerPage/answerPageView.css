@@ -1,7 +1,20 @@
 .answer_question_meta {
-    color: #bbbbbb;
+  color: #6c757d;
+  font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.answer_question_meta_label {
+  text-transform: lowercase;
+}
+
+.answer_question_meta_value {
+  white-space: nowrap;
 }
 
 .ansButton {
-    margin: 2% 0 2% 2%;
+  margin: 2rem 0 2rem 2rem;
 }

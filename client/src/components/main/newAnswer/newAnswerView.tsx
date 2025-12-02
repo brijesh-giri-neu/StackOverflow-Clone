@@ -33,8 +33,19 @@ const NewAnswer = ({ qid, handleAnswer, userId }: NewAnswerProps) => {
         err={textErr}
       />
       <div className="btn_indicator_container">
-        <button className="form_postBtn" onClick={postAnswer}>
+        <button
+          type="button"
+          className="btn btn-primary form_postBtn"
+          onClick={postAnswer}
+        >
           Post Answer
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary form_postBtn secondary"
+          onClick={() => handleAnswer(qid)}
+        >
+          Cancel
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>

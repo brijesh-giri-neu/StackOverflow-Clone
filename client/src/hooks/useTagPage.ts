@@ -34,13 +34,19 @@ export const useTagPage = ({ page, limit }: UseTagPageProps) => {
       try {
         const res = await getTagsWithQuestionNumber(page, limit);
         setTlist(res.data || []);
-        setPagination(res?.pagination || pagination);
+        setPagination(res?.pagination || {
+          totalItems: 0,
+          totalPages: 0,
+          currentPage: 1,
+          pageSize: limit,
+        });
       } catch (e) {
         console.error("Error fetching tags:", e);
       }
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, limit]);
 
   return { tlist, pagination };

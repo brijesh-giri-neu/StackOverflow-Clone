@@ -1,8 +1,6 @@
 import {
-    FaCircleUp,
-    FaRegCircleUp,
-    FaCircleDown,
-    FaRegCircleDown,
+    FaCaretUp,
+    FaCaretDown,
 } from "react-icons/fa6";
 import "./voteButtonView.css";
 import { useVote } from "../../../hooks/useVote";
@@ -10,11 +8,9 @@ import { PostType, VoteValueType } from "../../../types/entityTypes";
 
 import type { FC, SVGProps } from "react";
 
-// Typed icon components
-const SolidUpIcon = FaCircleUp as FC<SVGProps<SVGSVGElement>>;
-const RegularUpIcon = FaRegCircleUp as FC<SVGProps<SVGSVGElement>>;
-const SolidDownIcon = FaCircleDown as FC<SVGProps<SVGSVGElement>>;
-const RegularDownIcon = FaRegCircleDown as FC<SVGProps<SVGSVGElement>>;
+// Typed icon components - Stack Overflow style triangles
+const UpIcon = FaCaretUp as FC<SVGProps<SVGSVGElement>>;
+const DownIcon = FaCaretDown as FC<SVGProps<SVGSVGElement>>;
 
 interface VoteButtonProps {
     /** ID of the current user (optional if not logged in) */
@@ -64,9 +60,9 @@ const VoteButtons = ({
                         isUpVoted ? VoteValueType.NoVote : VoteValueType.UpVote
                     )
                 }
-                title="Upvote"
+                data-tooltip="Upvote"
             >
-                {isUpVoted ? <SolidUpIcon /> : <RegularUpIcon />}
+                <UpIcon />
             </button>
             <div className="vote_score">{updatedScore}</div>
             <button
@@ -76,9 +72,9 @@ const VoteButtons = ({
                         isDownVoted ? VoteValueType.NoVote : VoteValueType.DownVote
                     )
                 }
-                title="Downvote"
+                data-tooltip="Downvote"
             >
-                {isDownVoted ? <SolidDownIcon /> : <RegularDownIcon />}
+                <DownIcon />
             </button>
         </div>
     );

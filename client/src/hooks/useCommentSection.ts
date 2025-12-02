@@ -54,6 +54,7 @@ export const useCommentSection = (
 
   useEffect(() => {
     loadComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [postId]);
 
   return {
