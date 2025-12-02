@@ -1,7 +1,23 @@
 /* Bootstrap classes handle button styling - only keep pagination-button for potential test compatibility */
-.pagination-button {
+.btn.pagination-button {
   font-size: 0.9rem;
   min-width: 40px;
+  color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  background-color: transparent !important;
+}
+
+.btn.pagination-button:hover:not(:disabled) {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  color: #fff !important;
+}
+
+.btn.pagination-button:disabled {
+  color: #6c757d !important;
+  border-color: #ced4da !important;
+  opacity: 0.65;
+  cursor: not-allowed;
 }
 
 .pagination-controls {
