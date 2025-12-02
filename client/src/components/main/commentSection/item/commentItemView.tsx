@@ -1,5 +1,6 @@
 import { useIsCommentOwner } from "../../../../hooks/useCommentItem";
-import { CommentType } from "../../../../types/entityTypes";
+import { CommentType, UserRefType } from "../../../../types/entityTypes";
+import { getMetaData } from "../../../../utils";
 
 /**
  * Props for the CommentItem component.
@@ -19,15 +20,35 @@ interface Props {
 const CommentItem = ({ comment, currentUserId, onEdit, onDelete }: Props) => {
   const isOwner = useIsCommentOwner(comment.userId, currentUserId);
 
+  const authorName =
+    typeof comment.userId === "string"
+      ? "Unknown user"
+      : (comment.userId as UserRefType).displayName;
+
+  const createdMeta =
+    comment.createdAt ? getMetaData(new Date(comment.createdAt)) : null;
+
   return (
     <li className="comment-item">
-      <span>{comment.isDeleted ? "[deleted]" : comment.text}</span>
-      {isOwner && !comment.isDeleted && (
-        <div className="comment-actions">
-          <button onClick={onEdit}>Edit</button>
-          <button onClick={onDelete}>Delete</button>
-        </div>
-      )}
+      <div className="comment_text">
+        {comment.isDeleted ? "[deleted]" : comment.text}
+      </div>
+      <div className="comment_meta_wrapper">
+        {!comment.isDeleted && (
+          <div className="comment_meta">
+            <span className="comment_author">{authorName}</span>
+            {createdMeta && (
+              <span className="comment_time">{createdMeta}</span>
+            )}
+          </div>
+        )}
+        {isOwner && !comment.isDeleted && (
+          <div className="comment-actions">
+            <button onClick={onEdit}>Edit</button>
+            <button onClick={onDelete}>Delete</button>
+          </div>
+        )}
+      </div>
     </li>
   );
 };

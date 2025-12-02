@@ -45,6 +45,7 @@ const AnswerPage = ({
         userId={userId}
         views={question.views}
         answersCount={question.answers.length}
+        tags={question.tags}
         text={question.text}
         askby={question.asked_by}
         meta={getMetaData(new Date(question.ask_date_time))}

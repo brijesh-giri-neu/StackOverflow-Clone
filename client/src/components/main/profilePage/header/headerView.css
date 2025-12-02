@@ -2,12 +2,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2rem;
+  padding: 1.5rem 0;
   border-bottom: 1px solid #dee2e6;
   background-color: #fff;
-  border-radius: 0.5rem 0.5rem 0 0;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-  margin-bottom: 1.5rem;
 }
 
 .profile_left {

@@ -3,6 +3,7 @@ import { PostType } from "../../../types/entityTypes";
 import CommentForm from "./form/commentFormView";
 import CommentList from "./list/commentListView";
 import { useCommentSection } from "../../../hooks/useCommentSection";
+import { useState } from "react";
 
 /**
  * Props for the CommentSection component.
@@ -29,21 +30,11 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
     loading,
   } = useCommentSection(postId, postType, userId);
 
+  const [showForm, setShowForm] = useState(false);
+
   // Don't show anything if there are no comments and no user to add comments
   if (!loading && comments.length === 0 && !userId) {
     return null;
-  }
-
-  // If there are no comments but the user can add one, just show the form without extra spacing/border
-  if (!loading && comments.length === 0 && userId) {
-    return (
-      <CommentForm
-        initialText={editTarget?.text}
-        isEditing={!!editTarget}
-        onSubmit={submitComment}
-        onCancel={cancelEdit}
-      />
-    );
   }
 
   return (
@@ -62,12 +53,28 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
             />
           )}
           {userId && (
-            <CommentForm
-              initialText={editTarget?.text}
-              isEditing={!!editTarget}
-              onSubmit={submitComment}
-              onCancel={cancelEdit}
-            />
+            <>
+              {!showForm && (
+                <button
+                  type="button"
+                  className="comment_toggle_link"
+                  onClick={() => setShowForm(true)}
+                >
+                  Add a comment
+                </button>
+              )}
+              {showForm && (
+                <CommentForm
+                  initialText={editTarget?.text}
+                  isEditing={!!editTarget}
+                  onSubmit={submitComment}
+                  onCancel={() => {
+                    cancelEdit();
+                    setShowForm(false);
+                  }}
+                />
+              )}
+            </>
           )}
         </>
       )}
