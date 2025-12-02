@@ -8,6 +8,46 @@
   border-radius: 0.5rem 0.5rem 0 0;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   margin-bottom: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .profile_header {
+    padding: 1.5rem;
+  }
+  
+  .profile_name {
+    font-size: 1.25rem;
+  }
+  
+  .user_icon {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile_header {
+    padding: 1rem;
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+  
+  .profile_name {
+    font-size: 1rem;
+  }
+  
+  .user_icon {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .profile_left {
+    gap: 0.75rem;
+  }
 }
 
 .profile_left {
@@ -49,6 +89,28 @@
   font-weight: 500;
   transition: all 0.15s ease-in-out;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.logout_button span {
+  display: inline;
+}
+
+@media (max-width: 768px) {
+  .logout_button span {
+    display: none;
+  }
+  
+  .logout_button {
+    padding: 0.6rem;
+    min-width: 40px;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile_right {
+    display: none;
+  }
 }
 
 .logout_button:hover {

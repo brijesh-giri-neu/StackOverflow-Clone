@@ -50,7 +50,7 @@ const ProfileHeader = ({
             <div className="profile_header">
                 <div className="profile_left">
                     <img src="/profile.png" alt="User" className="user_icon" />
-                    <h2 className="profile_name">{displayName}</h2>
+                    <span className="profile_name">{displayName}</span>
                 </div>
                 <div className="profile_actions">
                     <button onClick={setEditUserProfilePage} className="edit_profile_button">

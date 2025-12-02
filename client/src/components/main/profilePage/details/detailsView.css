@@ -2,13 +2,32 @@
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: 1200px;
+  margin: 2rem auto 0 auto;
   background-color: #fff;
   border: 1px solid #dee2e6;
   border-radius: 0.5rem;
   padding: 2rem;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .profile_details_container {
+    padding: 1.5rem;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile_details_container {
+    padding: 1rem;
+    gap: 1rem;
+    margin-top: 1rem;
+    border-radius: 0.25rem;
+  }
 }
 
 .profile_details_left {
@@ -16,11 +35,36 @@
   min-width: 300px;
 }
 
+@media (max-width: 768px) {
+  .profile_details_left {
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
+  
+  .profile_details_right {
+    min-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
 .display_name {
   margin: 0 0 1rem 0;
   font-size: 2rem;
   font-weight: 600;
   color: #212529;
+}
+
+@media (max-width: 768px) {
+  .display_name {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .display_name {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
 }
 
 .title_badge {
@@ -40,6 +84,14 @@
   color: #212529;
   line-height: 1.7;
   font-size: 0.95rem;
+}
+
+@media (max-width: 480px) {
+  .about_me {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-top: 0.75rem;
+  }
 }
 
 .profile_details_right {
