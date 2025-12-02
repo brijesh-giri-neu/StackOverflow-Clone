@@ -60,8 +60,19 @@ const NewQuestion = ({ userId, handleQuestions }: NewQuestionProps) => {
         err={tagErr}
       />
       <div className="btn_indicator_container">
-        <button className="btn btn-primary form_postBtn" onClick={postQuestion}>
+        <button
+          type="button"
+          className="btn btn-primary form_postBtn"
+          onClick={postQuestion}
+        >
           Post Question
+        </button>
+        <button
+          type="button"
+          className="btn btn-secondary form_postBtn secondary"
+          onClick={handleQuestions}
+        >
+          Cancel
         </button>
         <div className="mandatory_indicator">* indicates mandatory fields</div>
       </div>

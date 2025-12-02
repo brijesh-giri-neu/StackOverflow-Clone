@@ -46,7 +46,7 @@ const CommentForm = ({ initialText = "", isEditing, onSubmit, onCancel }: Props)
             <button className="btn btn-primary form_postBtn" onClick={handleSubmit}>
               {isEditing ? "Update Comment" : "Post Comment"}
             </button>
-            {isEditing && onCancel && (
+            {onCancel && (
               <button className="btn btn-secondary form_postBtn secondary" onClick={handleCancel}>
                 Cancel
               </button>

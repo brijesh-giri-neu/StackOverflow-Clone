@@ -39,7 +39,20 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
 
   return (
     <div className="comment-section">
-      {comments.length > 0 && <h4>Comments</h4>}
+      {comments.length > 0 && (
+        <div className="comment-header">
+          <h4>Comments</h4>
+          {userId && !showForm && (
+            <button
+              type="button"
+              className="comment_toggle_link comment_header_toggle"
+              onClick={() => setShowForm(true)}
+            >
+              Add a comment
+            </button>
+          )}
+        </div>
+      )}
       {loading ? (
         <p>Loading comments...</p>
       ) : (
@@ -54,7 +67,7 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
           )}
           {userId && (
             <>
-              {!showForm && (
+              {comments.length === 0 && !showForm && (
                 <button
                   type="button"
                   className="comment_toggle_link"
