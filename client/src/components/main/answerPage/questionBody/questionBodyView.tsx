@@ -8,6 +8,7 @@ interface QuestionBodyProps {
   userId?: string
   qId: string,
   views: number;
+  answersCount: number;
   text: string;
   askby: string;
   meta: string;
@@ -20,26 +21,32 @@ interface QuestionBodyProps {
  * @param props containing the views, text, askby and meta data of the question 
  * @returns the question body component
  */
-const QuestionBody = ({ qId, userId, vote_score, views, text, askby, meta, initial_vote }: QuestionBodyProps) => {
+const QuestionBody = ({ qId, userId, vote_score, views, answersCount, text, askby, meta, initial_vote }: QuestionBodyProps) => {
   return (
-    <div id="questionBody" className="questionBody right_padding">
-      <div className="question_body_container">
-        <VoteButtons
-          userId = {userId}
-          voteScore={vote_score}
-          postType={PostType.Question}
-          initialVote={initial_vote}
-          postId = {qId}
-        />
-        <div className="bold_title answer_question_view">{views} views</div>
+    <div className="answer right_padding">
+      <VoteButtons
+        userId = {userId}
+        voteScore={vote_score}
+        postType={PostType.Question}
+        initialVote={initial_vote}
+        postId = {qId}
+      />
+      <div className="answer_question_content">
         <div className="answer_question_text">{text}</div>
-        <div className="answer_question_right">
-          <div className="question_author">{askby}</div>
-          <div className="answer_question_meta">asked {meta}</div>
+        <div className="answer_question_footer">
+          <span className="answer_question_view">{views} views</span>
+          <span className="answer_question_answers">
+            {answersCount} {answersCount === 1 ? "answer" : "answers"}
+          </span>
         </div>
-      </div>
-      <div id="comment-div">
         <CommentSection postId={qId} postType={PostType.Question} userId={userId}/>
+      </div>
+      <div className="answerAuthor">
+        <div className="question_author">{askby}</div>
+        <div className="answer_question_meta">
+          <span className="answer_question_meta_label">asked on</span>
+          <span className="answer_question_meta_value">{meta}</span>
+        </div>
       </div>
     </div>
   );

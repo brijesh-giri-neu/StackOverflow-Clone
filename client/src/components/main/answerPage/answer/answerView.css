@@ -6,9 +6,20 @@
   gap: 1rem;
 }
 
-.answerText {
+.answer_question_content {
   flex: 1;
-  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.answer_question_content:has(.comment-section),
+.answer_question_content:has(.comment_form_container) {
+  justify-content: flex-start;
+}
+
+.answerText {
   line-height: 1.6;
   color: #212529;
   font-size: 0.95rem;
@@ -25,6 +36,6 @@
 }
 
 .answer_author {
-  color: #0d6efd;
+  color: #198754;
   font-weight: 500;
 }

@@ -1,6 +1,18 @@
 .answer_question_meta {
   color: #6c757d;
   font-size: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+
+.answer_question_meta_label {
+  text-transform: lowercase;
+}
+
+.answer_question_meta_value {
+  white-space: nowrap;
 }
 
 .ansButton {

@@ -29,15 +29,17 @@ const Answer = ({ userId, ansId, text, ansBy, meta, vote_score, initial_vote }: 
           initialVote={initial_vote}
           postId = {ansId}
         />
-      <div id="answerText" className="answerText">
-        {text}
-        <div id="comment-div">
-          <CommentSection postId={ansId} postType={PostType.Answer} userId={userId}/>
+      <div className="answer_question_content">
+        <div id="answerText" className="answerText">
+          {text}
         </div>
+        <CommentSection postId={ansId} postType={PostType.Answer} userId={userId}/>
       </div>
       <div className="answerAuthor">
         <div className="answer_author">{ansBy}</div>
-        <div className="answer_question_meta">{meta}</div>
+        <div className="answer_question_meta">
+          <span className="answer_question_meta_value">{meta}</span>
+        </div>
       </div>
     </div>
   );

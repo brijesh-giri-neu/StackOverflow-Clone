@@ -36,7 +36,6 @@ const AnswerPage = ({
   return (
     <>
       <AnswerHeader
-        ansCount={question.answers.length}
         title={question.title}
         handleNewQuestion={handleNewQuestion}
         userId={userId}
@@ -45,6 +44,7 @@ const AnswerPage = ({
         qId={question._id}
         userId={userId}
         views={question.views}
+        answersCount={question.answers.length}
         text={question.text}
         askby={question.asked_by}
         meta={getMetaData(new Date(question.ask_date_time))}

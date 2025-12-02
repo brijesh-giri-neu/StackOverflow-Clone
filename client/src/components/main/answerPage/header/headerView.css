@@ -1,8 +1,5 @@
 .answer_question_title {
-  max-width: 60%;
-  text-align: center;
-  flex: 1;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 600;
   color: #212529;
   line-height: 1.3;

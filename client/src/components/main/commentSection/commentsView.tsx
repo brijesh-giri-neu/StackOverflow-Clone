@@ -29,19 +29,38 @@ const CommentSection = ({ postId, postType, userId }: Props) => {
     loading,
   } = useCommentSection(postId, postType, userId);
 
+  // Don't show anything if there are no comments and no user to add comments
+  if (!loading && comments.length === 0 && !userId) {
+    return null;
+  }
+
+  // If there are no comments but the user can add one, just show the form without extra spacing/border
+  if (!loading && comments.length === 0 && userId) {
+    return (
+      <CommentForm
+        initialText={editTarget?.text}
+        isEditing={!!editTarget}
+        onSubmit={submitComment}
+        onCancel={cancelEdit}
+      />
+    );
+  }
+
   return (
     <div className="comment-section">
-      <h4>Comments</h4>
+      {comments.length > 0 && <h4>Comments</h4>}
       {loading ? (
         <p>Loading comments...</p>
       ) : (
         <>
-          <CommentList
-            comments={comments}
-            currentUserId={userId}
-            onEdit={setEditTarget}
-            onDelete={deleteComment}
-          />
+          {comments.length > 0 && (
+            <CommentList
+              comments={comments}
+              currentUserId={userId}
+              onEdit={setEditTarget}
+              onDelete={deleteComment}
+            />
+          )}
           {userId && (
             <CommentForm
               initialText={editTarget?.text}

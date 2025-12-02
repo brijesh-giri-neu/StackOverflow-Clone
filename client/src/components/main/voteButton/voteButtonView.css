@@ -3,40 +3,71 @@
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
-  min-width: 50px;
+  min-width: 40px;
 }
 
 .vote_button {
   background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 2rem;
+  border: 1px solid #d6d9dc;
   border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s ease-in-out;
-  color: #6c757d;
-  width: 36px;
-  height: 36px;
+  transition: all 0.1s ease-in-out;
+  color: #212529;
+  width: 32px;
+  height: 32px;
   padding: 0;
+  position: relative;
 }
 
 .vote_button:hover {
-  background-color: #f8f9fa;
+  background-color: #fff3cd;
+  border-color: #ffc107;
   color: #212529;
 }
 
 .vote_button.active_vote:first-child {
-  color: #198754;
+  color: #212529;
+  border-color: #212529;
 }
 
 .vote_button.active_vote:last-child {
-  color: #dc3545;
+  color: #212529;
+  border-color: #212529;
 }
 
 .vote_button.active_vote:hover {
-  background-color: #f8f9fa;
+  background-color: #fff3cd;
+  border-color: #ffc107;
+  color: #212529;
+}
+
+/* Custom tooltip that appears quickly - positioned to the right to avoid blocking vote count */
+.vote_button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 0.5rem;
+  background-color: #3b4045;
+  color: #ffffff;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.1s ease-in-out;
+  z-index: 1000;
+}
+
+.vote_button:hover::after {
+  opacity: 1;
+  transition-delay: 0s;
 }
 
 .vote_score {
@@ -49,7 +80,5 @@
   align-items: center;
   justify-content: center;
   padding: 0.25rem 0.5rem;
-  background-color: #fff3cd;
-  border-radius: 0.25rem;
   min-width: 40px;
 }
