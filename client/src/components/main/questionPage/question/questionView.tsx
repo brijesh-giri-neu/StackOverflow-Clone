@@ -19,6 +19,7 @@ interface QuestionProps {
     tags: Tag[];
     asked_by: string;
     ask_date_time: string;
+    vote_score?: number;
   };
   clickTag: ClickTagFunctionType;
   handleAnswer: IdFunctionType;
@@ -33,6 +34,9 @@ interface QuestionProps {
  * @param handleAnswer - Handler for when the question is clicked (to view/answer it).
  */
 const Question = ({ q, clickTag, handleAnswer }: QuestionProps) => {
+  const answerCount = q.answers.length || 0;
+  const voteCount = q.vote_score ?? 0;
+  
   return (
     <div
       className="question right_padding"
@@ -41,8 +45,18 @@ const Question = ({ q, clickTag, handleAnswer }: QuestionProps) => {
       }}
     >
       <div className="postStats">
-        <div>{q.answers.length || 0} answers</div>
-        <div>{q.views} views</div>
+        <div className="stat-item votes-stat">
+          <div className="stat-number">{voteCount}</div>
+          <div className="stat-label">votes</div>
+        </div>
+        <div className={`stat-item answers-stat ${answerCount > 0 ? 'has-answers' : ''}`}>
+          <div className="stat-number">{answerCount}</div>
+          <div className="stat-label">{answerCount === 1 ? 'answer' : 'answers'}</div>
+        </div>
+        <div className="stat-item views-stat">
+          <div className="stat-number">{q.views}</div>
+          <div className="stat-label">{q.views === 1 ? 'view' : 'views'}</div>
+        </div>
       </div>
       <div className="question_mid">
         <div className="postTitle">{q.title}</div>
@@ -65,7 +79,6 @@ const Question = ({ q, clickTag, handleAnswer }: QuestionProps) => {
       </div>
       <div className="lastActivity">
         <div className="question_author">{q.asked_by}</div>
-        <div>&nbsp;</div>
         <div className="question_meta">
           asked {getMetaData(new Date(q.ask_date_time))}
         </div>

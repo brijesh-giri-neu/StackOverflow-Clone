@@ -70,7 +70,10 @@ const QuestionPage = ({
       <div id="question_list" className="question_list">
         {qlist.map((q, idx) => (
           <Question
-            q={q}
+            q={{
+              ...q,
+              vote_score: q.vote_score ?? 0
+            }}
             key={idx}
             clickTag={clickTag}
             handleAnswer={handleAnswer}
