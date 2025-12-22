@@ -42,7 +42,7 @@ UserProfileSchema.statics.updateUserProfile = async function (
         throw new Error("Failed to create/update user profile");
     }
 
-    return convertToIUserProfile(updatedProfile);
+    return convertToIUserProfile(updatedProfile as unknown as IUserProfileDocument);
 };
 
 /**

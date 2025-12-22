@@ -65,6 +65,7 @@ export default class AnswerPageClass extends PageClass {
         qid={this.qid}
         handleNewQuestion={this.handleNewQuestion}
         handleNewAnswer={this.handleNewAnswer}
+        clickTag={this.clickTag}
       />
     );
   }

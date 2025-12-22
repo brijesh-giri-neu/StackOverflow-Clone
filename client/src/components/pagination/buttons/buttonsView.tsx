@@ -33,17 +33,17 @@ const PaginationButtons = ({
     <div className="pagination-controls">
       {showPrev && (
         <button
-          className="prev-btn pagination-button"
+          className="btn btn-outline-secondary pagination-button"
           onClick={handlePrev}
         >
           Prev
         </button>
       )}
-      <span className="page-info">
+      <span className="page-info mx-2">
         Page {pageNumber} of {totalPages}
       </span>
       <button
-        className="next-btn pagination-button"
+        className="btn btn-outline-secondary pagination-button"
         onClick={handleNext}
         disabled={pageNumber >= totalPages}
       >

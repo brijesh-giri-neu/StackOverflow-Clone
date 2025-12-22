@@ -63,13 +63,17 @@ const QuestionPage = ({
         title_text={title_text}
         qcnt={pagination.totalItems}
         userId={userId}
+        order={order}
         setQuestionOrder={setQuestionOrder}
         handleNewQuestion={handleNewQuestion}
       />
       <div id="question_list" className="question_list">
         {qlist.map((q, idx) => (
           <Question
-            q={q}
+            q={{
+              ...q,
+              vote_score: q.vote_score ?? 0
+            }}
             key={idx}
             clickTag={clickTag}
             handleAnswer={handleAnswer}

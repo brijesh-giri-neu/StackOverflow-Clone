@@ -33,7 +33,7 @@ const TagPage = ({ page, limit, userId, clickTag, handleNewQuestion, setTagPage 
         <div className="bold_title">All Tags</div>
         <div className="button_container">
           {userId && (
-            <button className="bluebtn" onClick={handleNewQuestion}>
+            <button className="btn btn-primary" onClick={handleNewQuestion}>
               Ask a Question
             </button>
           )}

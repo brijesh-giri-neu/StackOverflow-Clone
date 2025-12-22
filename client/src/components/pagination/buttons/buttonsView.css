@@ -1,48 +1,30 @@
-.pagination-button {
-    display: inline-block;
-    padding: 5px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #121b0c8f;
-    background-color: #b6b0ac;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    margin: 1%;
+/* Bootstrap classes handle button styling - only keep pagination-button for potential test compatibility */
+.btn.pagination-button {
+  font-size: 0.9rem;
+  min-width: 40px;
+  color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  background-color: transparent !important;
 }
 
-.pagination-button:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+.btn.pagination-button:hover:not(:disabled) {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
+  color: #fff !important;
 }
 
-.pagination-button:active {
-    background-color: #003d80;
-    transform: scale(0.95);
-}
-
-.pagination-button:focus {
-    outline: none;
-    box-shadow: 0 0 5px 2px rgba(0, 123, 255, 0.5);
-}
-
-.pagination-button:disabled,
-.pagination-button:disabled:hover {
-  background-color: #e0e0e0; /* Or keep it the same as default */
-  color: #888;
+.btn.pagination-button:disabled {
+  color: #6c757d !important;
+  border-color: #ced4da !important;
+  opacity: 0.65;
   cursor: not-allowed;
 }
 
-/* Left-side controls */
-.pagination-controls  {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* or center or space-between as needed */
-    gap: 0.5rem;
-    margin-left: 2rem;
-    flex-wrap: nowrap; /* Prevent wrapping */
-    white-space: nowrap; /* Prevent internal line breaks */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }

@@ -10,6 +10,7 @@ interface InputProps {
   val: string;
   setState: StringFunctionType;
   err?: string;
+  type?: string;
 }
 
 // A generic reusble component for the input field of a form.
@@ -21,6 +22,7 @@ const Input = ({
   val,
   setState,
   err,
+  type = "text",
 }: InputProps) => {
   return (
     <>
@@ -32,7 +34,7 @@ const Input = ({
       <input
         id={id}
         className="input_input"
-        type="text"
+        type={type}
         value={val}
         onInput={(e) => {
           setState(e.currentTarget.value);

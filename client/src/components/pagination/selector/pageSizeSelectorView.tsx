@@ -23,9 +23,15 @@ const PageSizeSelector = ({
 }: PageSizeSelectorProps) => {
   return (
     <div className="page-size-selector">
-      <label htmlFor="pageSize">Items per page:</label>
+      <label
+        htmlFor="pageSize"
+        className="form-label mb-0 me-2"
+      >
+        Items per page:
+      </label>
       <select
         id="pageSize"
+        className="form-select form-select-sm d-inline-block w-auto"
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       >

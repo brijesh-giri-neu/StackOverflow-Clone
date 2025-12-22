@@ -13,6 +13,7 @@ interface QuestionHeaderProps {
   title_text: string;
   qcnt: number;
   userId?: string;
+  order: string;
   setQuestionOrder: MessageFunctionType;
   handleNewQuestion: VoidFunctionType;
 }
@@ -25,6 +26,7 @@ const QuestionHeader = ({
   title_text,
   qcnt,
   userId,
+  order,
   setQuestionOrder,
   handleNewQuestion,
 }: QuestionHeaderProps) => {
@@ -33,7 +35,7 @@ const QuestionHeader = ({
       <div className="space_between right_padding">
         <div className="bold_title">{title_text}</div>
         {userId && (
-          <button className="bluebtn"
+          <button className="btn btn-primary"
             onClick={() => {
               handleNewQuestion();
             }}
@@ -49,6 +51,7 @@ const QuestionHeader = ({
             <OrderButton
               key={idx}
               message={m}
+              order={order}
               setQuestionOrder={setQuestionOrder}
             />
           ))}

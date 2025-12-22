@@ -1,3 +1,4 @@
+import "./profilePageView.css";
 import ProfileHeader from "./header/headerView";
 import ProfileDetails from "./details/detailsView";
 import { UserProfileType } from "../../../types/entityTypes";

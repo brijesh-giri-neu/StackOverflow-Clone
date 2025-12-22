@@ -1,84 +1,128 @@
 /* Container for the entire header */
 .header-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #f8f9f9;
-    /* Light gray, Stack Overflow–like */
-    border-bottom: 1px solid #e4e6e8;
-    padding: 0.5rem 1rem;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 50px;
 }
 
 /* Left section: logo + site name */
 .header-left {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: opacity 0.15s ease-in-out;
+}
+
+.header-left:hover {
+  opacity: 0.8;
 }
 
 .header-logo {
-    height: 35px;
-    width: 200px;
-    /* Adjust as needed */
+  height: 30px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
 }
 
 .header-title {
-    font-weight: bold;
-    font-size: 1.3rem;
-    color: #2f3337;
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: #212529;
 }
 
 /* Center section: search bar */
 .header-center {
-    flex: 1;
-    /* Grows to take up available space */
-    display: flex;
-    justify-content: center;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 700px;
+  margin: 0 1.5rem;
 }
 
 .header-search {
-    width: 500px;
-    /* Adjust for your layout */
-    max-width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #babfc4;
-    border-radius: 3px;
-    font-size: 1rem;
-    outline: none;
+  width: 100%;
+  max-width: 600px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  background-color: #fff;
+  color: #212529;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.header-search::placeholder {
+  color: #6c757d;
+}
+
+.header-search:hover {
+  border-color: #adb5bd;
 }
 
 .header-search:focus {
-    border-color: #6bbbf7;
-    box-shadow: 0 0 0 3px rgba(0, 149, 255, 0.15);
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
 }
 
 /* Right section: profile or auth buttons */
 .header-right {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .profile-icon {
-    width: 35px;
-    height: 35px;
-    cursor: pointer;
-    object-fit: cover;
-    /* Keep aspect ratio */
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #dee2e6;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.profile-icon:hover {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.1);
 }
 
 .login-button,
 .signup-button {
-    background-color: transparent;
-    border: 1px solid #838c95;
-    padding: 0.4rem 0.8rem;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 0.9rem;
+  background-color: transparent;
+  border: 1px solid #ced4da;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #6c757d;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
 }
 
 .login-button:hover,
 .signup-button:hover {
-    background-color: #e3e6e8;
+  background-color: #f8f9fa;
+  border-color: #adb5bd;
+  color: #212529;
+}
+
+.signup-button {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+
+.signup-button:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+  color: #fff;
 }

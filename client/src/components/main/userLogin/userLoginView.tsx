@@ -47,14 +47,15 @@ const UserLogin = ({ setUser, setUserProfile, handleQuestions }: UserLoginProps)
                 val={password}
                 setState={setPassword}
                 err={passwordErr}
+                type="password"
             />
             {loginErr && (
-                <div className="form_error" style={{ color: "red", marginTop: "8px", marginBottom: "18px" }}>
+                <div className="text-danger mb-3 mt-2">
                     {loginErr}
                 </div>
             )}
             <div className="btn_indicator_container">
-                <button className="form_postBtn" onClick={loginUser}>
+                <button className="btn btn-primary form_postBtn" onClick={loginUser}>
                     Login
                 </button>
                 <div className="mandatory_indicator">* indicates mandatory fields</div>

@@ -1,26 +1,48 @@
 .input_title {
-    margin-bottom: 8px;
-    font-weight: bold;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #212529;
 }
 
 .input_hint {
-    font-size: 14px;
-    color: black;
-    margin-bottom: 5px;
-    font-style: italic;
-    margin-left: 10px;
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.25rem;
+  font-style: italic;
+  margin-left: 0.5rem;
 }
 
 .input_input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  color: #212529;
+  background-color: #fff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.input_input:hover {
+  border-color: #adb5bd;
+}
+
+.input_input:focus {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.input_input::placeholder {
+  color: #6c757d;
 }
 
 .input_error {
-    color: red;
-    margin-bottom: 20px;
+  color: #dc3545;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  margin-top: -0.25rem;
 }

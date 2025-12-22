@@ -1,9 +1,17 @@
 .btns {
-    margin-right: 15%;
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.question_list {
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  background-color: #fff;
+  margin-top: 1.5rem;
+  overflow: hidden;
 }
 
 .question_list:last-child {
-    border-bottom: #000000 1px dashed;
+  border-bottom: 1px solid #dee2e6;
 }
-
-

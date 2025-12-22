@@ -3,7 +3,7 @@ import Answer from "./answer/answerView";
 import AnswerHeader from "./header/headerView";
 import "./answerPageView.css";
 import QuestionBody from "./questionBody/questionBodyView";
-import { VoidFunctionType } from "../../../types/functionTypes";
+import { ClickTagFunctionType, VoidFunctionType } from "../../../types/functionTypes";
 import { useAnswerPage } from "../../../hooks/useAnswerPage";
 
 // The type of the props for the AnswerPage component
@@ -12,6 +12,7 @@ interface AnswerPageProps {
   qid: string;
   handleNewQuestion: VoidFunctionType;
   handleNewAnswer: VoidFunctionType;
+  clickTag: ClickTagFunctionType;
 }
 
 /**
@@ -26,6 +27,7 @@ const AnswerPage = ({
   qid,
   handleNewQuestion,
   handleNewAnswer,
+  clickTag,
 }: AnswerPageProps) => {
   const { question } = useAnswerPage(qid);
 
@@ -36,7 +38,6 @@ const AnswerPage = ({
   return (
     <>
       <AnswerHeader
-        ansCount={question.answers.length}
         title={question.title}
         handleNewQuestion={handleNewQuestion}
         userId={userId}
@@ -45,6 +46,9 @@ const AnswerPage = ({
         qId={question._id}
         userId={userId}
         views={question.views}
+        answersCount={question.answers.length}
+        tags={question.tags}
+        clickTag={clickTag}
         text={question.text}
         askby={question.asked_by}
         meta={getMetaData(new Date(question.ask_date_time))}
@@ -65,7 +69,7 @@ const AnswerPage = ({
       ))}
       {userId && (
         <button
-          className="bluebtn ansButton"
+          className="btn btn-primary ansButton"
           onClick={() => {
             handleNewAnswer();
           }}
