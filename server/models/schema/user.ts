@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { IUserDocument, IUserModel } from "../../types/types";
-import { hashPassword } from "../../services/passwordService";
+import { hashPassword } from "../../services/authService";
 
 /**
  * The schema for a document in the User collection.

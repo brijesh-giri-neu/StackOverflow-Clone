@@ -1,4 +1,4 @@
-import { hashPassword } from "../../services/passwordService"; // Adjust path based on your project structure
+import { hashPassword } from "../../services/authService";
 import bcrypt from "bcrypt";
 
 jest.mock("bcrypt", () => ({

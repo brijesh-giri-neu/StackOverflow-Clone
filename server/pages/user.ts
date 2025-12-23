@@ -4,6 +4,7 @@ import User from '../models/users';
 import { IUser } from '../types/types';
 import { isAuthenticated } from '../middlewares/auth/isAuthenticated';
 import { isAuthorized } from '../middlewares/auth/isAuthorized';
+import { generateToken } from '../services/authService';
 
 const router = express.Router();
 
@@ -24,8 +25,22 @@ router.post('/register', async (req: Request, res: Response) => {
     }
     const user: IUser = { email, displayName, password };
     const newUser = await User.registerUser(user);
+    
+    // Generate encrypted JWT token.
+    if (!newUser._id || !newUser.email) {
+        return res.status(500).json({ message: "Error creating user" });
+    }
+    const token = await generateToken(newUser._id, newUser.email);
+    
+    // Set session for backward compatibility.
     req.session.userId = newUser._id;
-    res.status(200).json(newUser);
+    
+    // Return encrypted token in response body.
+    res.status(200).json({ 
+        message: "Registration successful", 
+        user: newUser,
+        token
+    });
 });
 
 /**
@@ -39,9 +54,19 @@ router.post('/register', async (req: Request, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await User.loginUser(email, password);
-    if (user) {
+    if (user && user._id && user.email) {
+        // Generate encrypted JWT token.
+        const token = await generateToken(user._id, user.email);
+        
+        // Set session for backward compatibility
         req.session.userId = user._id;
-        res.status(200).json({ message: "Login successful", user });
+        
+        // Return encrypted token in response body.
+        res.status(200).json({ 
+            message: "Login successful", 
+            user,
+            token
+        });
     } else {
         res.status(401).json({ message: "Invalid credentials" });
     }
@@ -65,19 +90,36 @@ router.post("/logout", (req: Request, res: Response) => {
 
 /**
  * @route   GET /user/session
- * @desc    Get the currently authenticated user based on session.
- * @access  Public (or Protected, depending on your use case)
+ * @desc    Get the currently authenticated user.
+ *          This endpoint authenticates via:
+ *          - Encrypted JWT token in Authorization header (Bearer token) - primary method
+ *          - Session cookie (for backward compatibility only)
+ * @access  Protected (requires authentication)
  */
-router.get('/session', async (req: Request, res: Response) => {
-    if (!req.session.userId) {
+router.get('/session', isAuthenticated, async (req: Request, res: Response) => {
+    // req.userId is set by isAuthenticated middleware based on the authentication method.
+    const userId = req.userId;
+    
+    if (!userId) {
         return res.status(401).json({ message: "Not authenticated" });
     }
 
-    const user = await User.getUserById(req.session.userId);
+    const user = await User.getUserById(userId);
     if (!user) {
         return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({ user });
+    
+    // Generate a new encrypted JWT token for the session (useful after page refresh).
+    // This allows the frontend to restore the Bearer token in memory.
+    if (!user._id || !user.email) {
+        return res.status(500).json({ message: "Error retrieving user data" });
+    }
+    const token = await generateToken(user._id, user.email);
+    
+    res.status(200).json({ 
+        user,
+        token // Return token so frontend can restore it in memory.
+    });
 });
 
 /**
@@ -93,15 +135,20 @@ router.get('/session', async (req: Request, res: Response) => {
  * @returns {Response} - A JSON response indicating that the account was permanently deleted.
  */
 router.delete("/delete", isAuthenticated, isAuthorized, async (req: Request, res: Response) => {
-    const userId = req.session.userId as string;
+    // req.userId is set by isAuthenticated middleware based on the authentication method.
+    const userId = req.userId;
+
+    if (!userId) {
+        return res.status(401).json({ message: "Unauthorized" });
+    }
 
     await User.deleteUserById(userId);
 
     // Logout user
     req.session.destroy(() => {
-        // Optionally clear the session cookie, 'connect.sid' is the default session cookie name.
+        // Clear session cookie.
         res.clearCookie("connect.sid");
-        res.status(200).json({ message: "Logout successful" });
+        res.status(200).json({ message: "Account deleted successfully" });
     });
 });
 
