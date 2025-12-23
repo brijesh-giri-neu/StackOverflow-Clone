@@ -9,6 +9,7 @@ import axios, {
   InternalAxiosRequestConfig,
   AxiosResponse,
 } from "axios";
+import { getAuthToken, removeAuthToken } from "../utils/authToken";
 
 // Base URL for the REST API of the server.
 const REACT_APP_API_URL = process.env.REACT_APP_API_URL || "http://localhost:8000";
@@ -35,28 +36,58 @@ const handleErr = (err: AxiosError): Promise<never> => {
 /**
  * The axios instance that will be used to make requests to the API.
  * 
- * The instance is created with the withCredentials option set to true, which allows the client to send cookies with the request to cross site servers.
+ * withCredentials is set to true to allow session cookies for backward compatibility.
+ * This enables the initial session check on page refresh to work via session cookies.
+ * Once authenticated, JWT tokens (encrypted JWE) are stored in memory and sent as Bearer tokens.
+ * JWT tokens are NOT stored in cookies - only session cookies are used for initial auth check.
  */
 const api = axios.create({ withCredentials: true });
 
 /**
- * The interceptor handles all outgoing requests.
+ * Request interceptor that automatically adds the encrypted JWT token (JWE) 
+ * to all outgoing API requests as a Bearer token in the Authorization header.
  * 
- * Every request made with the api instance will be passed through the request interceptor, which will log the request to the console and return the request object.
+ * This ensures all authenticated requests include the token, regardless of
+ * which service method is called (GET, POST, PUT, DELETE, etc.).
+ * 
+ * The token is retrieved from in-memory storage and added only if it exists.
+ * If no token exists, the request proceeds without the Authorization header
+ * (useful for public endpoints like login/register).
  */
 api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => config,
+  (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+    // Get encrypted JWT token from in-memory storage
+    const token = getAuthToken();
+    
+    // Add Bearer token to Authorization header if token exists
+    // This applies to ALL requests: GET, POST, PUT, DELETE, PATCH, etc.
+    // Axios config.headers is always defined, so we can safely set it
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    return config;
+  },
   (error: AxiosError): Promise<never> => handleErr(error)
 );
 
 /**
- * The interceptor handles all incoming responses.
+ * Response interceptor that handles authentication errors.
  * 
- * Every response received from the server will be passed through the response interceptor, which will handle the response using the handleRes function and the handleErr function.
+ * Automatically clears the stored token when a 401 Unauthorized response is received,
+ * which typically indicates the token has expired, is invalid, or the user is not authenticated.
+ * This prevents the app from making further requests with an invalid token.
  */
 api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => handleRes(response),
-  (error: AxiosError): Promise<never> => handleErr(error)
+  (error: AxiosError): Promise<never> => {
+    // If we get a 401 Unauthorized, the token is likely invalid/expired
+    // Clear the token from memory to prevent further failed requests
+    if (error.response?.status === 401) {
+      removeAuthToken();
+    }
+    return handleErr(error);
+  }
 );
 
 export { REACT_APP_API_URL, api };

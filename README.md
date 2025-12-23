@@ -30,10 +30,8 @@ npm run test
 ```
 
 ## Future Enhancements  
-- User authentication (JWT-based login/signup)
 - Content Moderation and Flagging
 - Real-time updates with WebSockets
-- API Rate Limits & Abuse Prevention – Ensure fair use and prevent bot spam
 - Improved UI with Material-UI/Tailwind
 
 ## Contributing  

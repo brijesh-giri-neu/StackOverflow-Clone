@@ -1,3 +1,4 @@
+import "../setup/mocks";
 import mongoose from "mongoose";
 import Vote from "../../models/votes";
 import { VoteType, PostType } from "../../types/types";

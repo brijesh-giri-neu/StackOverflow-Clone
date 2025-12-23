@@ -1,3 +1,4 @@
+import "../setup/mocks";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import User from "../../models/users";

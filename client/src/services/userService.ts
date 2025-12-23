@@ -1,5 +1,6 @@
 import { REACT_APP_API_URL, api } from "./config";
 import { UserResponseType } from "../types/entityTypes";
+import { setAuthToken, removeAuthToken } from "../utils/authToken";
 
 // The base URL for the user API
 const USER_API_URL = `${REACT_APP_API_URL}/user`;
@@ -22,7 +23,11 @@ const registerNewUser = async (
             }
             throw new Error("Error while registering user");
         }
-        return res.data;
+        // Store JWT token from response.
+        if (res.data.token) {
+            setAuthToken(res.data.token);
+        }
+        return res.data.user || res.data;
     } catch (error) {
         console.error("Error registering user:", error);
         throw error;
@@ -44,6 +49,10 @@ const loginExistingUser = async (email: string, password: string): Promise<UserR
             throw new Error("Error while logging in");
         }
         if (res.data.user) {
+            // Store JWT token from response
+            if (res.data.token) {
+                setAuthToken(res.data.token);
+            }
             return res.data.user;
         }
         throw new Error("Login failed: Invalid credentials");
@@ -65,9 +74,13 @@ const logoutCurrentUser = async (): Promise<{ message: string }> => {
         if (res.status !== 200) {
             throw new Error("Error while logging out");
         }
+        // Remove token from localStorage on logout
+        removeAuthToken();
         return res.data;
     } catch (error) {
         console.error("Error logging out user:", error);
+        // Remove token even if logout request fails
+        removeAuthToken();
         throw error;
     }
 };
@@ -86,6 +99,11 @@ const getUserSession = async (): Promise<UserResponseType | null> => {
             return null;
         }
         if (res.data.user) {
+            // Restore JWT token in memory after page refresh
+            // Backend returns token in session response to restore authentication
+            if (res.data.token) {
+                setAuthToken(res.data.token);
+            }
             return res.data.user;
         }
         throw new Error("No active user session");
@@ -107,9 +125,13 @@ const deleteCurrentUser = async (): Promise<{ message: string }> => {
         if (res.status !== 200) {
             throw new Error("Error while deleting user");
         }
+        // Remove token from localStorage after account deletion
+        removeAuthToken();
         return res.data;
     } catch (error) {
         console.error("Error deleting user:", error);
+        // Remove token even if deletion request fails
+        removeAuthToken();
         throw error;
     }
 };

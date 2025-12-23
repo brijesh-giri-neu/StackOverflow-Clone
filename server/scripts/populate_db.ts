@@ -286,7 +286,7 @@ const populate = async () => {
     const t15 = await tagCreate("authentication");
     const t16 = await tagCreate("async-await");
     const t17 = await tagCreate("flexbox");
-    const t18 = await tagCreate("react-native");
+    // const t18 = await tagCreate("react-native");
 
     const user1 = await userCreate(
       "test1@example.com",

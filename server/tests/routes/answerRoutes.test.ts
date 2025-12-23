@@ -1,4 +1,6 @@
+import "../setup/mocks";
 import request from "supertest";
+
 const app = require("../../server"); // CommonJS import style
 import Answer from "../../models/answers";
 import Question from "../../models/questions";

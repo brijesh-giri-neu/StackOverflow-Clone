@@ -1,3 +1,4 @@
+import "../setup/mocks";
 import Question from "../../models/questions";
 import Vote from "../../models/votes";
 import { VoteType } from "../../types/types";
