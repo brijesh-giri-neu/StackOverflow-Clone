@@ -3,6 +3,7 @@ import Header from "./header";
 import Main from "./main/mainView";
 import { useFakeStackOverflow } from "../hooks/useFakeStackOverflow";
 import { useUserSession } from '../hooks/useUserSession';
+import BackendNoticeModal from './BackendNoticeModal';
 
 /**
  * The root component for the Fake Stack Overflow application.
@@ -40,6 +41,7 @@ const FakeStackOverflow = (): JSX.Element => {
 
   return (
     <>
+      <BackendNoticeModal />
       <Header
         user={user}
         userProfile={userProfile}
