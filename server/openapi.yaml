@@ -617,7 +617,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Registration successful"
+                  user:
+                    $ref: "#/components/schemas/User"
+                  token:
+                    type: string
+                    example: "encrypted.jwt.token.here"
+                required:
+                  - message
+                  - user
+                  - token
         "400":
           description: Email already registered
           content:
@@ -661,11 +674,18 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
-                    type: boolean
-                    example: true
+                  message:
+                    type: string
+                    example: "Login successful"
                   user:
                     $ref: "#/components/schemas/User"
+                  token:
+                    type: string
+                    example: "encrypted.jwt.token.here"
+                required:
+                  - message
+                  - user
+                  - token
         "401":
           description: Invalid credentials.
           content:
@@ -795,6 +815,7 @@ paths:
       description: |
         Returns the currently authenticated user's data if a session exists.
         This endpoint checks the session and fetches the user from the database using the stored userId.
+        Returns a new encrypted JWT token to restore authentication after page refresh.
       responses:
         "200":
           description: User session is valid
@@ -805,6 +826,12 @@ paths:
                 properties:
                   user:
                     $ref: "#/components/schemas/User"
+                  token:
+                    type: string
+                    example: "encrypted.jwt.token.here"
+                required:
+                  - user
+                  - token
         "401":
           description: Not authenticated
           content:
@@ -814,13 +841,17 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Not authenticated"
+                    example: "Unauthorized"
         "404":
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResponse"
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "User not found"
         "500":
           $ref: "#/components/responses/InternalServerError"
   

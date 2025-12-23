@@ -1,4 +1,6 @@
+import "../setup/mocks";
 import mongoose from "mongoose";
+
 const request = require("supertest");
 const app = require("../../server");
 import Comment from "../../models/comments";

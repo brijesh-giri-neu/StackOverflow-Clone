@@ -1,4 +1,6 @@
+import "../setup/mocks";
 import Tag from "../../models/tags";
+
 const request = require("supertest");
 const app = require("../../server");
 
