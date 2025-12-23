@@ -5,6 +5,7 @@ import { verifyToken, extractToken } from "../../services/authService";
  * Extends Express Request to include userId from JWT authentication.
  */
 declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Express {
         interface Request {
             userId?: string;

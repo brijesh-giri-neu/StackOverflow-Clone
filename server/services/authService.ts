@@ -108,7 +108,7 @@ export const verifyToken = async (token: string): Promise<JWTPayload | null> => 
     }
     
     return null;
-  } catch (error) {
+  } catch {
     // Token is invalid, expired, malformed, or decryption failed
     return null;
   }
