@@ -8,7 +8,7 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
     "inlineSourceMap": false,
-    "rootDir": ".",                     
+    "rootDir": ".",
     "typeRoots": ["./expressTypes", "./node_modules/@types"]
   },
   "include": [
@@ -16,6 +16,7 @@
   ],
   "exclude": [
     "node_modules",
-    "tests"
+    "tests",
+    "**/*.test.ts"
   ]
 }

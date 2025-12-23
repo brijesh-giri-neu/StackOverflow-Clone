@@ -13,9 +13,12 @@ import { Request, Response, NextFunction } from "express";
  */
 export const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
     const sessionUserId = req.session?.userId;
+    const reqUserId = req.userId;
+    // Try to get userId from JWT token, fallback to session storage.
+    const userId = reqUserId || sessionUserId;
     const paramUserId = req.params?.userId;
 
-    if (!sessionUserId || (paramUserId && paramUserId !== sessionUserId)) {
+    if (!userId || (paramUserId && paramUserId !== userId)) {
         return res.status(403).json({ message: "Forbidden" });
     }
 

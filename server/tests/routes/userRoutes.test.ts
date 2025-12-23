@@ -1,7 +1,13 @@
+// Import mocks FIRST before any other imports
+import "../setup/mocks";
+import { mockGenerateToken } from "../setup/mocks";
+
 import mongoose from "mongoose";
 import User from "../../models/users";
+import { IUser } from "../../types/types";
 
 const request = require("supertest");
+// Import server AFTER mocks are set up
 const app = require("../../server");
 
 describe("User Routes", () => {
@@ -14,7 +20,13 @@ describe("User Routes", () => {
     };
 
     beforeAll(() => {
-        jest.spyOn(console, "log").mockImplementation(() => { });
+        // Don't suppress console.log for debugging
+    });
+
+    beforeEach(() => {
+        // Reset mocks before each test
+        mockGenerateToken.mockClear();
+        mockGenerateToken.mockResolvedValue("mock.encrypted.token");
     });
 
     afterEach(() => {
@@ -24,7 +36,17 @@ describe("User Routes", () => {
     describe("POST /user/register", () => {
         it("should register a new user", async () => {
             User.findOne = jest.fn().mockResolvedValue(null);
-            User.registerUser = jest.fn().mockResolvedValue(testUser);
+            // registerUser returns an IUser object (converted via convertToIUser)
+            // Ensure it has _id and email properties
+            const registeredUser = {
+                _id: testUser._id,
+                email: testUser.email,
+                displayName: testUser.displayName,
+                password: testUser.password
+            };
+            User.registerUser = jest.fn().mockResolvedValue(registeredUser);
+            // Set up generateToken mock - override default for this test
+            mockGenerateToken.mockResolvedValue("mock.token.here");
 
             const response = await request(app)
                 .post("/user/register")
@@ -34,12 +56,17 @@ describe("User Routes", () => {
                     password: "testpass123"
                 });
 
+
             expect(response.statusCode).toBe(200);
-            expect(response.body).toMatchObject({
+            expect(response.body).toHaveProperty("message", "Registration successful");
+            expect(response.body).toHaveProperty("user");
+            expect(response.body).toHaveProperty("token", "mock.token.here");
+            expect(response.body.user).toMatchObject({
                 _id: testUser._id,
                 email: testUser.email,
                 displayName: testUser.displayName
             });
+            expect(mockGenerateToken).toHaveBeenCalledWith(testUser._id, testUser.email);
         });
 
         it("should return 400 if email is already registered", async () => {
@@ -124,7 +151,8 @@ describe("User Routes", () => {
         it("should return 401 if no session exists", async () => {
             const response = await request(app).get("/user/session");
             expect(response.statusCode).toBe(401);
-            expect(response.body).toEqual({ message: "Not authenticated" });
+            // isAuthenticated middleware returns "Unauthorized", not "Not authenticated"
+            expect(response.body).toEqual({ message: "Unauthorized" });
         });
 
         it("should return the user if session is valid", async () => {
@@ -132,6 +160,7 @@ describe("User Routes", () => {
 
             // 1. Mock loginUser and register session via login
             User.loginUser = jest.fn().mockResolvedValue(testUser);
+            mockGenerateToken.mockResolvedValue("mock.token.here");
 
             await agent.post("/user/login").send({
                 email: testUser.email,
@@ -140,12 +169,15 @@ describe("User Routes", () => {
 
             // 2. Mock getUserById
             User.getUserById = jest.fn().mockResolvedValue(testUser);
+            mockGenerateToken.mockResolvedValue("new.mock.token.here");
 
             // 3. Call session endpoint
             const response = await agent.get("/user/session");
 
             expect(response.statusCode).toBe(200);
-            expect(response.body).toEqual({ user: testUser });
+            expect(response.body).toHaveProperty("user");
+            expect(response.body).toHaveProperty("token", "new.mock.token.here");
+            expect(response.body.user).toEqual(testUser);
         });
 
         it("should return 404 if user not found in session", async () => {
@@ -205,12 +237,12 @@ describe("User Routes", () => {
 
             expect(User.deleteUserById).toHaveBeenCalledWith(user._id);
             expect(res.statusCode).toBe(200);
-            expect(res.body).toEqual({ message: "Logout successful" });
+            expect(res.body).toEqual({ message: "Account deleted successfully" });
 
-            // Verify session is cleared
+            // Verify session is cleared - isAuthenticated middleware returns "Unauthorized"
             const sessionRes = await agent.get("/user/session");
             expect(sessionRes.statusCode).toBe(401);
-            expect(sessionRes.body).toEqual({ message: "Not authenticated" });
+            expect(sessionRes.body).toEqual({ message: "Unauthorized" });
         });
     });
 

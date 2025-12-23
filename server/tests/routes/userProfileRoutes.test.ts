@@ -1,5 +1,7 @@
+import "../setup/mocks";
 import mongoose from "mongoose";
 import UserProfile from "../../models/userProfiles";
+
 const request = require("supertest");
 const app = require("../../server");
 
